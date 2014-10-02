@@ -11,7 +11,7 @@
   29Jun1998  dl               Create public version
 */
 
-package EDU.oswego.cs.dl.util.concurrent;
+package edu.oswego.cs.dl.util.concurrent;
 
 /**
  * Thrown by Barrier upon interruption of participant threads

@@ -11,7 +11,7 @@
   11Jun1998  dl               Create public version
 */
 
-package EDU.oswego.cs.dl.util.concurrent;
+package edu.oswego.cs.dl.util.concurrent;
 
 /**
  * A simple non-reentrant mutual exclusion lock.

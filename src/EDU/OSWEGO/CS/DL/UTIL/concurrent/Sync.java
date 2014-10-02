@@ -12,7 +12,7 @@
    5Aug1998  dl               Added some convenient time constants
 */
 
-package EDU.oswego.cs.dl.util.concurrent;
+package edu.oswego.cs.dl.util.concurrent;
 
 /**
  * Main interface for locks, gates, and conditions.
