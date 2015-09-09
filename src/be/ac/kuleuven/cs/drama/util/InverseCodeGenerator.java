@@ -17,8 +17,9 @@ import java.util.Hashtable;
  instructie een uitwendige machine-instructie maken)
  Deze versie ondersteunt dit enkel voor de opcodes
  
- @version 1.0 05 APR 1999
+ @version 1.1 05 APR 2015
  @author Tom Vekemans
+ @author Jo-Thijs Daelman
 */
 
 public class InverseCodeGenerator {
@@ -74,9 +75,13 @@ public class InverseCodeGenerator {
       _hash.put("71", "LEZ");
       _hash.put("72", "DRU");
       _hash.put("73", "NWL");
+      _hash.put("79", "DRS");
       _hash.put("81", "INV");
       _hash.put("82", "UTV");
       _hash.put("99", "STP");
+      _hash.put("91", "HIB");
+      _hash.put("92", "SGI");
+      _hash.put("93", "SGU");
    }
 
 }

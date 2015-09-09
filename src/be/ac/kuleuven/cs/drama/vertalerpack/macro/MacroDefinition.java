@@ -9,19 +9,15 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringTokenizer;
+
 import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
-
-import java.io.PrintWriter;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import java.util.Map;
-import java.util.HashMap;
-
-import java.util.StringTokenizer;
 
 /**
  * A definition of a macro.
@@ -55,11 +51,11 @@ public class MacroDefinition {
     */
    public MacroDefinition(int lineno, ExpansionManager manager)
    throws AbnormalTerminationException {
-      _lines = new ArrayList();
-      _manager = manager;
-      _labels = new HashMap();
-      _formalParameters = new ArrayList();
-      _lineno = lineno;
+      this._lines = new ArrayList();
+      this._manager = manager;
+      this._labels = new HashMap();
+      this._formalParameters = new ArrayList();
+      this._lineno = lineno;
    }
 
    /**
@@ -68,18 +64,18 @@ public class MacroDefinition {
    public MacroDefinition(int lineno, ExpansionManager manager, String header)
    throws AbnormalTerminationException {
       this(lineno, manager);
-      setHeaderInfo(header);
+      this.setHeaderInfo(header);
    }
 
    public int getLineNo() {
-      return _lineno;
+      return this._lineno;
    }
 
    /**
     * set the name of this macro definition
     */
    protected void setName(String name) {
-      _name = name;
+      this._name = name;
    }
 
    /**
@@ -103,7 +99,7 @@ public class MacroDefinition {
          throw new AbnormalTerminationException("Ongeldige macronaam: " + name);
       }
 
-      setName(name);
+      this.setName(name);
       // parse the formal parameters
       StringTokenizer tokenizer = new StringTokenizer(params, ",");
       List formalParams = new ArrayList();
@@ -119,21 +115,21 @@ public class MacroDefinition {
          formalParams.add(param);
       }
 
-      setFormalParameters(formalParams);
+      this.setFormalParameters(formalParams);
    }
 
    /**
     * set the formal parameters
     */
    protected void setFormalParameters(List params) {
-      _formalParameters = params;
+      this._formalParameters = params;
    }
 
    /**
     * @return the name
     */
    public String getName() {
-      return _name;
+      return this._name;
    }
 
    /**
@@ -141,7 +137,7 @@ public class MacroDefinition {
     */
    public void addLine(int lineno, String line)
    throws AbnormalTerminationException {
-      _lines.add(new MacroLineFactory().parseLine(line, lineno, this));
+      this._lines.add(new MacroLineFactory().parseLine(line, lineno, this));
    }
 
    /**
@@ -149,7 +145,7 @@ public class MacroDefinition {
     * and another line should be added
     */
    public boolean wantNextLine() {
-      return _lines.size() == 0 || ! ((MacroLine) _lines.get(_lines.size() - 1)).isLastLine();
+      return this._lines.size() == 0 || ! ((MacroLine) this._lines.get(this._lines.size() - 1)).isLastLine();
    }
 
    /**
@@ -159,12 +155,12 @@ public class MacroDefinition {
     */
    public int expand(PrintWriter out, List actualParameters, int lineno)
    throws AbnormalTerminationException {
-      checkParameters(actualParameters);
+      this.checkParameters(actualParameters);
       VariableTable localVariableTable =
-         new VariableTable(_formalParameters, actualParameters,
-                           _manager.getGlobalVariableTable());
-      MacroExpander m = new MacroExpander(_manager);
-      m.expand(localVariableTable, _lines, out, lineno);
+         new VariableTable(this._formalParameters, actualParameters,
+                           this._manager.getGlobalVariableTable());
+      MacroExpander m = new MacroExpander(this._manager);
+      m.expand(localVariableTable, this._lines, out, lineno);
       return m.getLineNo();
    }
 
@@ -174,7 +170,7 @@ public class MacroDefinition {
    public int nbOfSourceLines() {
       // the main program has an extra MCREINDE
       // by a normal macro we take MACRO and the header into account
-      return isMainProgram() ? _lines.size() - 1 : _lines.size() + 2;
+      return this.isMainProgram() ? this._lines.size() - 1 : this._lines.size() + 2;
    }
 
    /**
@@ -183,7 +179,7 @@ public class MacroDefinition {
     * and the main progam.
     */
    public boolean isMainProgram() {
-      return getName() == null;
+      return this.getName() == null;
    }
 
    /**
@@ -191,10 +187,9 @@ public class MacroDefinition {
     */
    private void checkParameters(List actualParameters)
    throws AbnormalTerminationException {
-      if (actualParameters.size() != _formalParameters.size()) {
-         throw new AbnormalTerminationException("Ongeldig aantal parameters in " + getName() + "!");
+      if (actualParameters.size() != this._formalParameters.size()) {
+         throw new AbnormalTerminationException("Ongeldig aantal parameters in " + this.getName() + "!");
       }
-
    }
 
    /**
@@ -204,23 +199,23 @@ public class MacroDefinition {
    throws AbnormalTerminationException {
       MacroLabel label = MacroLabel.getLabel(labelString);
 
-      if (! _labels.containsKey(label.getName())) {
-         _labels.put(label.getName(), label);
+      if (! this._labels.containsKey(label.getName())) {
+         this._labels.put(label.getName(), label);
       }
 
       return (MacroLabel) _labels.get(label.getName());
    }
 
    public boolean isMacroName(String name) {
-      return _manager.containsMacroDefinition(name);
+      return this._manager.containsMacroDefinition(name);
    }
 
    public MacroDefinition getMacro(String name) {
-      return _manager.getMacroDefinition(name);
+      return this._manager.getMacroDefinition(name);
    }
 
    public int getNumberOfLines() {
-      return _lines.size();
+      return this._lines.size();
    }
 
 }

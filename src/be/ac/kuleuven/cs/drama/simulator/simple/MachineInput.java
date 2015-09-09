@@ -31,5 +31,10 @@ public interface MachineInput
     * IMPOSED BY GUICONTROLLER
     */
    public void setInput(String input);
+   
+   /**
+    * @return whatever the user is currently being asked for input
+    */
+   public boolean isWaiting();
 
 }

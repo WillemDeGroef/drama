@@ -16,8 +16,9 @@ import javax.swing.JMenu;
  * Creates the menu bar for the
  * editor frame.
  *
- * @version 1.0.0 09/06/2000
+ * @version 1.0.0 09/06/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class EditFrameMenuFactory {
@@ -41,6 +42,7 @@ public class EditFrameMenuFactory {
       _menuBar = new JMenuBar();
       createFileMenu();
       createCompileMenu();
+      createColorMenu();
       createHelpMenu();
    }
 
@@ -66,6 +68,20 @@ public class EditFrameMenuFactory {
       menu.add(_actionManager.getCompileAction());
       menu.add(_actionManager.getCompileStatisticsAction());
       menu.add(_actionManager.getShowExecuteFrameAction());
+      
+      menu.addSeparator();
+      
+      menu.add(_actionManager.getStopPrecompilationAction());
+
+      _menuBar.add(menu);
+   }
+
+   private void createColorMenu() {
+      JMenu menu = new JMenu("Kleuren");
+      
+      menu.add(_actionManager.getIdeBlackWhiteAction());
+      menu.add(_actionManager.getIdeLightAction());
+      menu.add(_actionManager.getIdeDarkAction());
 
       _menuBar.add(menu);
    }

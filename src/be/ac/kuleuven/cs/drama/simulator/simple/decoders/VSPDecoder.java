@@ -14,9 +14,9 @@
 
 package be.ac.kuleuven.cs.drama.simulator.simple.decoders;
 
-import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
-import be.ac.kuleuven.cs.drama.simulator.simple.*;
-import java.io.PrintStream;
+import be.ac.kuleuven.cs.drama.simulator.simple.Instruction;
+import be.ac.kuleuven.cs.drama.simulator.simple.InternalMachine;
+import be.ac.kuleuven.cs.drama.simulator.simple.OpcodeDecoder;
 
 public class VSPDecoder extends OpcodeDecoder {
 
@@ -47,53 +47,35 @@ public class VSPDecoder extends OpcodeDecoder {
    private boolean test(int i, InternalMachine internalmachine) {
       switch (i) {
 
-      case 0:        // '\0'
+      case 0:
+    	 return internalmachine.cpu().ptw().getSOI();
 
-
-
-
-
-
-
-         System.out.println("VSP conditie SO niet geimplementeerd");
-         return false;
-
-      case 1:        // '\001'
-
-
-
-
-
-
-
+      case 1:
          return internalmachine.cpu().ptw().getCC() == 0;
 
-      case 2:        // '\002'
+      case 2:
          return internalmachine.cpu().ptw().getCC() != 2;
 
-      case 3:        // '\003'
+      case 3:
          return internalmachine.cpu().ptw().getCC() != 1;
 
-      case 4:        // '\004'
-         System.out.println("VSP conditie OVL niet geimplementeerd");
-         return false;
+      case 4:
+         return internalmachine.cpu().ptw().getOVI();
 
-      case 5:        // '\005'
-         System.out.println("VSP conditie GOVL niet geimplementeerd");
-         return true;
+      case 5:
+         return ! internalmachine.cpu().ptw().getOVI();
 
-      case 6:        // '\006'
+      case 6:
          return internalmachine.cpu().ptw().getCC() == 1;
 
-      case 7:        // '\007'
+      case 7:
          return internalmachine.cpu().ptw().getCC() == 2;
 
-      case 8:        // '\b'
+      case 8:
          return internalmachine.cpu().ptw().getCC() != 0;
 
-      case 9:        // '\t'
-         System.out.println("VSP conditie GSO niet geimplementeerd");
-         return true;
+      case 9:
+         return ! internalmachine.cpu().ptw().getSOI();
       }
 
       return false;
@@ -114,7 +96,12 @@ public class VSPDecoder extends OpcodeDecoder {
    protected boolean usesOperand() {
       return true;
    }
+   
+   protected boolean isPrivileged() {
+	   return false;
+   }
 
+   /*
    private static final int SO = 0;
    private static final int NUL = 1;
    private static final int NNEG = 2;
@@ -125,4 +112,5 @@ public class VSPDecoder extends OpcodeDecoder {
    private static final int NEG = 7;
    private static final int NNUL = 8;
    private static final int GSO = 9;
+   */
 }

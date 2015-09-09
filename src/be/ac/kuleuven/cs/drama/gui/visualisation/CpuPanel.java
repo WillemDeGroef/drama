@@ -23,6 +23,8 @@ import javax.swing.*;
 public class CpuPanel
 
    extends JPanel {
+	private static final long serialVersionUID = 0L;
+
 
    private JLabel[] _registers;
    private JLabel _instruction;

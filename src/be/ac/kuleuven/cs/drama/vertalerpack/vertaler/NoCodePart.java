@@ -9,8 +9,6 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.vertaler;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
 /**
  * The NoCodePart is an ActiveCodePart for an empty line.
  *

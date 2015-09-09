@@ -40,10 +40,10 @@ package be.ac.kuleuven.cs.drama.gui;
 
 
 import java.io.File;
-import java.util.Hashtable;
 import java.util.Enumeration;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import java.util.Hashtable;
+
+import javax.swing.filechooser.FileFilter;
 
 /**
  * A convenience implementation of FileFilter that filters out
@@ -67,8 +67,8 @@ import javax.swing.filechooser.*;
 
 public class ExtensionFileFilter extends FileFilter {
 
-   private static String TYPE_UNKNOWN = "Type Unknown";
-   private static String HIDDEN_FILE = "Hidden File";
+   //private static String TYPE_UNKNOWN = "Type Unknown";
+   //private static String HIDDEN_FILE = "Hidden File";
 
    private Hashtable filters = null;
    private String description = null;

@@ -9,8 +9,6 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.vertaler;
 
-import java.util.StringTokenizer;
-
 import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 
 /**

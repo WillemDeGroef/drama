@@ -81,7 +81,7 @@ public class ONDOpcode extends OpcodeCodePart {
 
 
    public int getIdx() {
-      return 99;
+      return 9;
    }
 
    public int getOperand()

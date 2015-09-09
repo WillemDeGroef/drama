@@ -9,8 +9,6 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
 import java.util.Set;
 
 /**

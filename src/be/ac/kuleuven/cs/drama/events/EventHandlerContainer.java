@@ -18,6 +18,8 @@ optreden van zo'n event bij die objecten moeten worden opgeroepen.
 */
 
 public class EventHandlerContainer implements java.io.Serializable {
+	private static final long serialVersionUID = 0L;
+
    private transient Object $eventHandler;
    private transient Method $method;
 

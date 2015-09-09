@@ -56,5 +56,9 @@ public class HIADecoder extends OpcodeDecoder {
    protected boolean usesOperand() {
       return true;
    }
+   
+   protected boolean isPrivileged() {
+	   return false;
+   }
 
 }

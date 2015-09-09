@@ -14,8 +14,9 @@
 
 package be.ac.kuleuven.cs.drama.simulator.simple.decoders;
 
-import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
-import be.ac.kuleuven.cs.drama.simulator.simple.*;
+import be.ac.kuleuven.cs.drama.simulator.simple.Instruction;
+import be.ac.kuleuven.cs.drama.simulator.simple.InternalMachine;
+import be.ac.kuleuven.cs.drama.simulator.simple.OpcodeDecoder;
 
 public class SBRDecoder extends OpcodeDecoder {
 
@@ -58,6 +59,10 @@ public class SBRDecoder extends OpcodeDecoder {
 
    protected boolean usesOperand() {
       return true;
+   }
+   
+   protected boolean isPrivileged() {
+	   return false;
    }
 
 }

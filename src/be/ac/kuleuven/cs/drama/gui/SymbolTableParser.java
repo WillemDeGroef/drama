@@ -52,6 +52,8 @@ public class SymbolTableParser {
          while ( (line = in.readLine()) != null) {
             parseLine(line, labels, addresses);
          }
+         
+         in.close();
 
       } catch (IOException ioe) {
          System.out.println("Fout in symbooltabel");

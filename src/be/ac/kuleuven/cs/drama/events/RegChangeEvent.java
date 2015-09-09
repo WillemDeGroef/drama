@@ -17,6 +17,8 @@ import java.util.EventObject;
 */
 
 public class RegChangeEvent extends EventObject {
+	private static final long serialVersionUID = 0L;
+
    private int _index;
    private long _value;
 

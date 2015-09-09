@@ -20,8 +20,9 @@ import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
  *
  * The input from outside is only used if the machine is waiting for it.
  *
- * @version 1.0.0 08/11/2000
+ * @version 1.0.0 08/11/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class SimpleInteractiveInput
@@ -29,8 +30,8 @@ public class SimpleInteractiveInput
    implements MachineInput {
 
    private static final boolean DEBUG = false;
-   private boolean _abort = false;
-   private boolean _waiting = false;
+   private volatile boolean _abort = false;
+   private volatile boolean _waiting = false;
    private String _input = null;
 
    private final InternalMachine _machine;
@@ -52,7 +53,8 @@ public class SimpleInteractiveInput
 
       notify();
 
-      _abort = false;
+      if (!_waiting)
+    	  _abort = false;
    }
 
    /**
@@ -68,7 +70,7 @@ public class SimpleInteractiveInput
 
 
 
-      while ( _input == null && ! _abort) {
+      while ( _input == null ) {
 
          InputRequestEventManager.fireEvent();
 
@@ -76,6 +78,9 @@ public class SimpleInteractiveInput
             if (DEBUG) System.out.println("Waiting for input");
 
             wait();
+
+            if (_abort)
+            	break;
 
          } catch (InterruptedException ie) {
             _waiting = false;
@@ -101,6 +106,7 @@ public class SimpleInteractiveInput
       _waiting = false;
 
       if (_abort) {
+    	  _abort = false;
          throw new RuntimeException("LEZ afgebroken");
       }
 
@@ -137,4 +143,7 @@ public class SimpleInteractiveInput
 
    }
 
+   public synchronized boolean isWaiting() {
+	   return _waiting;
+   }
 }

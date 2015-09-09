@@ -102,6 +102,14 @@ public class VSPOpcode extends OpcodeCodePart {
       if (str.equals("KLG") || str.equals("NPOS")) {
          return 3;
       }
+      
+      if (str.equals("OVL")) {
+    	  return 4;
+      }
+      
+      if (str.equals("GOVL")) {
+    	  return 5;
+      }
 
       if (str.equals("GR") || str.equals("POS")) {
          return 6;

@@ -18,61 +18,36 @@ package be.ac.kuleuven.cs.drama.gui.statemachine;
 
 class CompiledState
 
-   extends GuiState {
-   CompiledState(GuiStateMachine stateMachine) {
-      super(stateMachine);
-   }
+extends GuiState {
+	CompiledState(GuiStateMachine stateMachine) {
+		super(stateMachine);
+	}
 
-   void initActionStates() {
-      getStateMachine().setExecuteActionsEnabled(true);
-   }
+	void newFile() {
+		getStateMachine().realNewFile();
+		getStateMachine().setCurrentState(getStateMachine().getSavedState());
+	}
 
-   void newFile() {
-      getStateMachine().realNewFile();
-      getStateMachine().setCurrentState(getStateMachine().getSavedState());
-   }
+	void saveFile() {
+		// NOTHING NECESSARY
+	}
 
-   void saveFile() {
-      // NOTHING NECESSARY
-   }
+	void openFile() {
+		try {
+			getStateMachine().realOpenFile();
+			getStateMachine().setCurrentState(getStateMachine().getSavedState());
+		} catch (CancelException ce) {
+			getStateMachine().statusMessage("Openen geanulleerd.");
+		}
 
+	}
 
+	void precompile() {
+		// NOTHING NECESSARY
+	}
 
-
-
-
-
-
-   void openFile() {
-      try {
-         getStateMachine().realOpenFile();
-         getStateMachine().setCurrentState(getStateMachine().getSavedState());
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Openen geanulleerd.");
-      }
-
-   }
-
-   void precompile() {
-      // NOTHING NECESSARY
-   }
-
-
-
-
-
-
-
-
-   void compile() {
-      // NOTHING NECESSARY
-   }
-
-
-
-
-
-
-
+	void compile() {
+		// NOTHING NECESSARY
+	}
 
 }

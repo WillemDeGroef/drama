@@ -9,24 +9,25 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
-import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
-
-import java.util.Set;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.StringTokenizer;
+import java.util.Set;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
+import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
 
 /**
  * Superclass for all classes that represent 
  * lines in a macro.
  * 
- * @version 1.0.0 08/29/2000
+ * @version 1.0.0 08/29/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public abstract class MacroLine {
+
+   private static boolean _terminationRequested;
 
    private MacroLabel _label = null;
    private String _line;
@@ -34,32 +35,25 @@ public abstract class MacroLine {
 
    protected MacroLine() {}
 
-
-
-
-
-
-
-
    public void initCaller(String line, MacroDefinition context, int lineno)
    throws AbnormalTerminationException {
-      setLineNo(lineno);
-      init(line, context);
+      this.setLineNo(lineno);
+      this.init(line, context);
    }
 
    public abstract void init(String line, MacroDefinition context)
    throws AbnormalTerminationException;
 
    public String getLine() {
-      return _line;
+      return this._line;
    }
 
    protected void setLineNo(int lineno) {
-      _lineno = lineno;
+      this._lineno = lineno;
    }
 
    public int getLineNo() {
-      return _lineno;
+      return this._lineno;
    }
 
    public boolean isMacroCommand() {
@@ -68,28 +62,30 @@ public abstract class MacroLine {
 
    public final int expand(MacroExpander expander)
    throws AbnormalTerminationException {
-      expandImpl(expander);
-      String text = outString(expander);
-      boolean outputText = !isMacroCommand() || (text.length() > 0);
+      if (_terminationRequested)
+    	  throw new AbnormalTerminationException("Voorvertaling is geforceerd gestopt.");
 
-      if (_label != null && _label.shouldBePrinted()) {
-         if (labelOnSeparateLine() || !outputText) {
-            expander.println(getLineNo(), _label.toString(expander) + ":");
+      this.expandImpl(expander);
+      String text = this.outString(expander);
+      boolean outputText = !this.isMacroCommand() || (text.length() > 0);
+
+      if (this._label != null && this._label.shouldBePrinted()) {
+         if (this.labelOnSeparateLine() || !outputText) {
+            expander.println(this.getLineNo(), this._label.toString(expander) + ":");
          } else {
-            expander.print(getLineNo(), _label.toString(expander) + ":");
+            expander.print(this.getLineNo(), this._label.toString(expander) + ":");
          }
-
       }
 
       if (outputText) {
-         expander.println(getLineNo(), text);
+         expander.println(this.getLineNo(), text);
       }
 
       return 0;
    }
 
    public void setLabel(MacroLabel label) {
-      _label = label;
+      this._label = label;
    }
 
    /**
@@ -186,6 +182,10 @@ public abstract class MacroLine {
 
    protected boolean labelOnSeparateLine() {
       return true;
+   }
+
+   public static void setTerminationRequest(boolean requested) {
+	   _terminationRequested = requested;
    }
 
 }

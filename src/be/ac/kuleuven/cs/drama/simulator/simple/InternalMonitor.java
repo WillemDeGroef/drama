@@ -19,10 +19,15 @@ package be.ac.kuleuven.cs.drama.simulator.simple;
 
 public interface InternalMonitor {
 
-   /**
-    * write the given drama number to the output
-    */
-   public void writeLong(long value);
+	   /**
+	    * write the given drama number to the output
+	    */
+	   public void writeLong(long value);
+
+	   /**
+	    * write the given drama number to the output
+	    */
+	   public void writeChar(char value);
 
    /**
     * write a newline to the output
@@ -43,5 +48,15 @@ public interface InternalMonitor {
     * release resources if necessary
     */
    public void close();
+   
+   /**
+    * clear output screen
+    */
+   public void clear();
+   
+   /**
+    * Removes the last character of the output
+    */
+   public void delLastChar();
 
 }

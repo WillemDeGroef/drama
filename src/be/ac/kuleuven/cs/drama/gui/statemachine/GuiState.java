@@ -28,8 +28,6 @@ abstract class GuiState {
       return _stateMachine;
    }
 
-   abstract void initActionStates();
-
    abstract void newFile();
 
    abstract void saveFile();

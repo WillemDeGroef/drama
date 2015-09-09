@@ -9,13 +9,10 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
-import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
-
-import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 
 /**
  * Manages the definition of all macros, including the special 
@@ -51,7 +48,6 @@ public class MacroDefiner {
       try {
          while ((line = _in.readLine()) != null) {
             lineno++;
-            //System.out.println(lineno + ": " + line);
             if (macro != null) {
                // bezig met verwerken van een macro
                macro.addLine(lineno, line);
@@ -86,8 +82,7 @@ public class MacroDefiner {
       }
 
       if ((macro != null) && macro.wantNextLine())
-         throw new AbnormalTerminationException(macro.getLineNo(), "Macro " +
-                                                "wordt niet afgesloten");
+         throw new AbnormalTerminationException(macro.getLineNo(), "Macro wordt niet afgesloten");
       main.addLine(lineno + 1, "MCREINDE");
       _expansionManager.addMainMacro(main);
       return _expansionManager;

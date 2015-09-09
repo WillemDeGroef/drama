@@ -9,18 +9,23 @@
  */
 package be.ac.kuleuven.cs.drama.gui.editor;
 
-import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.SourceLine;
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.TextUI;
-import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Rectangle;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.ArrayList;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.plaf.TextUI;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
+import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.SourceLine;
 
 /**
  * Editor class.
@@ -30,14 +35,13 @@ import java.util.ArrayList;
  */
 
 public class SimpleEditor extends JPanel {
+	private static final long serialVersionUID = 0L;
 
    private JScrollPane _scrollPane;
    private JPanel _innerPanel;
 
    private ColorLineTextPane _textPane;
    private JLabel _coordinates;
-
-   // private boolean           _debugMode;
 
    private BreakPointCollection _breakPointCollection;
    private DocumentListener _bpListener;
@@ -63,13 +67,9 @@ public class SimpleEditor extends JPanel {
       _textPane = new ColorLineTextPane(Color.white, Color.blue);
       _textPane.setFont(new Font("monospaced", Font.PLAIN, 12));
 
-      // _debugMode = false;
-      //buildBreakPointCollection();
-
       _textPane.addCaretListener(new CoordinateController());
       _coordinates = new JLabel("1:1");
       _innerPanel.add(_breakPointCollection.getBox(), BorderLayout.WEST);
-      //_breakPointCollection.getBox().setVisible(false);
       _innerPanel.add(_textPane, BorderLayout.CENTER);
       add(_scrollPane, BorderLayout.CENTER);
       add(_coordinates, BorderLayout.SOUTH);
@@ -84,7 +84,6 @@ public class SimpleEditor extends JPanel {
       implements CaretListener {
 
       public void caretUpdate(CaretEvent ce) {
-         //_breakPointCollection.setButtonHeight(_textPane.getLineHeight());
          _coordinates.setText(_textPane.getCurrentRow() + ":" + _textPane.getCurrentColumn());
       }
 
@@ -96,10 +95,8 @@ public class SimpleEditor extends JPanel {
    public void setText(String text) {
       _textPane.getStyledDocument().removeDocumentListener(_bpListener);
       _breakPointCollection.clear();
-      //text = text.replace('\t', ' ');
       _textPane.setText(text);
       buildBreakPointCollection();
-      //disableBreakPoints();
       _textPane.getStyledDocument().addDocumentListener(_bpListener);
       _breakPointCollection.setButtonHeight(_textPane.getLineHeight());
 
@@ -112,36 +109,6 @@ public class SimpleEditor extends JPanel {
       return _textPane.getText();
    }
 
-   /*
-   public void toggleMode(){
-   _debugMode = ! _debugMode;
-
-   if (_debugMode){
-    setDebugMode();
-} else {
-    setNormalMode();
-}
-}
-   */
-
-   /*
-   private void setDebugMode(){
-   _breakPointCollection.clear();
-   buildBreakPointCollection();
-   _breakPointCollection.getBox().setVisible(true);
-   _textPane.setDefaultForeground(Color.yellow);
-   _textPane.applyDefaults();
-}
-   */
-
-   /*
-   private void setNormalMode(){
-   _textPane.setDefaultForeground(Color.white);
-   _textPane.applyDefaults();
-   _breakPointCollection.getBox().setVisible(false);
-}
-   */
-
    /**
     * toggle the breakpoint of the current line
     * no effect if disabled
@@ -151,30 +118,24 @@ public class SimpleEditor extends JPanel {
    }
 
    /**
-    * toggle the breakpoint of the given obejct code line
+    * toggle the breakpoint of the given object code line
     */
    public void toggleBreakPoint(int realLineNumber) {
       _breakPointCollection.toggle(realLineNumber);
    }
 
-   /*
-   public boolean isDebugMode(){
-   return _debugMode;
-}
-   */
-
    /**
-    * @return wether the text has been edited
+    * @return whether the text has been edited
     */
    public boolean isDirty() {
       return _textPane.isDirty();
    }
 
    /**
-    * set wether the text has been edited
+    * set whether the text has been edited
     */
    public void setDirty(boolean state) {
-      if ((! state) /* && (isDebugMode()) */ && isDirty()) {
+      if ((! state) && isDirty()) {
          _breakPointCollection.clear();
          buildBreakPointCollection();
          enableBreakPoints();
@@ -203,19 +164,7 @@ public class SimpleEditor extends JPanel {
          TextUI mapper = _textPane.getUI();
          Rectangle r = mapper.modelToView(_textPane, 0);
          _breakPointCollection.setButtonHeight(r.height);
-      } catch (Exception e) {
-         //e.printStackTrace();
-      }
-
-
-
-
-
-
-
-
-
-
+      } catch (Exception e) { }
 
       int lc = _textPane.getLineCount();
 
@@ -227,15 +176,6 @@ public class SimpleEditor extends JPanel {
             lines = new SourceLine(_textPane.getLine(i), null).nbObjectLines();
          } catch (AbnormalTerminationException ate) {
          }
-
-
-
-
-
-
-
-
-
 
          if (lines != 1) {
             _breakPointCollection.disableLine(i);
@@ -265,9 +205,13 @@ public class SimpleEditor extends JPanel {
    private int getRealLineNumber(int effectiveLineNumber) {
       int realln = 0;
       int effectiveln = -1;
+      int max = getText().split("\n").length;
 
       while (effectiveln < effectiveLineNumber) {
-         realln += 1;
+         if (++realln > max) {
+        	 realln = -1;
+        	 break;
+         }
 
          try {
             effectiveln += new SourceLine(_textPane.getLine(realln), null).nbObjectLines();
@@ -277,7 +221,6 @@ public class SimpleEditor extends JPanel {
 
       }
 
-      //System.out.println(effectiveLineNumber + " => " + realln);
       return realln;
 
    }
@@ -344,15 +287,6 @@ public class SimpleEditor extends JPanel {
       }
 
       public void changedUpdate(DocumentEvent e) {}
-
-
-
-
-
-
-
-
-
 
    }
 

@@ -9,16 +9,12 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
 import java.io.PrintWriter;
-
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 
 /**
  * The ExpansionManager collects and distributes all
@@ -45,33 +41,31 @@ public class ExpansionManager {
    public ExpansionManager() {
       if (DEBUG) System.out.println("ExpansionManager.<init>");
 
-      _globalVariableTable = new VariableTable();
-      _macroDefinitions = new HashMap();
-      _uniqueExpansionNumber = 0;
+      this._globalVariableTable = new VariableTable();
+      this._macroDefinitions = new HashMap();
+      this._uniqueExpansionNumber = 0;
    }
 
    public ArrayList getLineMap() {
-      return _linemap;
+      return this._linemap;
    }
 
    public void addLineMapping(int destline, int srcline) {
-      if (destline < _destline) {
-         throw new RuntimeException("destline shrinks... bad... verry bad");
+      if (destline < this._destline) {
+         throw new RuntimeException("destline shrinks... bad... very bad");
       }
 
-      if (destline > _destline) {
-         _linemap.add(new Integer(srcline));
-         _destline++;
+      if (destline > this._destline) {
+         this._linemap.add(new Integer(srcline));
+         this._destline++;
       }
-
-      //System.out.println("-- " + destline + " src:" + srcline);
    }
 
    /**
     * @return the global variable table
     */
    public VariableTable getGlobalVariableTable() {
-      return _globalVariableTable;
+      return this._globalVariableTable;
    }
 
    /**
@@ -82,43 +76,42 @@ public class ExpansionManager {
    public void addMacroDefinition(MacroDefinition definition)
    throws AbnormalTerminationException {
       if (containsMacroDefinition(definition.getName())) {
-         throw new AbnormalTerminationException("Dubbele definitie van macro: "
-                                                + definition.getName());
+         throw new AbnormalTerminationException("Dubbele definitie van macro: " + definition.getName());
       }
 
-      _macroDefinitions.put(definition.getName(), definition);
+      this._macroDefinitions.put(definition.getName(), definition);
    }
 
    public void addMainMacro(MacroDefinition main) {
-      _main = main;
+      this._main = main;
    }
 
    /**
     * @return wether the given macro name is already defined
     */
    public boolean containsMacroDefinition(String macroName) {
-      return _macroDefinitions.containsKey(macroName);
+      return this._macroDefinitions.containsKey(macroName);
    }
 
    /**
     * @return the macro definition with given name
     */
    public MacroDefinition getMacroDefinition(String name) {
-      return (MacroDefinition) _macroDefinitions.get(name);
+      return (MacroDefinition) this._macroDefinitions.get(name);
    }
 
    /**
     * @return the main macro (the plain drama code thus)
     */
    public MacroDefinition getMain() {
-      return _main;
+      return this._main;
    }
 
    /**
     * @return a unique number, used for unique labels
     */
    public int getUniqueExpansionNumber() {
-      return _uniqueExpansionNumber++;
+      return this._uniqueExpansionNumber++;
    }
 
    /**
@@ -129,20 +122,11 @@ public class ExpansionManager {
    throws AbnormalTerminationException {
       if (DEBUG) System.out.println("ExpansionManager.expand()");
 
-      if (getMain() == null) {
+      if (this.getMain() == null) {
          throw new AbnormalTerminationException("Geen programma gedefinieerd.");
       }
-
-      //      System.out.println("lines: " + getMain().nbOfSourceLines());
-      //      Iterator it = _macroDefinitions.keySet().iterator();
-      //      while(it.hasNext()) {
-      //         String macroName = (String) it.next();
-      //         System.out.println("Macro: " + macroName + "(" +
-      //                            getMacroDefinition(macroName).getNumberOfLines() + ", " +
-      //                            getMacroDefinition(macroName).nbOfSourceLines()+
-      //                            ")");
-      //      }
-      getMain().expand(out, new ArrayList(), 1);
+      
+      this.getMain().expand(out, new ArrayList(), 1);
    }
 
 }

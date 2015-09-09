@@ -52,6 +52,7 @@ public class ExecuteFrameMenuFactory {
       menu.add(_actionManager.getStepAction());
       menu.add(_actionManager.getStopAction());
       menu.add(_actionManager.getResetAction());
+      menu.add(_actionManager.getClearFrameAction());
       menu.add(_actionManager.getRunStatisticsAction());
       menu.addSeparator();
       menu.add(_actionManager.getCloseExecuteFrameAction());

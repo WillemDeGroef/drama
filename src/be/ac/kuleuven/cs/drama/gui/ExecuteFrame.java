@@ -9,31 +9,23 @@
  */
 package be.ac.kuleuven.cs.drama.gui;
 
-import be.ac.kuleuven.cs.drama.gui.editor.SimpleEditor;
-import be.ac.kuleuven.cs.drama.gui.editor.ColorLineTextPane;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-
 import java.util.Hashtable;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
-import javax.swing.JToolBar;
-import javax.swing.JTextArea;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.JToolBar;
 
-import javax.swing.event.CaretListener;
-import javax.swing.event.CaretEvent;
+import be.ac.kuleuven.cs.drama.gui.editor.SimpleEditor;
 
 /**
  * Execute frame.
@@ -45,9 +37,10 @@ import javax.swing.event.CaretEvent;
 public class ExecuteFrame
 
    extends JFrame {
+	private static final long serialVersionUID = 0L;
+
    private ActionManager _actionManager;
    
-   // private ColorLineTextPane _textPane;
    private SimpleEditor _simpleEditor;
 
    private JTextArea _statusWindow;
@@ -78,8 +71,10 @@ public class ExecuteFrame
       _actionManager.getStepAction().setEnabled((state.isInitial() || state.isStarted()) && !state.isExecuting());
       _actionManager.getStopAction().setEnabled(state.isExecuting());
       _actionManager.getResetAction().setEnabled(state.canExecute() && !state.isInitial() && !state.isExecuting());
+      _actionManager.getResetAction().setEnabled(true);
       ((SimpleAction)_actionManager.getContinueAction()).putValue(SimpleAction.SHORT_DESCRIPTION, state.isStarted() ? "Doorgaan" : "Starten");
       ((SimpleAction)_actionManager.getContinueAction()).putValue(SimpleAction.LONG_DESCRIPTION, state.isStarted() ? "Doorgaan" : "Starten");
+      
       updateHighlights();
    }
    
@@ -99,39 +94,12 @@ public class ExecuteFrame
       _panel = new JPanel();
       _panel.setLayout(new BorderLayout());
 
-      JSplitPane innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _panel, createSimpleEditor() /* createTextPane()*/);
+      JSplitPane innerSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _panel, createSimpleEditor());
 
       JSplitPane outerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, innerSplitPane, createStatusWindow());
-      outerSplitPane.setResizeWeight(1);
+      outerSplitPane.setResizeWeight(.8);
       getContentPane().add(outerSplitPane, BorderLayout.CENTER);
    }
-
-   /*
-   private JPanel createTextPane(){
-    JPanel panel = new JPanel();
-    panel.setLayout(new BorderLayout());
-    
-    final JLabel label = new JLabel("0:0");
-    label.setHorizontalAlignment(JLabel.RIGHT);
-    
-    _textPane = new ColorLineTextPane(Color.black, Color.white);
-    
-    _textPane.setEditable(false);
-    
-    _textPane.addCaretListener(new CaretListener(){ 
-       public void caretUpdate(CaretEvent ce){
-         label.setText(_textPane.getCurrentRow() + ":" + _textPane.getCurrentColumn());
-       }
-      });
-      
-      JScrollPane scrollPane = new JScrollPane(_textPane, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        
-      panel.add(label, BorderLayout.SOUTH);
-      panel.add(scrollPane, BorderLayout.CENTER);
-    return panel;
-
-}
-   */
 
    private JPanel createSimpleEditor() {
       _simpleEditor = new SimpleEditor();
@@ -143,9 +111,7 @@ public class ExecuteFrame
             public void windowOpened(WindowEvent we) {
                _simpleEditor.buildBreakPointCollection();
             }
-
          }
-
       );
 
       return _simpleEditor;
@@ -180,7 +146,6 @@ public class ExecuteFrame
    }
 
    public void setText(String text) {
-      // _textPane.setText(text);
       _simpleEditor.setText(text);
    }
 
@@ -201,7 +166,7 @@ public class ExecuteFrame
       _simpleEditor.clearLineColor();
       if (0 <= _currentInstructionAddress)
          _simpleEditor.setLineColor(_currentInstructionAddress, Color.red);
-      if (_state.isStarted() && !_state.isExecuting() && 0 <= _currentBT)
+      if (_state.isStarted() && !_state.isExecuting() && _currentBT >= 0)
          _simpleEditor.setLineColor(_currentBT, null, Color.yellow);
    }
 

@@ -9,13 +9,17 @@
  */
 package be.ac.kuleuven.cs.drama.gui.editor;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.event.*;
-import java.util.*;
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.*;
-import java.awt.*;
+import java.util.ListIterator;
+
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.DefaultCaret;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
 
 /**
  * JTextpane that supports the notion of different lines.
@@ -25,6 +29,7 @@ import java.awt.*;
  */
 
 public class ColorLineTextPane extends ColorTextPane {
+	private static final long serialVersionUID = 0L;
 
    private MyDocumentListener _dirtyListener;
 

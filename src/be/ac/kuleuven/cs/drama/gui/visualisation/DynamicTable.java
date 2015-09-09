@@ -9,12 +9,16 @@
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.GridLayout;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.Arrays;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 
 /**
  * Class that displays the memory contents.
@@ -26,6 +30,8 @@ import java.util.Arrays;
 public class DynamicTable
 
    extends JPanel {
+	private static final long serialVersionUID = 0L;
+
 
    private static final boolean DEBUG = false;
 
@@ -96,10 +102,9 @@ public class DynamicTable
     * Refill all visible cells.
     */
    private void fillAll() {
-      for (int i = 0; i < _realSize; i++) {
+	  //int c = _frameStart;
+      for (int i = 0; i < _realSize; i++) 
          fill(i, _frameStart + i);
-      }
-
    }
 
    /*

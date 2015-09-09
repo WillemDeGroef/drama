@@ -131,5 +131,10 @@ public interface ControllableMachine {
     * instruction execution to file
     */
    public void writeRunTimeStatsToFile();
+   
+   /**
+    * clears the output screen
+    */
+   public void clear();
 
 }

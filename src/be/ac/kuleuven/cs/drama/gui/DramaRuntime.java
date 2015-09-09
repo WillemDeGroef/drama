@@ -22,13 +22,6 @@ package be.ac.kuleuven.cs.drama.gui;
 public interface DramaRuntime {
 
    /**
-     toon een gegeven boodschap, met een gegeven titel
-     @param message de af te beelden boodschap
-     @param title de titel van de boodschap
-   */
-   //public void showOKMessage(String message, String title);
-
-   /**
       toon de gegeven boodschap
       @param message de te tonen boodschap (deze komt uit de vertaler
       module)

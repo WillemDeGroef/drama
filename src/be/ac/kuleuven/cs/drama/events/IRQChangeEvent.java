@@ -16,6 +16,8 @@ import java.util.EventObject;
 */
 
 public class IRQChangeEvent extends EventObject {
+	private static final long serialVersionUID = 0L;
+
    private int _index;
    private boolean _on;
 

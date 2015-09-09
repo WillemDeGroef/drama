@@ -55,4 +55,8 @@ public class MODDecoder extends MathDecoder {
       return BigInteger.valueOf(NumberFormat.toDramaNumber(biginteger.longValue()));
    }
 
+	protected boolean hasOverflow(long registerValue, long operand, long result) {
+		return false;
+	}
+
 }

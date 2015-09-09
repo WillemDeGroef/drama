@@ -16,15 +16,10 @@ package be.ac.kuleuven.cs.drama.exception;
 */
 
 public class NoSuchHandlerException extends Exception {
+	private static final long serialVersionUID = 0L;
+
    /**initialiseer een nieuwe NoSuchHandlerException
    */
    public NoSuchHandlerException() {}
-
-
-
-
-
-
-
 
 }

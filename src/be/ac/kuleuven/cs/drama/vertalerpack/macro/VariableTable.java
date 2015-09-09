@@ -9,10 +9,9 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import java.util.List;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Table of key value pairs that are keys.

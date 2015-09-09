@@ -29,7 +29,7 @@ public class MVSPCommand
 
    protected void expandImpl(MacroExpander expander)
    throws AbnormalTerminationException {
-      if (expander._assert((Condition) getArgument(0))) {
+      if (expander.doAssert((Condition) getArgument(0))) {
          expander.setCurrentLine((MacroLabel) getArgument(1));
       }
 

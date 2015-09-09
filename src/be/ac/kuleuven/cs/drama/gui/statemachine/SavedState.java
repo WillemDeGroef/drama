@@ -10,78 +10,86 @@
 package be.ac.kuleuven.cs.drama.gui.statemachine;
 
 /**
- * State that represents the clean
- * situation of the program text,
- * either not edited or new.
- * Precompilation of compilation has
- * not occured yet.
+ * State that represents the clean situation of the program text, either not
+ * edited or new. Precompilation of compilation has not occured yet.
  *
- * @version 0.7.0 09/06/2000
+ * @version 0.7.0 09/06/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 class SavedState extends GuiState {
 
-   SavedState(GuiStateMachine stateMachine) {
-      super(stateMachine);
-   }
+	SavedState(GuiStateMachine stateMachine) {
+		super(stateMachine);
+	}
 
-   void initActionStates() {
-      getStateMachine().setExecuteActionsEnabled(false);
-   }
+	void newFile() {
+		if (getStateMachine().isEnabled())
+			getStateMachine().realNewFile();
+	}
 
-   void newFile() {
-      getStateMachine().realNewFile();
-   }
+	void saveFile() {
+		if (getStateMachine().isEnabled())
+			if (getStateMachine().isNewFile()) {
+				try {
+					getStateMachine().realSaveAsFile();
+				} catch (CancelException ce) {
+					getStateMachine().statusMessage("Opslaan geanulleerd.");
+				}
+			}
+	}
 
-   void saveFile() {
-      if (getStateMachine().isNewFile()) {
-         try {
-            getStateMachine().realSaveAsFile();
-         } catch (CancelException ce) {
-            getStateMachine().statusMessage("Opslaan geanulleerd.");
-         }
+	void openFile() {
+		if (getStateMachine().isEnabled())
+			try {
+				getStateMachine().realOpenFile();
+			} catch (CancelException ce) {
+				getStateMachine().statusMessage("Openen geanulleerd.");
+			}
+	}
 
-      }
+	void precompile() {
+		if (getStateMachine().isEnabled())
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						if (getStateMachine().isNewFile())
+							getStateMachine().realSaveAsFile();
+						
+						getStateMachine().setEnabled(false);
 
-   }
+						getStateMachine().realPrecompile();
+						getStateMachine().setCurrentState(getStateMachine().getPrecompiledState());
+					} catch (CancelException ce) {
+						getStateMachine().statusMessage("Precompilatie niet geslaagd.");
+					} finally {
+						getStateMachine().setEnabled(true);
+					}
+				}
+			}).start();
+	}
 
-   void openFile() {
-      try {
-         getStateMachine().realOpenFile();
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Openen geanulleerd.");
-      }
-
-   }
-
-   void precompile() {
-      try {
-         if (getStateMachine().isNewFile()) {
-            getStateMachine().realSaveAsFile();
-         }
-
-         getStateMachine().realPrecompile();
-         getStateMachine().setCurrentState(getStateMachine().getPrecompiledState());
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Precompilatie niet geslaagd.");
-      }
-
-   }
-
-   void compile() {
-      try {
-         if (getStateMachine().isNewFile()) {
-            getStateMachine().realSaveAsFile();
-         }
-
-         getStateMachine().realPrecompile();
-         getStateMachine().setCurrentState(getStateMachine().getPrecompiledState());
-         getStateMachine().compile();
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Compilatie niet geslaagd.");
-      }
-
-   }
-
+	void compile() {
+		if (getStateMachine().isEnabled())
+			new Thread(new Runnable() {
+				public void run() {
+					try {
+						if (getStateMachine().isNewFile())
+							getStateMachine().realSaveAsFile();
+						
+						getStateMachine().setEnabled(false);
+			
+						getStateMachine().realPrecompile();
+						getStateMachine().setCurrentState(getStateMachine().getPrecompiledState());
+						getStateMachine().compile();
+					} catch (CancelException ce) {
+						getStateMachine().statusMessage("Compilatie niet geslaagd.");
+					} finally {
+						getStateMachine().setEnabled(true);
+					}
+			
+				}
+			}).start();
+	}
 }

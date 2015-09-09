@@ -7,9 +7,6 @@
  * Developed at Dept. Computer Science
  *
  */
-//import be.ac.kuleuven.cs.drama.vertalerpack.macrovoorvertaler.*;
-//import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.*;
-//import be.ac.kuleuven.cs.drama.simulator.*;
 
 import be.ac.kuleuven.cs.drama.vertalerpack.macro.MacroPreprocessor;
 import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.Vertaler2;
@@ -18,7 +15,6 @@ import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.Vertaler2;
 import be.ac.kuleuven.cs.drama.gui.DramaRuntime;
 import be.ac.kuleuven.cs.drama.simulator.ControllableMachine;
 import be.ac.kuleuven.cs.drama.simulator.simple.SimpleMachine;
-//import be.ac.kuleuven.cs.drama.gui.*;
 
 import java.util.*;
 import java.io.*;
@@ -93,7 +89,6 @@ public class DramaBatch
    @param args[] de te verwerken argumenten (zie main() methode)
    */
    private void verwerk(String arg[]) {
-      //DramaMachine machine=new DramaMachine(this);
       ControllableMachine machine = new SimpleMachine(this, false);
 
       System.out.println("Batch verwerking begint om " + getTime());
@@ -179,11 +174,7 @@ public class DramaBatch
 
       //Vervolg
       File infile, outfile, mapfile;
-      OutputStream outstream;
-      PipedOutputStream outpipe1, outpipe2, outpipe3;
-      PipedInputStream inpipe1, inpipe2, inpipe3;
       String filenaam, filenaam_zonder_ext;
-      //MacroVoorvertaler mvv;
 
       MacroPreprocessor mvv;
 
@@ -213,14 +204,11 @@ public class DramaBatch
             mapfile = new File(filenaam_zonder_ext + ".map");
 
             try {
-               //mvv=new MacroVoorvertaler(infile,outfile);
                mvv = new MacroPreprocessor(infile, outfile, mapfile);
-               //mvv.proces();
                mvv.process();
                System.out.println("Voorvertaling van " + filenaam + " geslaagd");
                filenaam = filenaam_zonder_ext + ".pre";
             } catch (Exception e) {
-               ///*DBG*/ e.printStackTrace();
                systemErrorMessage(e.toString());
             }
 
@@ -235,13 +223,11 @@ public class DramaBatch
 
             try {
                vertaler = new Vertaler2(infile, outfile, map);
-               //vertaler.setParent(this);
                vertaler.process();
                System.out.println("Vertaling van " + filenaam + " geslaagd");
                filenaam = filenaam_zonder_ext + ".out";
             } catch (Exception e) {
                System.out.println("probleem met Vertaler");
-               ///*DBG*/ e.printStackTrace();
                systemErrorMessage(e.toString());
             }
 
@@ -249,7 +235,6 @@ public class DramaBatch
 
          //Uitvoering
          if (runProgram && cont) {
-            //machine=new DramaMachine(this); //geen hergebruik, wie weet wat er allemaal gebeurd is ;-) !
             machine = new SimpleMachine(this, false);
 
             if (useInputFile) {

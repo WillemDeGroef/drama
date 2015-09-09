@@ -10,20 +10,21 @@
 package be.ac.kuleuven.cs.drama.simulator.simple;
 
 import be.ac.kuleuven.cs.drama.events.*;
-
 import be.ac.kuleuven.cs.drama.simulator.CVOInterface;
 import be.ac.kuleuven.cs.drama.simulator.basis.DramaRegister;
-
 import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 import be.ac.kuleuven.cs.drama.simulator.devices.CVO.DramaPTW;
 
 import java.util.Hashtable;
 
+import javax.swing.JOptionPane;
+
 /**
  * Class that represents the CPU functions.
  *
- * @version 1.0.0 08/11/2000
+ * @version 1.0.0 08/11/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class SimpleCPU
@@ -48,6 +49,8 @@ public class SimpleCPU
 
    private final Executer _executer;
 
+   private boolean _usingGBE = false;
+   private long _GBE = 0;
 
 
    /**
@@ -110,6 +113,22 @@ public class SimpleCPU
    public void step() {
       fetchInstruction();
       _decoder.decode();
+      ptw().setSOI(getReg(9) < getReg(7));
+      
+      for(int i = 9; i > _machine.cpu().ptw().getElement(0); i--) {
+    	  if (ptw().getElement(i + 10) == 0 && _machine.cpu().ptw().getInterruptFlag(i)) {
+			  int r9 = (int)addGBE(getReg(9)) - 1;
+			  if (r9 == -1)
+				  r9 = 9999;
+			  turnGBE(false);
+			  _machine.ram().setCell(r9, ptw().getValue());
+			  setRegister(9, r9);
+    		  ptw().setElement(0, i);
+    		  ptw().setBT(_machine.ram().getCell(9990 + i));
+    		  ptw().setInterruptFlag(i, false);
+    		  break;
+    	  }
+      }
    }
 
    /**
@@ -117,7 +136,7 @@ public class SimpleCPU
     */
    private void fetchInstruction() {
       int address = (int) ptw().getBT(); // STUPID CAST HERE
-      setCurrentInstruction(_machine.ram().getCell(address));
+      setCurrentInstruction(_machine.ram().getCell((int)addGBE(address)));
       ptw().setBT(address + 1);
    }
 
@@ -137,6 +156,10 @@ public class SimpleCPU
       ptw().setBT(0);
       setCurrentInstruction(0);
       _noSecondCall = false;
+
+      _usingGBE = false;
+      _GBE = 0;
+      updateGBE();
 
       _executer.clear();
    }
@@ -195,7 +218,7 @@ public class SimpleCPU
    // CVOInterface implementation
 
    public long getBT() {
-      return getPTW().getBT();
+      return addGBE(getPTW().getBT());
    }
 
    public PTW getPTW() {
@@ -213,23 +236,25 @@ public class SimpleCPU
    // Jobs
 
    private class Step
-
       implements Job {
 
       public Step() {}
-
-
-
-
-
-
-
 
       public void execute() {
          try {
             step();
             _noSecondCall = true;
          } catch (FatalMachineError fme) {
+        	Object options[] = {"OK"};
+            JOptionPane.showOptionDialog(
+               null,
+               "Er is een fatale fout opgetreden en de uitvoering is gestopt:\n" + fme.getMessage(),
+               "Fatale fout!",
+               JOptionPane.DEFAULT_OPTION,
+               JOptionPane.INFORMATION_MESSAGE,
+               null,
+               options,
+               options[0]);
             _machine.systemMessage("Er is een fatale fout opgetreden en de uitvoering is gestopt: ");
             _machine.systemMessage(fme.getMessage());
          }
@@ -244,31 +269,33 @@ public class SimpleCPU
    }
 
    private class Continue
-
       implements Job {
 
       public Continue() {}
-
-
-
-
-
-
-
 
       public void execute() {
          _machine.systemMessage("Uitvoering gestart...");
 
          try {
-            while (! (_machine.isHalted() || debugStop())) {
+            while (!(_machine.isHalted() || debugStop())) {
                step();
             }
          } catch (FatalMachineError fme) {
+        	Object options[] = {"OK"};
+            JOptionPane.showOptionDialog(
+               null,
+               "Er is een fatale fout opgetreden en de uitvoering is gestopt:\n" + fme.getMessage(),
+               "Fatale fout!",
+               JOptionPane.DEFAULT_OPTION,
+               JOptionPane.INFORMATION_MESSAGE,
+               null,
+               options,
+               options[0]);
             _machine.systemMessage("Er is een fatale fout opgetreden en de uitvoering is gestopt: ");
             _machine.systemMessage(fme.getMessage());
          }
          catch (Throwable t) {
-            t.printStackTrace();
+            //t.printStackTrace();
             _machine.systemMessage("Er is een onverwachte fout opgetreden en de uitvoering is gestopt: ");
             _machine.systemMessage(t.getMessage());
          }
@@ -277,7 +304,26 @@ public class SimpleCPU
          _machine.systemMessage("Uitvoering beëindigd");
          _machine.halted();
       }
+   
+   }
 
+
+   public void turnGBE(boolean on) {
+ 	  _usingGBE = on;
+	  updateGBE();
+   }
+   
+   public void setGBE(long address) {
+ 	  _GBE = address % 10000;
+ 	  updateGBE();
+   }
+   
+   public long addGBE(long address) {
+ 	  return _usingGBE ? (address + _GBE) % 10000 : address;
+   }
+   
+   private void updateGBE() {
+	   _ptw.setGBE(_usingGBE ?_GBE + 10000 : _GBE);
    }
 
 }

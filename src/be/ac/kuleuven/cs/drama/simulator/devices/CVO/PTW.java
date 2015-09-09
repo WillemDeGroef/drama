@@ -13,8 +13,9 @@ import be.ac.kuleuven.cs.drama.simulator.basis.*;
 import be.ac.kuleuven.cs.drama.events.*;
 
 /** Klasse voor bewerkingen op PTWs (PTW=programmatoestandswoord)*
- * @version 1.2 19 APR 1999
+ * @version 1.2 19 APR 2015
  * @author Tom Vekemans
+ * @author Jo-Thijs Daelman
  */
 
 public abstract class PTW extends Register {
@@ -58,6 +59,41 @@ public abstract class PTW extends Register {
    */
    public abstract void setCC(int value);
 
+   /**geef de overloopindicator
+	   @return de waarde van de overloopindicator van dit PTW
+	*/
+	public abstract boolean getOVI();
+	
+	/**zet de waarde van de overloopindicator
+	   @param value de nieuwe waarde van de overloopindicator
+	*/
+	public abstract void setOVI(boolean value);
+
+   /**geef de stapeloverloopindicator
+	   @return de waarde van de stapeloverloopindicator van dit PTW
+	*/
+	public abstract boolean getSOI();
+	
+	/**zet de waarde van de stapeloverloopindicator
+	   @param value de nieuwe waarde van de stapeloverloopindicator
+	*/
+	public abstract void setSOI(boolean value);
+
+   /**geef de supervisie status terug
+	   @return de waarde van de S/P masker van dit PTW
+	*/
+	public abstract boolean getSupervisionState();
+
+   /**geef de geheugen beheer eenheid
+      @return de waarde van de conditiecode van dit PTW
+   */
+   public abstract long getGBE();
+
+   /**zet de waarde van de geheugen beheer eenheid
+      @param value de nieuwe waarde van de geheugen beheer eenheid
+   */
+   public abstract void setGBE(long value);
+
    /**zet de waarde van het "waarde" deel van dit PTW. Het
       "waarde" deel is het deel van het PTW zonder maskervlaggen 
       @param value de waarde die het "waarde" deel moet krijgen
@@ -83,4 +119,7 @@ public abstract class PTW extends Register {
 
    }
 
+   public abstract boolean getInterruptFlag(int flag);
+   
+   public abstract void setInterruptFlag(int flag, boolean value);
 }

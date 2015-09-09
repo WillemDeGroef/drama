@@ -18,6 +18,7 @@ package be.ac.kuleuven.cs.drama.simulator.simple;
  */
 
 public class FatalMachineError extends Error {
+	private static final long serialVersionUID = 0L;
 
    public FatalMachineError(String message) {
       super(message);

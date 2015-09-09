@@ -35,10 +35,13 @@ public abstract class MathDecoder extends OpcodeDecoder {
       long l2 = operate(BigInteger.valueOf(l1), BigInteger.valueOf(l)).mod(MODULO).longValue();
       l2 = NumberFormat.toDramaNumber(l2);
       setCC(internalmachine, l2);
+      setOVI(internalmachine, hasOverflow(l1, l, l2));
       internalmachine.cpu().setRegister(instruction.acc(), l2);
    }
 
    protected abstract BigInteger operate(BigInteger biginteger, BigInteger biginteger1);
+
+   protected abstract boolean hasOverflow(long registerValue, long operand, long result);
 
    protected final boolean usesAcc() {
       return true;
@@ -54,6 +57,10 @@ public abstract class MathDecoder extends OpcodeDecoder {
 
    protected final boolean usesOperand() {
       return true;
+   }
+   
+   protected final boolean isPrivileged() {
+	   return false;
    }
 
    private static final BigInteger MODULO = BigInteger.valueOf(0x2540be400L);

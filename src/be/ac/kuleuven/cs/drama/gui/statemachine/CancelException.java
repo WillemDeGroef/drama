@@ -17,9 +17,10 @@ package be.ac.kuleuven.cs.drama.gui.statemachine;
  * @author  Tom Schrijvers
  */
 
-class CancelException
+public class CancelException
 
    extends Exception {
+	private static final long serialVersionUID = 0L;
 
    public CancelException() {
       super();

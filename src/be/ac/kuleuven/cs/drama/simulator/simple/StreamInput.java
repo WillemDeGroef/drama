@@ -45,7 +45,9 @@ public class StreamInput
    /**
     * Cannot reset a stream.
     */
-   public void reset() {}
+   public void reset() {
+		System.err.println("Couldn't reset input stream.");
+   }
 
    /**
     * @return a long read from the stream
@@ -88,12 +90,6 @@ public class StreamInput
     */
 
    public void setInput(String input) {}
-
-
-
-
-
-
-
-
+   
+   public boolean isWaiting() { return false; }
 }

@@ -14,8 +14,9 @@ import be.ac.kuleuven.cs.drama.simulator.basis.NumberFormat;
 /**
  * Decoder of an opcode instruction.
  *
- * @version 1.0.0 08/11/2000
+ * @version 1.0.0 08/11/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public abstract class OpcodeDecoder {
@@ -112,7 +113,7 @@ public abstract class OpcodeDecoder {
          return 0;
       }
 
-   }
+   } 
 
    /**
     * @return the entire operand value
@@ -138,12 +139,12 @@ public abstract class OpcodeDecoder {
          return operand;
 
       case ADDRESS:
-         operand = operand % 10000;
+         operand = (machine.cpu().addGBE(operand)) % 10000;
          return machine.ram().cell((int)operand);
 
       case INDIRECT_ADDRESS:
-         operand = operand % 10000;
-         return machine.ram().cell((int) machine.ram().cell((int) operand));
+         operand = (machine.cpu().addGBE(operand)) % 10000;
+         return machine.ram().cell((int) machine.cpu().addGBE(machine.ram().cell((int) operand)));
 
       default:
          System.out.println("No valid addressing mode");
@@ -174,6 +175,13 @@ public abstract class OpcodeDecoder {
    }
 
    /**
+    * Set the condition code of the given machine based on the sign of the given value
+    */
+   protected final void setOVI(InternalMachine machine, boolean overflow) {
+      machine.cpu().ptw().setOVI(overflow);
+   }
+
+   /**
     * @return wether this decoder uses the addressing mode field
     */
    protected abstract boolean usesAddressing();
@@ -192,6 +200,11 @@ public abstract class OpcodeDecoder {
     * @return wether this decoder uses the operand field
     */
    protected abstract boolean usesOperand();
+
+   /**
+    * @return wether this decoder is privileged
+    */
+   protected abstract boolean isPrivileged();
 
    /*
     * check wether the fields of the instruction are all valid

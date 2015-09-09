@@ -26,6 +26,8 @@ import javax.swing.JButton;
 public class ToolBarButton
 
    extends JButton {
+	private static final long serialVersionUID = 0L;
+
    public ToolBarButton() {
       super();
    }
@@ -35,7 +37,6 @@ public class ToolBarButton
    }
 
    protected void configurePropertiesFromAction(Action a) {
-      //setText((a!=null?(String)a.getValue(Action.NAME):null));
       setIcon((a != null ? (Icon)a.getValue(Action.SMALL_ICON) : null));
       setEnabled((a != null ? a.isEnabled() : true));
       setToolTipText((a != null ? (String)a.getValue(Action.NAME) : null));

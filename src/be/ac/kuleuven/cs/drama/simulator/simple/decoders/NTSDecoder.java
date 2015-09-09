@@ -59,5 +59,9 @@ public class NTSDecoder extends OpcodeDecoder {
    protected boolean usesOperand() {
       return false;
    }
+   
+   protected boolean isPrivileged() {
+	   return false;
+   }
 
 }

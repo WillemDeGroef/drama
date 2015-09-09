@@ -9,10 +9,10 @@
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
-import be.ac.kuleuven.cs.drama.gui.Settings;
+import javax.swing.Icon;
+import javax.swing.JLabel;
 
-import javax.swing.*;
-import java.awt.*;
+import be.ac.kuleuven.cs.drama.gui.Settings;
 
 /**
  * Led that is either on or off.
@@ -26,6 +26,7 @@ import java.awt.*;
 public class Led
 
    extends JLabel {
+	private static final long serialVersionUID = 0L;
 
    private static final Icon IRQon = Settings.getIcon(Settings.IRQ_ON_ICON);
    private static final Icon IRQoff = Settings.getIcon(Settings.IRQ_OFF_ICON);
