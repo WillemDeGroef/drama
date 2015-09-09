@@ -10,13 +10,11 @@
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
 import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
 import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import java.util.StringTokenizer;
 
 /**

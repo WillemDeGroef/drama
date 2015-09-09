@@ -9,13 +9,10 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-
 import java.io.PrintWriter;
-
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 
 /**
  * Class that manages all the variable for
@@ -26,8 +23,6 @@ import java.util.HashMap;
  */
 
 public class MacroExpander {
-
-   private static final Map _expanders = new HashMap();
 
    private final ExpansionManager _manager;
 
@@ -103,8 +98,6 @@ public class MacroExpander {
     * want to keep track of the lineno we're on)
     */
    public void println(int srcline, String s) {
-      //System.out.println(getLineNo() + " - src:" + srcline);
-      //_lineno += countNewlines(s);
       _manager.addLineMapping(_lineno, srcline);
       _lineno++;
       out().println(s);
@@ -119,8 +112,6 @@ public class MacroExpander {
     * want to keep track of the lineno we're on)
     */
    public void print(int srcline, String s) {
-      //System.out.println(" " + getLineNo() + " - src:" + srcline);
-      //_lineno += countNewlines(s);
       _manager.addLineMapping(_lineno, srcline);
       out().print(s);
    }
@@ -187,7 +178,7 @@ public class MacroExpander {
     * @return wether the macro condition code
     *  meets the given conditon
     */
-   public boolean _assert(Condition cond) {
+   public boolean doAssert(Condition cond) {
       return cond.accept(_mcc);
    }
 

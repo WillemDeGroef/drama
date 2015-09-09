@@ -9,28 +9,24 @@
  */
 package be.ac.kuleuven.cs.drama.gui.statemachine;
 
-import be.ac.kuleuven.cs.drama.gui.ExecutionState;
-import be.ac.kuleuven.cs.drama.util.FileUtils;
-
-import be.ac.kuleuven.cs.drama.gui.ActionManager;
-import be.ac.kuleuven.cs.drama.gui.ActionImpl;
-import be.ac.kuleuven.cs.drama.gui.GuiMain;
-
-import be.ac.kuleuven.cs.drama.gui.ExtensionFileFilter;
-import be.ac.kuleuven.cs.drama.gui.Settings;
-
-import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
-import be.ac.kuleuven.cs.drama.vertalerpack.macro.MacroPreprocessor;
-import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.Vertaler2;
-
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
+import be.ac.kuleuven.cs.drama.gui.ActionImpl;
+import be.ac.kuleuven.cs.drama.gui.ActionManager;
+import be.ac.kuleuven.cs.drama.gui.ExtensionFileFilter;
+import be.ac.kuleuven.cs.drama.gui.GuiMain;
+import be.ac.kuleuven.cs.drama.gui.Settings;
+import be.ac.kuleuven.cs.drama.util.FileUtils;
+import be.ac.kuleuven.cs.drama.vertalerpack.macro.MacroLine;
+import be.ac.kuleuven.cs.drama.vertalerpack.macro.MacroPreprocessor;
+import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.Vertaler2;
 
 /**
  * Simple state machine for the transition
@@ -42,8 +38,6 @@ import javax.swing.event.DocumentListener;
  */
 
 public class GuiStateMachine {
-
-   //private static final File PROGS_DIRECTORY = new File(Settings.DRAMADIR.concat("Progs/"));
 
    private final GuiMain _main;
    private final ActionManager _actionManager;
@@ -76,28 +70,17 @@ public class GuiStateMachine {
             }
 
             public void changedUpdate(DocumentEvent e) {}
-
-
-
-
-
-
-
          }
-
       );
    }
 
    private void initActionManager() {
-
       _actionManager.setNewFileAction(
          new ActionImpl() {
             public void react() {
                newFile();
             }
-
          }
-
       );
 
       _actionManager.setOpenFileAction(
@@ -105,20 +88,15 @@ public class GuiStateMachine {
             public void react() {
                openFile();
             }
-
          }
-
       );
-
 
       _actionManager.setSaveFileAction(
          new ActionImpl() {
             public void react() {
                saveFile();
             }
-
          }
-
       );
 
       _actionManager.setSaveAsFileAction(
@@ -126,9 +104,7 @@ public class GuiStateMachine {
             public void react() {
                saveAsFile();
             }
-
          }
-
       );
 
       _actionManager.setPrecompileAction(
@@ -136,9 +112,7 @@ public class GuiStateMachine {
             public void react() {
                precompile();
             }
-
          }
-
       );
 
       _actionManager.setCompileAction(
@@ -146,9 +120,7 @@ public class GuiStateMachine {
             public void react() {
                compile();
             }
-
          }
-
       );
 
       _actionManager.setQuitAction(
@@ -156,29 +128,32 @@ public class GuiStateMachine {
             public void react() {
                quit();
             }
-
          }
-
       );
+
+      _actionManager.setStopPrecompilationAction(
+         new ActionImpl() {
+            public void react() {
+               MacroLine.setTerminationRequest(true);
+            }
+         }
+      );
+      _actionManager.getStopPrecompilationAction().setEnabled(false);
    }
 
    void setCurrentState(GuiState state) {
       _currentState = state;
-      _currentState.initActionStates();
    }
 
    void newFile() {
-      //System.out.println("GuiStateMachine.newFile()");
       _currentState.newFile();
    }
 
    void openFile() {
-      //System.out.println("GuiStateMachine.openFile()");
       _currentState.openFile();
    }
 
    private void saveFile() {
-      //System.out.println("GuiStateMachine.saveFile()");
       _currentState.saveFile();
    }
 
@@ -187,12 +162,10 @@ public class GuiStateMachine {
    }
 
    void precompile() {
-      //System.out.println("GuiStateMachine.precompile()");
       _currentState.precompile();
    }
 
    void compile() {
-      //System.out.println("GuiStateMachine.compile()");
       _currentState.compile();
    }
 
@@ -202,9 +175,6 @@ public class GuiStateMachine {
 
    private void notifyDirty() {
       _currentState.notifyDirty();
-   }
-
-   void setExecuteActionsEnabled(boolean on) {
    }
 
    void realOpenFile()
@@ -228,6 +198,7 @@ public class GuiStateMachine {
             _currentFile = file;
             _main.getEditFrame().setTitle("DramaSimulator - Editor - ".concat(_currentFile.getName()));
             _main.getEditFrame().clearStatusWindow();
+            _main.getEditFrame().reset();
          } catch (Exception e) {
             throw new CancelException();
          }
@@ -283,15 +254,17 @@ public class GuiStateMachine {
    }
 
    void realPrecompile() throws CancelException {
-
       File output = FileUtils.otherExtension(_currentFile, "pre");
       File map = FileUtils.otherExtension(_currentFile, "map");
+
+      MacroLine.setTerminationRequest(false);
 
       try {
          MacroPreprocessor mpp = new MacroPreprocessor(_currentFile, output, map);
          mpp.process();
          _main.getEditFrame().statusMessage("Voorvertaling met succes uitgevoerd.");
-      } catch (AbnormalTerminationException ate) {
+      }
+      catch (AbnormalTerminationException ate) {
          statusMessage(ate.getMessage());
          throw new CancelException();
       }
@@ -299,7 +272,6 @@ public class GuiStateMachine {
          statusMessage("I/O probleem.");
          throw new CancelException();
       }
-
    }
 
    void realCompile()
@@ -320,7 +292,7 @@ public class GuiStateMachine {
          throw new CancelException();
       }
       catch (IOException ioe) {
-         // IMPL
+         // TODO IMPL
          throw new CancelException();
       }
 
@@ -332,15 +304,14 @@ public class GuiStateMachine {
 
    void realOptionalSaveAsFile()
    throws CancelException {
-      int result = JOptionPane.showConfirmDialog(_main.getEditFrame(), "Wil je het programma opslaan?", "Programma is gewijzigd", JOptionPane.YES_NO_CANCEL_OPTION);
-
-      if (result == JOptionPane.YES_OPTION) {
+      int result = JOptionPane.showOptionDialog(null, "Wil je het programma opslaan?", "Programma is gewijzigd",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[] {"Ja", "Nee", "Annuleer"}, "Annuleer");
+      
+      if (result == 2)
+    	  throw new CancelException();
+      
+      if (result == 0)
          realSaveAsFile();
-      } else if (result == JOptionPane.NO_OPTION) {}
-      else {
-         throw new CancelException();
-      }
-
    }
 
    boolean isNewFile() {
@@ -387,4 +358,17 @@ public class GuiStateMachine {
       _main.getEditFrame().statusMessage(message);
    }
 
+   void setEnabled(boolean enabled) {
+	   this._actionManager.getNewFileAction().setEnabled(enabled);
+	   this._actionManager.getOpenFileAction().setEnabled(enabled);
+	   this._actionManager.getSaveFileAction().setEnabled(enabled);
+	   this._actionManager.getSaveAsFileAction().setEnabled(enabled);
+	   this._actionManager.getPrecompileAction().setEnabled(enabled);
+	   this._actionManager.getCompileAction().setEnabled(enabled);
+	   this._actionManager.getStopPrecompilationAction().setEnabled(!enabled);
+   }
+   
+   boolean isEnabled() {
+	   return this._actionManager.getNewFileAction().isEnabled();
+   }
 }

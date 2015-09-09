@@ -9,10 +9,8 @@
  */
 package be.ac.kuleuven.cs.drama.util;
 
-import java.io.*;
-
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 //import be.ac.kuleuven.cs.drama.gui.*;
 
@@ -56,11 +54,10 @@ public class StatistiekModule {
    */
    public String toString() {
       StringBuffer buf = new StringBuffer();
-      InverseCodeGenerator decomp = new InverseCodeGenerator();
 
       for (int i = 0;i < 100;i++) {
          if (_instr[i] > 0) {
-            buf.append(decomp.getSource("" + i));
+            buf.append(InverseCodeGenerator.getSource("" + i));
             buf.append(": ");
             buf.append("" + _instr[i]);
             buf.append('\n');

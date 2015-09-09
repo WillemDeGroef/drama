@@ -16,6 +16,8 @@ import java.util.EventObject;
 */
 
 public class PortChangeEvent extends EventObject {
+	private static final long serialVersionUID = 0L;
+
    private int _adres;
    private long _value;
    private int _soort;

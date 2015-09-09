@@ -82,7 +82,7 @@ public abstract class MacroCommand extends MacroLine {
    }
 
    /**
-    * checks the correct number of arguments and parses from Strig to the desired object type
+    * checks the correct number of arguments and parses from String to the desired object type
     */
    private void checkArguments(MacroDefinition context)
    throws AbnormalTerminationException {

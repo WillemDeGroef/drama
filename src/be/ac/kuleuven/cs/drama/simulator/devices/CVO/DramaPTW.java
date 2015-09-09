@@ -9,12 +9,13 @@
  */
 package be.ac.kuleuven.cs.drama.simulator.devices.CVO;
 
-import be.ac.kuleuven.cs.drama.simulator.basis.*;
+//import be.ac.kuleuven.cs.drama.simulator.basis.*;
 /** Klasse voor bewerkingen op DramaPTWs. Dit zijn
  * programmatoestandswoorden voor DRAMA machines.
  *
- * @version 1.0.0 17-nov-1998
+ * @version 1.1.0 17-nov-2015
  * @author Tom Vekemans
+ * @author Jo-Thijs Daelman
  */
 
 public class DramaPTW extends PTW {
@@ -22,8 +23,9 @@ public class DramaPTW extends PTW {
    /**instantieer een nieuw DramaPTW
     */
    public DramaPTW() {
-      _size = 20;
+      _size = 25;
       _element = new int[_size];
+      _interruptFlag = new boolean[9];
       init();
    }
 
@@ -33,6 +35,8 @@ public class DramaPTW extends PTW {
    public void init() {
       setValue(0);
       setMaskerValue(1111111111L);
+      for(int i = 1; i <= 9; i++)
+    	  setInterruptFlag(i, false);
    }
 
    /**geef de waarde van de bevelenteller
@@ -77,13 +81,6 @@ public class DramaPTW extends PTW {
          try {
             ans = (ans * 10) + getElement(i);
          } catch (IndexOutOfBoundsException iobe) {}
-
-
-
-
-
-
-
       }
 
       return ans;
@@ -122,11 +119,6 @@ public class DramaPTW extends PTW {
    }
 
    //zet element PTW[index] op waarde val
-
-
-
-
-
 
 
    private final void privSetElement(int index, int val) {
@@ -193,6 +185,7 @@ public class DramaPTW extends PTW {
    }
 
    private volatile int _element[];
+   private volatile boolean _interruptFlag[];
    /**index van de ONV indicator (onderbrekingsniveau)*/
    public final static int ONV = 0;
    /**index van de H/U indicator (halt/uitvoeringstoestand)*/
@@ -225,4 +218,55 @@ public class DramaPTW extends PTW {
    public final static int SPL = 18;
    /**index van de MFT (machinefout) vlag*/
    public final static int MFT = 19;
+
+   public long getGBE() {
+      long l = 0;
+      for (int i = 20; i < 25; ++i)
+         l = l * 10 + _element[i];
+      return l;
+   }
+
+   public void setGBE(long value) {
+      for (int i = 24; i >= 20; --i) {
+    	 _element[i] = ((int) value) % 10;
+         value /= 10;
+      }
+      notifyListeners();
+   }
+
+   public boolean getOVI() {
+      return _element[OVI] != 0;
+   }
+
+   public void setOVI(boolean value) {
+	   _element[OVI] = value ? 1 : 0;
+	   if (_element[OVI] != 0)
+		   if (_element[GPF] == 0)
+			   setInterruptFlag(OVL - 10, true);
+      notifyListeners();
+   }
+
+   public boolean getSOI() {
+      return _element[SOI] != 0;
+   }
+
+   public void setSOI(boolean value) {
+	   _element[SOI] = value ? 1 : 0;
+	   if (_element[SOI] != 0)
+		   if (_element[GPF] == 0)
+			   setInterruptFlag(SPL - 10, true);
+      notifyListeners();
+   }
+   
+   public boolean getInterruptFlag(int flag) {
+	   return _interruptFlag[flag - 1];
+   }
+   
+   public void setInterruptFlag(int flag, boolean value) {
+	   _interruptFlag[flag - 1] = value;
+   }
+
+	public boolean getSupervisionState() {
+		return getElement(S_P) != 0;
+	}
 }

@@ -9,6 +9,7 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.vertaler;
 import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
+import be.ac.kuleuven.cs.drama.vertalerpack.macro.Comment;
 
 /**
  * A SourceLine is a line from a drama source file
@@ -17,8 +18,9 @@ import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
  *
  * Label and comment are handled in this class.
  *
- * @version 1.0.0 08/03/2000
+ * @version 1.0.0 08/03/2015
  * @author Tom Schrijvers
+ * @author Jo-Thijs Daelman
  */
 
 public class SourceLine {
@@ -133,12 +135,17 @@ public class SourceLine {
     * remove the comment, if any, from  _line
     */
    private void splitOffComment() {
-      int index = _line.indexOf('|');
+	   int index = Comment.CommentStart(_line);
+	   if (index != -1) {
+		   _comment = _line.substring(index);
+		   _line = _line.substring(0, index);
+	   }
+      /*int index = _line.indexOf('|');
 
       if (index != -1) {
          _comment = _line.substring(index + 1);
          _line = _line.substring(0, index);
-      }
+      }*/
 
    }
 

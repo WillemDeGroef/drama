@@ -12,66 +12,52 @@ package be.ac.kuleuven.cs.drama.gui.statemachine;
 /**
  * State indicating that the program text is precompiled.
  *
- * @version 0.8.0 09/06/2000
+ * @version 1.0.0 09/06/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 class PrecompiledState
 
-   extends GuiState {
-   PrecompiledState(GuiStateMachine stateMachine) {
-      super(stateMachine);
-   }
+extends GuiState {
+	PrecompiledState(GuiStateMachine stateMachine) {
+		super(stateMachine);
+	}
 
-   void initActionStates() {
-      getStateMachine().setExecuteActionsEnabled(false);
-   }
+	void newFile() {
+		if (getStateMachine().isEnabled()) {
+			getStateMachine().realNewFile();
+			getStateMachine().setCurrentState(getStateMachine().getSavedState());
+		}
+	}
 
-   void newFile() {
-      getStateMachine().realNewFile();
-      getStateMachine().setCurrentState(getStateMachine().getSavedState());
-   }
+	void saveFile() {
+		// NOTHING NECESSARY
+	}
 
-   void saveFile() {
-      // NOTHING NECESSARY
-   }
+	void openFile() {
+		if (getStateMachine().isEnabled())
+			try {
+				getStateMachine().realOpenFile();
+				getStateMachine().setCurrentState(getStateMachine().getSavedState());
+			} catch (CancelException ce) {
+				getStateMachine().statusMessage("Openen geanulleerd.");
+			}
+		}
 
+	void precompile() {
+		// NOTHING NECESSARY
+	}
 
-
-
-
-
-
-
-   void openFile() {
-      try {
-         getStateMachine().realOpenFile();
-         getStateMachine().setCurrentState(getStateMachine().getSavedState());
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Openen geanulleerd.");
-      }
-
-   }
-
-   void precompile() {
-      // NOTHING NECESSARY
-   }
-
-
-
-
-
-
-
-
-   void compile() {
-      try {
-         getStateMachine().realCompile();
-         getStateMachine().setCurrentState(getStateMachine().getCompiledState());
-      } catch (CancelException ce) {
-         getStateMachine().statusMessage("Compilatie niet geslaagd.");
-      }
-
-   }
-
+	void compile() {
+		getStateMachine().setEnabled(false);
+		try {
+			getStateMachine().realCompile();
+			getStateMachine().setCurrentState(getStateMachine().getCompiledState());
+		} catch (CancelException ce) {
+			getStateMachine().statusMessage("Compilatie niet geslaagd.");
+		} finally {
+			getStateMachine().setEnabled(true);
+		}
+	}
 }

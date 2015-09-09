@@ -28,7 +28,7 @@ public class BIGDecoder extends OpcodeDecoder {
 
 
    protected final void decodeImpl(Instruction instruction, InternalMachine internalmachine) {
-      long l = getOperandValue(instruction, internalmachine) % 10000L;
+      long l = internalmachine.cpu().addGBE(getOperandValue(instruction, internalmachine)) % 10000L;
       long l1 = internalmachine.cpu().register(instruction.acc());
       setCC(internalmachine, l1);
       internalmachine.ram().setCell((int)l, l1);
@@ -56,6 +56,10 @@ public class BIGDecoder extends OpcodeDecoder {
 
    protected boolean usesOperand() {
       return true;
+   }
+   
+   protected boolean isPrivileged() {
+	   return false;
    }
 
 }

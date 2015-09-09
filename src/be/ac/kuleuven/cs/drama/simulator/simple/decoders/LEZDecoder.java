@@ -56,5 +56,9 @@ public class LEZDecoder extends OpcodeDecoder {
    protected boolean usesOperand() {
       return false;
    }
+   
+   protected boolean isPrivileged() {
+	   return false;
+   }
 
 }

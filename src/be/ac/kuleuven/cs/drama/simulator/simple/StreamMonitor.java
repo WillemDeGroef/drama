@@ -9,21 +9,20 @@
  */
 package be.ac.kuleuven.cs.drama.simulator.simple;
 
-import be.ac.kuleuven.cs.drama.simulator.basis.NumberFormat;
-import be.ac.kuleuven.cs.drama.simulator.MonitorInterface;
-
-import java.io.OutputStream;
-import java.io.PrintWriter;
 import java.io.BufferedWriter;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.IOException;
+import java.io.PrintWriter;
+
+import be.ac.kuleuven.cs.drama.simulator.basis.NumberFormat;
 
 /**
  * Output device usable by other
  * machine components.
  *
- * @version 08/11/2000
+ * @version 08/11/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class StreamMonitor
@@ -45,6 +44,15 @@ public class StreamMonitor
 
       _out.print(NumberFormat.toJavaNumber(value));
       _out.print('\t');
+   }
+
+   /**
+    * write the given drama character to the output
+    */
+   public void writeChar(char value) {
+      if (DEBUG) System.out.println("PrintMonitor.writeChar()");
+
+      _out.print(Character.toString(value));
    }
 
    /**
@@ -74,5 +82,9 @@ public class StreamMonitor
    public void close() {
       _out.close();
    }
+   
+   public void clear() {}
+
+   public void delLastChar() {}
 
 }

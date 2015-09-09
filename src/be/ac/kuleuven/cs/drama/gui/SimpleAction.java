@@ -25,6 +25,8 @@ import javax.swing.Icon;
 public class SimpleAction
 
    extends AbstractAction {
+	private static final long serialVersionUID = 0L;
+
 
    private final ActionImpl _actionImpl;
 

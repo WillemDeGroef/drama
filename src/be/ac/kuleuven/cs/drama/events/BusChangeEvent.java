@@ -16,6 +16,8 @@ import java.util.EventObject;
 */
 
 public class BusChangeEvent extends EventObject {
+	private static final long serialVersionUID = 0L;
+
    private long _adres;
    private long _data;
    private int _strobe;

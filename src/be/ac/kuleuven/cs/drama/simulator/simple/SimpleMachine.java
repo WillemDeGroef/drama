@@ -31,8 +31,9 @@ import java.util.Hashtable;
  * Simple inplementation of the ControllableMachine interface.
  * the number of used threads is limited to one.
  *
- * @version 1.0.0 08/09/2000
+ * @version 1.0.0 08/09/2015
  * @author Tom Schrijvers
+ * @author Jo-Thijs Daelman
  */
 
 public class SimpleMachine
@@ -98,6 +99,8 @@ public class SimpleMachine
     * reset this machine
     */
    private void reset() {
+	   if (_input.isWaiting())
+		   _monitor.delLastChar();
       _input.reset();
       _halted = false;
       ram().reset();
@@ -315,5 +318,11 @@ public class SimpleMachine
 
    public void halted() {
       _runtime.halted();
+   }
+   
+   public void clear() {
+	   _monitor.clear();
+	   if (((SimpleInteractiveInput)_input).isWaiting())
+		   _monitor.requestInput();
    }
 }

@@ -9,10 +9,12 @@
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
+import be.ac.kuleuven.cs.drama.gui.Settings;
 import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 import be.ac.kuleuven.cs.drama.simulator.devices.CVO.DramaPTW;
 
 import java.awt.*;
+
 import javax.swing.*;
 
 /**
@@ -25,6 +27,7 @@ import javax.swing.*;
 public class InternalRepresentationFrame
 
    extends JFrame {
+	private static final long serialVersionUID = 0L;
 
    private final CpuPanel _leftPanel;
 
@@ -37,6 +40,8 @@ public class InternalRepresentationFrame
    private final JPanel _secondPanel;
 
    private MachineVisualisation _machineVisualisation;
+   
+   private int _GBE = 0;
 
    /**
     * Initialize for the given MachineVisualisation manager.
@@ -83,6 +88,7 @@ public class InternalRepresentationFrame
 
       setSize(1080, 260);
 
+      this.setIconImage(new ImageIcon(Settings.class.getResource(Settings.LOGO_ICON)).getImage());
    }
 
    /**
@@ -118,7 +124,7 @@ public class InternalRepresentationFrame
     */
    public void setBT(long value) {
       _leftPanel.setBT(value);
-      _memoryPanel.setActive((int) value);
+      _memoryPanel.setActive((int) value + _GBE);
    }
 
    /**
@@ -270,9 +276,9 @@ public class InternalRepresentationFrame
             "SCH",
             "",
             "OVL",
-            "",
+            "GBA",
             "SPL",
-            "",
+            "GBE",
             "MFT"
          };
 
@@ -291,7 +297,9 @@ public class InternalRepresentationFrame
    private static final int BT = 12;
    private static final int SCH = 13;
    private static final int OVL = 15;
+   private static final int GBA = 16;
    private static final int SPL = 17;
+   private static final int GBE = 18;
    private static final int MFT = 19;
 
    private JPanel createPTWPanel() {
@@ -317,7 +325,7 @@ public class InternalRepresentationFrame
 
       for (int i = 0; i < 20; i++) {
          JLabel label = new JLabel(_ptwNames[i]);
-         label.setForeground(Color.yellow);
+         label.setForeground(Color.RED);
          label.setHorizontalAlignment(JLabel.CENTER);
 
          dataPanel.add(label);
@@ -360,6 +368,11 @@ public class InternalRepresentationFrame
       _ptw[OVL].setText(Long.toString(dp.getElement(DramaPTW.OVL)));
       _ptw[SPL].setText(Long.toString(dp.getElement(DramaPTW.SPL)));
       _ptw[MFT].setText(Long.toString(dp.getElement(DramaPTW.MFT)));
+      _ptw[GBE].setText(Long.toString(dp.getGBE() % 10000));
+      _ptw[GBA].setText(Long.toString(dp.getGBE() / 10000));
+      if ((_GBE = ((int) dp.getGBE()) - 50000) < 0)
+    	  _GBE = 0;
+      _memoryPanel.setActive((int) dp.getBT() + _GBE);
    }
 
    /**

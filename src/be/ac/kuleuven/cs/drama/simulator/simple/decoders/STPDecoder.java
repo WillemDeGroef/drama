@@ -50,5 +50,9 @@ public class STPDecoder extends OpcodeDecoder {
    protected boolean usesOperand() {
       return false;
    }
+   
+   protected boolean isPrivileged() {
+	   return true;
+   }
 
 }

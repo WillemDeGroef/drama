@@ -42,4 +42,8 @@ public class VERDecoder extends MathDecoder {
       return biginteger.multiply(biginteger1);
    }
 
+	protected boolean hasOverflow(long registerValue, long operand, long result) {
+		return result < -5000000000L || result > 4999999999L || (operand != 0 && result / operand != registerValue);
+	}
+
 }

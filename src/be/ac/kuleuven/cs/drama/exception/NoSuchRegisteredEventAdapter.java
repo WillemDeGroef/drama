@@ -16,16 +16,11 @@ package be.ac.kuleuven.cs.drama.exception;
 */
 
 public class NoSuchRegisteredEventAdapter extends Exception {
+	private static final long serialVersionUID = 0L;
+
    /**initialiseer een nieuwe NoSuchRegisteredEventAdapter
    * Exception
    */
    public NoSuchRegisteredEventAdapter() {}
-
-
-
-
-
-
-
 
 }

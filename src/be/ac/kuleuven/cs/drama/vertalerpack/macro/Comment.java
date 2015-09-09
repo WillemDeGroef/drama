@@ -12,8 +12,9 @@ package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 /**
  * Utility class to strip comment from a line.
  *
- * @version 1.0.0 08/30/2000
+ * @version 1.0.0 08/30/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public final class Comment {
@@ -24,12 +25,31 @@ public final class Comment {
     * @return the given string without comment
     */
    public static String stripComment(String string) {
-      if (string.indexOf('|') != -1) {
-         return string.substring(0, string.indexOf('|'));
+	  int t = CommentStart(string);
+      if (t != -1) {
+         return string.substring(0, t);
       } else {
          return string;
       }
 
    }
 
+   public static int CommentStart(String line) {
+	   boolean valid = true;
+	   for(int i = 0; i < line.length(); ++i) {
+		   switch (line.charAt(i)) {
+		   case '|':
+			   if (valid)
+				   return i;
+			   continue;
+		   case '\\':
+			   ++i;
+			   continue;
+		   case '"':
+			   valid = !valid;
+		   }
+	   }
+	   return -1;
+   }
+   
 }

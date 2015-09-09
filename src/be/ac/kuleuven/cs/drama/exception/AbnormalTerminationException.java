@@ -16,6 +16,8 @@ package be.ac.kuleuven.cs.drama.exception;
  */
 
 public class AbnormalTerminationException extends Exception {
+	private static final long serialVersionUID = 0L;
+
 
    private boolean _hasLineNo = false;
 

@@ -9,14 +9,11 @@
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
-import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
+import javax.swing.JFrame;
 
 import be.ac.kuleuven.cs.drama.gui.GUIController;
-import be.ac.kuleuven.cs.drama.gui. MachineVisualisationInterface;
-
-
-import javax.swing.*;
-import java.awt.Color;
+import be.ac.kuleuven.cs.drama.gui.MachineVisualisationInterface;
+import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 
 /**
  * Magager of the visualisation of the machine.

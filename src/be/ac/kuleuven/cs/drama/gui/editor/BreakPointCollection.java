@@ -9,16 +9,17 @@
  */
 package be.ac.kuleuven.cs.drama.gui.editor;
 
-//import be.ac.kuleuven.cs.drama.gui.DramaTaskBar;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import java.awt.*;
-import java.awt.event.*;
-
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.ArrayList;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JPanel;
 
 /**
  * A BreakpointCollection manages the breakpoints,
@@ -48,7 +49,6 @@ public class BreakPointCollection {
       _mapping = new Hashtable();
       _box = new JPanel();
       _box.setLayout(new VerticalLayout());
-      //_box.add(Box.createRigidArea(new Dimension(20, 0)));
       _buttons = new ArrayList();
       _count = 0;
       _box.setForeground(Color.white);
@@ -125,7 +125,7 @@ public class BreakPointCollection {
     * decrease the number of source code lines
     */
    public void removeLine() {
-      getButton(_count).disable();
+	   getButton(_count).setEnabled(false);
       _box.remove(getButton(_count));
       _buttons.remove(getButton(_count));
       _count -= 1;
@@ -168,6 +168,7 @@ public class BreakPointCollection {
    }
 
    private class MyButton extends JButton {
+		private static final long serialVersionUID = 0L;
 
       private final int _line;
       private final Action _action;
@@ -207,20 +208,7 @@ public class BreakPointCollection {
          _on = ! _on;
          toggleBreakPoint(_line);
          showIcon();
-         //System.out.println(getSize());
-         //System.out.println(getMargin());
-         //System.out.println(getBounds());
       }
-
-
-
-
-
-
-
-
-
-
 
       private void showIcon() {
          if (_on) {
@@ -233,22 +221,13 @@ public class BreakPointCollection {
 
       private class MyAction
          extends AbstractAction {
+    		private static final long serialVersionUID = 0L;
+
 
          public MyAction() {}
 
-
-
-
-
-
-
-
-
-
-
          public void actionPerformed(ActionEvent e) {
             if (this.isEnabled()) {
-               //System.out.println(getSize());
                toggleMe();
             }
 

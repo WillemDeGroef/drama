@@ -111,6 +111,8 @@ public class SimpleRAM
             lineNumber = handleLine(line, lineNumber);
 
          }
+         
+         reader.close();
       } catch (IOException ioe) {
          throw new FatalMachineError( "Fout bij het inlezen van het programma.");
       }

@@ -15,8 +15,9 @@ import javax.swing.JButton;
 /**
  * Factory for the toolbar of the execute frame.
  *
- * @version 1.0.0 09/05/2000
+ * @version 1.0.0 09/05/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class ExecuteFrameToolBarFactory {
@@ -43,6 +44,7 @@ public class ExecuteFrameToolBarFactory {
       addStep();
       addStop();
       addReset();
+      addClear();
       _toolBar.addSeparator();
       addInternalMachine();
       addCpu();
@@ -85,6 +87,11 @@ public class ExecuteFrameToolBarFactory {
    private void addBuildMachine() {
       JButton button = new ToolBarButton(_actionManager.getBuildMachineAction());
       _toolBar.add(button);
+   }
+   
+   private void addClear() {
+	   JButton button = new ToolBarButton(_actionManager.getClearFrameAction());
+	   _toolBar.add(button);
    }
 
 }

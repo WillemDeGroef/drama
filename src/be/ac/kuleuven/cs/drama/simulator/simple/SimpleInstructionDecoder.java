@@ -17,8 +17,9 @@ import java.util.HashMap;
 /**
  * Decoder(factory) of all drama instructions.
  *
- * @version 1.0.0 08/09/2000
+ * @version 1.0.0 08/09/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class SimpleInstructionDecoder {
@@ -40,7 +41,10 @@ public class SimpleInstructionDecoder {
       OpcodeDecoder decoder = getDecoder(instruction);
 
       if (decoder != null) {
-         decoder.decode(instruction, _machine);
+    	  if (_machine.cpu().ptw().getSupervisionState() && decoder.isPrivileged())
+    		  _machine.cpu().ptw().setInterruptFlag(9, true);
+    	  else
+    		  decoder.decode(instruction, _machine);
       } else {
          throw new FatalMachineError("Niet decodeerbare instructie: " + instruction);
       }
@@ -89,10 +93,22 @@ public class SimpleInstructionDecoder {
 
       addDecoder(new LEZDecoder());
       addDecoder(new DRUDecoder());
+      addDecoder(new DRSDecoder());
       addDecoder(new NWLDecoder());
       addDecoder(new NTSDecoder());
 
       addDecoder(new STPDecoder());
+      
+      addDecoder(new HIBDecoder());
+      addDecoder(new SGIDecoder());
+      addDecoder(new SGUDecoder());
+      
+      addDecoder(new MKHDecoder());
+      addDecoder(new MKLDecoder());
+      addDecoder(new TSMDecoder());
+      addDecoder(new TSODecoder());
+      addDecoder(new KTODecoder());
+      addDecoder(new ONDDecoder());
    }
 
    /*

@@ -17,6 +17,8 @@ import be.ac.kuleuven.cs.drama.simulator.devices.CVO.*;
 */
 
 public class PTWChangeEvent extends EventObject {
+	private static final long serialVersionUID = 0L;
+
    private PTW _newPTW;
 
    /** Creëer een nieuw PTWChangeEvent

@@ -9,7 +9,6 @@
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.vertaler;
 
-//import be.ac.kuleuven.cs.drama.vertalerpack.bestand.FileProcessor;
 import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 import be.ac.kuleuven.cs.drama.util.StatistiekModule;
 
@@ -27,7 +26,6 @@ import java.io.ObjectInputStream;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Collections;
@@ -69,10 +67,9 @@ public class Vertaler2 {
          _linemap = (ArrayList) ins.readObject();
       } catch (Exception e) {
          throw new IOException(e.getMessage());
+      } finally {
+         ins.close();
       }
-
-      //System.out.println("=== linemap: " + _linemap.size());
-      ins.close();
    }
 
    public int translateLine(int line) {

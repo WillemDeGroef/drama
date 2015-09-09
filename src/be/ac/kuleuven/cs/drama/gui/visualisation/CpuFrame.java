@@ -9,8 +9,7 @@
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
-import java.awt.*;
-import javax.swing.*;
+import javax.swing.JFrame;
 
 /**
  * Frame containing a CpuPanel.
@@ -24,6 +23,8 @@ import javax.swing.*;
 public class CpuFrame
 
    extends JFrame {
+	private static final long serialVersionUID = 0L;
+
 
    private final CpuPanel _panel;
 

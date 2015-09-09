@@ -16,8 +16,9 @@ import java.util.HashMap;
  * The ActiveCodePArtFactory manufactures the right
  * ActiveCodePart for the given drama source line.
  *
- * @version 1.0.0 08/03/2000
+ * @version 1.0.0 08/03/2015
  * @author Tom Schrijvers
+ * @author Jo-Thijs Daelman
  */
 
 public final class ActiveCodePartFactory {
@@ -39,23 +40,26 @@ public final class ActiveCodePartFactory {
     * @return an ActiveCodePart for the given line and vertaler.
     */
    public ActiveCodePart getActiveCodePart(String line, Vertaler2 vertaler) {
-      line = line.trim().toUpperCase();
+      String eline = line.trim().toUpperCase();
 
-      if (line.length() == 0) {
+      if (eline.length() == 0) {
          return new NoCodePart();
       }
 
-      char c = line.charAt(0);
+      char c = eline.charAt(0);
 
       if (Character.isLetter(c)) {
-         return getLetterCodePart(line, vertaler);
+         return getLetterCodePart(eline, vertaler);
       }
 
       if (c == '-' || c == '+' || Character.isDigit(c)) {
-         return new ConstantCodePart(line, vertaler);
+         return new ConstantCodePart(eline, vertaler);
       }
+      
+      if (c == '"' && eline.charAt(eline.length()-1) == '"')
+    	  return new StringCodePart(StringCodePart.convertBackslashes(line.trim()), vertaler);
 
-      return new DummyCodePart(line);
+      return new DummyCodePart(eline);
    }
 
    /*
@@ -114,6 +118,10 @@ public final class ActiveCodePartFactory {
 
       addOpcode(new Class4Opcode("SPR", 32));
       addOpcode(new Class4Opcode("SBR", 41));
+      
+      addOpcode(new Class4Opcode("HIB", 91));
+      addOpcode(new Class4Opcode("SGI", 92));
+      addOpcode(new Class4Opcode("SGU", 93));
 
       addOpcode(new Class5Opcode("MKL", 51));
       addOpcode(new Class5Opcode("MKH", 52));
@@ -124,9 +132,11 @@ public final class ActiveCodePartFactory {
       addOpcode(new Class6Opcode("KTO", 62));
       addOpcode(new Class6Opcode("LEZ", 71));
       addOpcode(new Class6Opcode("DRU", 72));
+      addOpcode(new Class6Opcode("DRS", 79));
       addOpcode(new Class6Opcode("STP", 99));
       addOpcode(new Class6Opcode("NTS", 74));
       addOpcode(new Class6Opcode("NWL", 73));
+      
    }
 
 }

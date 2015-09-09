@@ -18,8 +18,9 @@ import java.util.StringTokenizer;
  * Utility class to evaluate a String expression
  * to a value.
  *
- * @version 1.0.0 08/30/2000
+ * @version 1.0.0 08/30/2015
  * @author  Tom Schrijvers
+ * @author  Jo-Thijs Daelman
  */
 
 public class Evaluator {
@@ -58,7 +59,12 @@ public class Evaluator {
             System.out.println("operator: " + operator);
          }
 
-         long value = Long.parseLong(token);
+         long value;
+         try {
+        	 value = Long.parseLong(token);
+         } catch (NumberFormatException e) {
+        	 throw new AbnormalTerminationException("MEVA werkt enkel met getallen, " + token + " is niet herkend als getal.");
+         }
 
          if (operator.equals("+")) {
             result += value;

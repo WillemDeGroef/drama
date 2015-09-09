@@ -42,4 +42,8 @@ public class AFTDecoder extends MathDecoder {
       return biginteger.subtract(biginteger1);
    }
 
+	protected boolean hasOverflow(long registerValue, long operand, long result) {
+		return result < -5000000000L || result > 4999999999L;
+	}
+
 }

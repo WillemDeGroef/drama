@@ -9,29 +9,31 @@
  */
 package be.ac.kuleuven.cs.drama.gui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import java.io.*;
-import java.net.URL;
-import java.lang.ClassLoader;
+import java.awt.EventQueue;
+import java.awt.Frame;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-import be.ac.kuleuven.cs.drama.simulator.*;
-import be.ac.kuleuven.cs.drama.events.*;
-//import be.ac.kuleuven.cs.drama.gui.simulator.*;
-//import be.ac.kuleuven.cs.drama.instantiation.*;
-//import be.ac.kuleuven.cs.drama.simulator.bus.*;
-//import be.ac.kuleuven.cs.drama.simulator.devices.CVO.*;
-//import be.ac.kuleuven.cs.drama.simulator.devices.geheugen.*;
-//import be.ac.kuleuven.cs.drama.simulator.devices.periferie.*;
-
-import be.ac.kuleuven.cs.drama.exception.*;
-import be.ac.kuleuven.cs.drama.util.*;
-
-import be.ac.kuleuven.cs.drama.simulator.simple.SimpleMachine;
-
+import be.ac.kuleuven.cs.drama.events.BusChangeEvent;
+import be.ac.kuleuven.cs.drama.events.GeneralEventAdapter;
+import be.ac.kuleuven.cs.drama.events.IRQChangeEvent;
+import be.ac.kuleuven.cs.drama.events.InstructionRegisterEventManager;
+import be.ac.kuleuven.cs.drama.events.InstructionRegisterListener;
+import be.ac.kuleuven.cs.drama.events.MemoryEventManager;
+import be.ac.kuleuven.cs.drama.events.MemoryListener;
+import be.ac.kuleuven.cs.drama.events.PTWChangeEvent;
+import be.ac.kuleuven.cs.drama.events.PortChangeEvent;
+import be.ac.kuleuven.cs.drama.events.RegChangeEvent;
+import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
 import be.ac.kuleuven.cs.drama.gui.visualisation.MachineVisualisation;
+import be.ac.kuleuven.cs.drama.simulator.CVOInterface;
+import be.ac.kuleuven.cs.drama.simulator.ControllableMachine;
+import be.ac.kuleuven.cs.drama.simulator.DeviceInterface;
+import be.ac.kuleuven.cs.drama.simulator.Memory;
+import be.ac.kuleuven.cs.drama.simulator.MonitorInterface;
+import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 
 
 /** Klasse GUIController coördineert het drama-machine model en de
@@ -44,25 +46,24 @@ import be.ac.kuleuven.cs.drama.gui.visualisation.MachineVisualisation;
  *   GUIController werkt nu met een ControllableMachine ipv met een DramaMachine
  *   9 augustus 2000
  *   Tom Schrijvers
+ *
+ *  Aanpassing:
+ *   GUIController heeft nu een actie om het outputvenster te herzetten
+ *   2015
+ *   Jo-Thijs Daelman
  */
 
 public class GUIController
    implements DramaRuntime {
 
    private ControllableMachine _machine;
-   private ExecutionEnvironment /* DramaScherm */ _gui;
+   private ExecutionEnvironment _gui;
 
-   // private MachineImage _machineGui;
    private MachineVisualisationInterface _machineGui;
 
    private int[] _adres = { -1, -1, -1, 3, 1, 7, 5, 8, 9};
    private int[] _irq = { -1, -1, -1, 5, 4, 6, 3, -1, 2};
    private int _numberOfDevices = 6;
-
-   private String _browsercomdo;
-
-   private InputStream _oldInStream;
-   private OutputStream _oldOutStream;
 
    private final SymbolTableParser _labelParser = new SymbolTableParser();
 
@@ -73,10 +74,9 @@ public class GUIController
       @see DramaScherm
       @see ControllableMachine
    */
-   public GUIController(ExecutionEnvironment /* DramaScherm */ gui) {
+   public GUIController(ExecutionEnvironment gui) {
       _gui = gui;
 
-      // _machineGui = new MachineImage(this);
       _machineGui = new MachineVisualisation(this);
 
       try {
@@ -95,22 +95,9 @@ public class GUIController
       }
 
       _machine = Settings.getMachine(this);
-      // _machine = new SimpleMachine(this);
-      // _machine = new DramaMachine(this);
 
       Frame f = _machineGui.getInternalRepresentationFrame();
       f.setVisible(false);
-
-      Properties result = new Properties();
-
-      try {
-         InputStream is = new BufferedInputStream(ClassLoader.getSystemResourceAsStream("settings.prop"));
-         result.load(is);
-
-         _browsercomdo = result.getProperty("Browser");
-      } catch (Exception e) {
-         System.err.println("PropertiesReader.. failed: " + e);
-      }
 
       InstructionRegisterEventManager.addListener(new InstructionRegisterListener() {
                public void handleInstructionRegisterEvent() {
@@ -160,33 +147,10 @@ public class GUIController
       loadProgram();
    }
 
-   /**zet de geassocieerde ControllableMachine in debug mode
-      @param breaklist de breekpuntenlijst die de ControllableMachine
-      moet gebruiken bij het uitvoeren van programma's.
-      @see ControllableMachine
-   */
-   /*
-   public void startDebug(Hashtable breaklist){
-   _machine.startDebug(breaklist);
-}
-   */
-
-   /**stop de debug mode, en voer daarbij de nodige stappen uit
-      in de GUI's en de ControllableMachine.
-   */
-   /*
-   public void stopDebug(){
-   _gui.clearLineColor();
-   _machine.stopDebug();
-   _machineGui.getCVOFrame().setVisible(false);
-}
-   */
-
    /**stop definitief de uitvoering van een programma op de
       geassocieerde ControllableMachine.
    */
    public void abort() {
-      // _gui.clearLineColor();
       _machine.abort();
       _machine.resetStats();
       _machineGui.halt();
@@ -203,16 +167,10 @@ public class GUIController
          _gui.programRunning();
          _machine.cont();
       } else {
-         // _gui.clearLineColor();
          _gui.programRunning();
          _machine.cont();
          _machineGui.cont();
       }
-
-      //if (! _machine.isFinished()){
-      //    int bt=(int)(_machine.getCVOInterface().getBT());
-      //    _gui.setLineColor(bt,Color.red);
-      //}
 
    }
 
@@ -231,8 +189,6 @@ public class GUIController
       _gui.programStepping();
       _machine.step();
 
-      int bt = (int)(_machine.getCVOInterface().getBT());
-      //_gui.setLineColor(bt,Color.red);
       _machineGui.getCVOFrame().toFront();
    }
 
@@ -257,7 +213,6 @@ public class GUIController
    public void showInternalMachine() {
       setEventsEnabled(true);
       setCVOGui();
-      _machineGui.getInternalRepresentationFrame().show();
       _machineGui.getInternalRepresentationFrame().setVisible(true);
       _machineGui.getInternalRepresentationFrame().toFront();
    }
@@ -266,7 +221,6 @@ public class GUIController
     */
    public void showCVO() {
       setCVOGui();
-      _machineGui.getCVOFrame().show();
       _machineGui.getCVOFrame().setVisible(true);
       _machineGui.getCVOFrame().toFront();
    }
@@ -295,9 +249,7 @@ public class GUIController
       @param evt het RegChangeEvent waarop gereageerd moet worden
    */
    public void regChange(RegChangeEvent evt) {
-      //System.out.println("regChange");
       _machineGui.setReg(evt.getRegIndex(), evt.getValue());
-      // _machineGui.getInternalRepresentationFrame().repaint();
    }
 
    /**reageer op een ptwChangeEvent (verandering van het PTW van de CVO)
@@ -307,15 +259,11 @@ public class GUIController
    public void ptwChange(PTWChangeEvent evt) {
 
       try {
-
-
          _machineGui.setPTW(evt.getPTW());
-
       } catch (Throwable t) {
          t.printStackTrace();
       }
 
-      // _machineGui.getInternalRepresentationFrame().repaint();
    }
 
    /**reageer op een irqChangeEvent (verandering van een PO-vlag)
@@ -329,11 +277,9 @@ public class GUIController
          _machineGui.setDeviceIRQ(getDeviceIndexForIRQ(irq), on);
          _machineGui.setIRQ(irq, on);
       } catch (AbnormalTerminationException ate) {
-         // showOKMessage(ate.toString(),"Configuratie probleem");
          systemMessage("Configuratieprobleem: ".concat(ate.toString()));
       }
 
-      // _machineGui.getInternalRepresentationFrame().repaint();
    }
 
    /**reageer op een portChangeEvent (verandering van een poort van een
@@ -379,7 +325,6 @@ public class GUIController
       for (int i = startAdress; i < endAdress && i <= 9999; i++) {
          try {
             region[i - startAdress] = ram.getData(i);
-            // System.out.println("mem["+i+"] ok");
          }
          catch (Exception e) {
             System.out.println(e.toString() + " : i=" + i);
@@ -413,8 +358,6 @@ public class GUIController
       _irq = irq;
       _machine.buildMachine(components, adres, irq);
 
-      // _machineGui = new MachineImage(this);
-
       _machineGui = new MachineVisualisation(this);
 
       _numberOfDevices = components.length - 3; //alle components - bus, cvo, geheugen
@@ -423,18 +366,8 @@ public class GUIController
          if (components[i].equals("(niets)") ) _numberOfDevices--;
 
       _machineGui.setDevices(_numberOfDevices, components);
-      // setNiveau(getNiveau());
       _gui.systemMessage("aanmaak nieuwe machine klaar");
    }
-
-   /**toon in het geassocieerde DramaScherm een gegeven boodschap met een
-      gegeven titel
-      @param message de af te beelden boodschap
-      @param title de titel van de af te beelden boodschap
-   */
-   // public void showOKMessage(String message, String title){
-   // _gui.showOKMessage(message,title);
-   // }
 
    /**zet de uitvoerstroom van de geassocieerde ControllableMachine
       @param outstream de nieuwe uitvoerstroom van de ControllableMachine
@@ -442,8 +375,6 @@ public class GUIController
       bewaren, en het menu van het DramaScherm aanpassen om dit aan te geven
    */
    public void setOutputStream(OutputStream outstream) {
-      _oldOutStream = _machine.getOutputStream();
-      // _gui.setResetOutputFileEnabled(true);
       BufferedOutputStream buf = new BufferedOutputStream(outstream);
       _machine.setOutputStream(buf);
    }
@@ -457,20 +388,8 @@ public class GUIController
          _machine.getOutputStream().close();
       } catch (Exception ioe) {}
 
-      //_machine.setOutputStream(_oldOutStream);
-
-
-
-
-
-
-
-
-
-
       _machine.setOutputStream(null);
 
-      //_gui.setResetOutputFileEnabled(false);
    }
 
    /**zet de invoerstroom van de geassocieerde ControllableMachine
@@ -480,13 +399,10 @@ public class GUIController
    */
    public void setInputStream(InputStream instream) {
       if (!(instream.markSupported())) {
-         BufferedInputStream buf = new BufferedInputStream(instream);
-         buf.mark(100000);
-         instream = buf;
+         instream = new BufferedInputStream(instream);
+         instream.mark(100000);
       }
 
-      _oldInStream = _machine.getInputStream();
-      // _gui.setResetInputFileEnabled(true);
       _machine.setInputStream(instream);
    }
 
@@ -494,9 +410,7 @@ public class GUIController
       de vorige invoerstroom
    */
    public void resetInputStream() {
-      //_machine.setInputStream(_oldInStream);
       _machine.setInputStream(null);
-      //_gui.setResetInputFileEnabled(false);
    }
 
    /**beeldt een systeemboodschap af in het geassocieerde DramaScherm
@@ -536,22 +450,7 @@ public class GUIController
 
       }
 
-      //_machineGui.setIRQPartEnabled(false);
-      //_machineGui.setPTWPartEnabled(false);
-      //if(i>1)
-      //    _machineGui.setPTWPartEnabled(true);
-      //if(i>2)
-      //    _machineGui.setIRQPartEnabled(true);
    }
-
-   /**geef het huidig ingestelde complexiteitsniveau (dit wordt gegeven
-      door het geassocieerde DramaScherm)
-      @return het huidig ingestelde complexiteitsniveau
-      @see DramaMenuBar
-   */
-   // public int getNiveau(){
-   //   return _gui.getNiveau();
-   // }
 
    /**geef voor een gegeven adres het volgnummer van het apparaat
     *
@@ -607,9 +506,7 @@ public class GUIController
       en anders gedesactiveerd
    */
    public void setEventsEnabled(boolean b) {
-      //GenericBusDeviceCore.setEventsEnabled(b);
-      //Bus.setEventsEnabled(b);
-      //_machineGui.setEventsEnabled(b);
+	   
    }
 
    /**zet de pauze tussen 2 cycli van de ControllableMachine
@@ -624,10 +521,6 @@ public class GUIController
     */
    public void showRunTimeStats() {
       _machine.writeRunTimeStatsToFile();
-
-      // Tom Schrijvers: beperking van de GUI-verantwoordelijkheden
-      //String stats=(new StatistiekModule()).readFile("runstat.txt");
-      //showOKMessage(stats,"Runtime statistieken");
    }
 
    /**herinitialiseer de runtime statistieken
@@ -650,37 +543,21 @@ public class GUIController
          
          _gui.programLoaded();
 
-         /* System.out.println("programma " + outfile +
-         " geladen");*/
       } catch (IndexOutOfBoundsException ioobe) {
-         //showOKMessage("Geen programma geladen ! ",
-         //  "Bedieningsfout");
          systemMessage("Bedieningsfout: geen programma geladen !");
       }
 
    }
 
-   /**open de browser en laadt daarin een gegeven bestand
-      @param filenaam het te openen bestand
-   */
-   //public void openBrowser(String filenaam){
-   //try{
-   //    URL url=new URL("file://"+ System.getProperty("user.dir") + "/" + filenaam);
-   //    //System.out.println("url = " + url.toString());
-   //    Runtime.getRuntime().exec(_browsercomdo + " " + url.toString());
-   //}
-   //catch(Exception e){
-   //    //showOKMessage("Probleem: " + e.toString() + "\n\nStart " + filenaam +
-   //   // " in een browser","Environment probleem");
-   //}
-   //  }
-
    /**geef de waarde van de bevelenteller van de CVO
       @return de waarde van de bevelenteller van de CVO
-      
    */
    public long getBT() {
       return _machine.getCVOInterface().getBT();
    }
 
+   public void clear() {
+	   _machine.clear();
+   }
+  
 }

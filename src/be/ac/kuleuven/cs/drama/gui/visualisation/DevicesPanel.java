@@ -20,6 +20,8 @@ import java.awt.*;
  */
 
 public class DevicesPanel extends JPanel {
+	private static final long serialVersionUID = 0L;
+
 
    private Device[] _devices;
 
@@ -63,6 +65,7 @@ public class DevicesPanel extends JPanel {
 
    private class Device
       extends JPanel {
+		private static final long serialVersionUID = 0L;
 
       private final JLabel _pt;
       private final JLabel _pog;

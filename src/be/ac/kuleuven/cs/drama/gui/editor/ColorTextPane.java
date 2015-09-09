@@ -9,11 +9,14 @@
  */
 package be.ac.kuleuven.cs.drama.gui.editor;
 
-import javax.swing.*;
-import javax.swing.text.*;
-import java.util.*;
-import java.awt.event.*;
-import java.awt.*;
+import java.awt.Color;
+
+import javax.swing.JTextPane;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.MutableAttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 /**
  * JTextPane with direct support for color and default
@@ -24,6 +27,7 @@ import java.awt.*;
  */
 
 public class ColorTextPane extends JTextPane {
+	private static final long serialVersionUID = 0L;
 
    private MutableAttributeSet _defaultAttribs;
 
@@ -53,9 +57,6 @@ public class ColorTextPane extends JTextPane {
       setBackground(bg);
       setForeground(fg);
       setCaretColor(fg);
-
-      //setForegroundColor(fg, 0, getText().length());
-      //setBackgroundColor(bg, 0, getText().length());
 
       setDefaultBackground(bg);
       setDefaultForeground(fg);
@@ -98,15 +99,7 @@ public class ColorTextPane extends JTextPane {
       StyleConstants.setBackground(_defaultAttribs, c);
    }
 
-
-   //public void setBackgroundColor(Color color, int offset, int length){
-   // MutableAttributeSet as = new SimpleAttributeSet();
-   // StyleConstants.setBackground(as, color);
-   // getStyledDocument().setCharacterAttributes(offset,length, as, false);
-   //}
-
    public void setText(String text) {
-      //System.out.println("Resetting text");
       super.setText(text);
       applyDefaults();
    }
