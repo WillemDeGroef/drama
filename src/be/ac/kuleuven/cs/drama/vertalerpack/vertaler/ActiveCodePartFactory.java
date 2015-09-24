@@ -40,7 +40,7 @@ public final class ActiveCodePartFactory {
     * @return an ActiveCodePart for the given line and vertaler.
     */
    public ActiveCodePart getActiveCodePart(String line, Vertaler2 vertaler) {
-      String eline = line.trim().toUpperCase();
+      String eline = line.trim();
 
       if (eline.length() == 0) {
          return new NoCodePart();
@@ -48,16 +48,11 @@ public final class ActiveCodePartFactory {
 
       char c = eline.charAt(0);
 
-      if (Character.isLetter(c)) {
+      if (Character.isLetter(c))
          return getLetterCodePart(eline, vertaler);
-      }
 
-      if (c == '-' || c == '+' || Character.isDigit(c)) {
-         return new ConstantCodePart(eline, vertaler);
-      }
-      
-      if (c == '"' && eline.charAt(eline.length()-1) == '"')
-    	  return new StringCodePart(StringCodePart.convertBackslashes(line.trim()), vertaler);
+      if (c == '-' || c == '+' || Character.isDigit(c) || c == '"')
+    	  return new LiteralCodePart(line, vertaler);
 
       return new DummyCodePart(eline);
    }
@@ -66,25 +61,28 @@ public final class ActiveCodePartFactory {
     * @return an ActiveCodePart for a line that starts with a letter.
     */
    private ActiveCodePart getLetterCodePart(String line, Vertaler2 vertaler) {
-      if (line.startsWith("RESGR")) {
-         return new ResgrCodePart(line, vertaler);
+      String eline = line.toUpperCase();
+
+      if (eline.startsWith("RESGR")) {
+         return new ResgrCodePart(eline, vertaler);
       }
 
-      if (line.startsWith("EINDPR")) {
-         return new EindprCodePart(line, vertaler);
+      if (eline.startsWith("EINDPR")) {
+         return new EindprCodePart(eline, vertaler);
       }
 
-      if (line.length() >= 3) {
-         String opcode = line.substring(0, 3);
+      if (eline.length() >= 3) {
+         String opcode = eline.substring(0, 3);
 
          if (_opcodes.containsKey(opcode)) {
             LetterCodePart lcp = (LetterCodePart) _opcodes.get(opcode);
-            return lcp.newInstance(line.substring(3), vertaler);
+            return lcp.newInstance(eline.substring(3), vertaler);
          }
 
       }
 
-      return new DummyCodePart(line);
+      return new LiteralCodePart(line, vertaler);
+      //return new DummyCodePart(line);
    }
 
    // map of OpcodecodeParts
