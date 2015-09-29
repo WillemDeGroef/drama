@@ -1,0 +1,15 @@
+| Tutorial 02: <<< UITVOERINGSSCHERM >>>
+| Doel: Geraak vertrouwd met het uitvoeringsscherm en het invoerspaneel.
+
+| Opdracht: Voer dit programma twee keer volledig uit en wis de uitvoer.
+| Verificatie: De opdracht is voltooid wanneer je twee keer een getal hebt ingegeven
+|              en vervolgens de 5 opeenvolgende getallen worden getoond.
+|              Daarna moet het scherm weer leeg gemaakt worden.
+| Hint: "Uitvoering > Reset", "Vertalen > Maak scherm schoon"
+
+	LEZ
+	HIA.w	R1, 5 (R0+)
+	DRU
+	VGL.w	R1, 0 (R0+)
+	VSP	GR, 2
+	STP

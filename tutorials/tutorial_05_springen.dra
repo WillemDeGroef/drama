@@ -1,0 +1,28 @@
+| Tutorial 05: <<< SPRINGEN >>>
+| Doel: Geraak vertrouwd met het spring systeem.
+
+| Opdracht: Voorspel wat dit programma zal doen.
+
+| Extra: probeer een if-else structuur te maken
+|             en een while loop
+
+Start:
+	LEZ | LEZ = LEZen van een getal en opslaan in R0
+	
+	SPR	Skipped | SPR = SPRing naar etiket "Skipped"
+	DRU | Nooit uitgevoerd
+Skipped:	
+	
+	VGL.w	R0, 5     | VGL = VERgelijk R0 met een getal
+	VSP	KL, Klein | VSP = Voorwaardelijke SProng
+		          | KL  = op voorwaarde dat R0 < 5
+	VSP	GR, Groot | GR  = op voorwaarde dat R0 > 5
+	SPR	Start     | Herstart (probeer ook KLG, GRG, GEL en NGEL)
+Klein:
+	HIA.w	R0, -1
+	SPR	Eind
+Groot:
+	HIA.w	R0,  1
+Eind:
+	DRU
+	STP

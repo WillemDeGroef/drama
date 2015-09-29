@@ -1,0 +1,17 @@
+| Tutorial 06: <<< INDEXERING >>>
+| Doel: Geraak vertrouwd met het indexeringssysteem.
+
+| Opdracht: Voorspel wat dit programma zal doen.
+
+| Extra: Experimenteer met (+R1), (R1), (R1-) en (-R1)
+
+	HIA.w	R1,  0     | -> R1 = 0;
+Loop:	VGL.w	R1,  5     | -> while (R1 != 5)
+	VSP	GEL, Einde | -> {
+	HIA	R0,  A(R1+)| -> R0 = A[R1++];
+	DRU	           | -> printf("%i\n", R0);
+	NWL | NWL = NieuWe Lijn
+	SPR	Loop       | -> }
+Einde:	STP
+| Globale variabelen:
+A:	1; 3; 6; 10; 15 | Initialiseer array A met waarden {1, 3, 6, 10, 15}

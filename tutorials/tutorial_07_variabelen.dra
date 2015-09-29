@@ -1,0 +1,37 @@
+| Tutorial 07: <<< VARIABELEN >>>
+| Doel: Geraak vertrouwd met pointers en het globale variabelen systeem.
+
+| Opdracht: Voorspel wat dit programma zal doen.
+
+Start:	
+	HIA.w	R0, X | Laad de plaats van variabele X in R0
+	DRU	      | -> R0 = &X;
+	
+	HIA	R0, X | Laad de waarde op adres van X in R0
+	DRU	      | -> R0 = X;
+	
+	LEZ	      | BIG = Berg In Accumulator
+	BIG	R0, X | -> X = R0;
+	
+	HIA.i	R0, P | Laad de waarde op het adres aangeduid door P in R0
+	DRU	      | -> R0 = *P; (ook wel R0 = X)
+	
+	HIA	R0, P - 1 | -> R0 = P - 1;
+	BIG	R0, A + 2 | -> A[2] = R0;
+	HIA.i	R0, A + 2 | -> R0 = *A[2];
+	
+	HIA	R0, X | -> R0 = X;
+	VGL	R0, Y | Vergelijk R0 lmet Y
+	VSP	KL, Einde | Ga aar "Einde" als X < Y (dus input < 5)
+	
+	HIA	R0, S | Laad commando in S in R0
+	BIG	R0, Einde | Sla het commando in R0 op in Einde
+	
+Einde:	SPR	Start | Herstart (of stop?)
+
+| Globale variabelen:
+X:	2 | Initialiseer variabele X met de waarde 2
+Y:	5 | Initialiseer variabele Y met de waarde 5
+P:	Y | Initialiseer variabele P met het adres van Y
+A:	RESGR 5 | Initialiseer globale array A met lengte 5 en waarden 0
+S:	STP | Initialiseer variabele S met de instructie STP

@@ -1,0 +1,10 @@
+| Tutorial 03: <<< ONEINDIGE LUS >>>
+| Doel: Begrijp hoe een oneindige lus
+|       tijdens uitvoering van DRAMA code op te lossen.
+
+| Opdracht: Voer dit programma uit en stop het programma daarna.
+|           Weet wat "Doorgaan" en "Reset" doen.
+
+	OPT.w	R0, 1
+	DRU
+	SPR	0

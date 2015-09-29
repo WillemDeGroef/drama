@@ -1,0 +1,50 @@
+| Tutorial 08: <<< STACK >>>
+| Doel: Geraak vertrouwd met de stack.
+
+| Opdracht: Voorspel wat dit programma zal doen (op iedere plaats).
+
+| Extra: Breidt de formule uit om te kunnen werken met een willekeurig aantal termen.
+|        (Willekeurig tussen 0 en 8000)
+
+	HIA	R0, R9
+	DRU	| Print 9000
+	HIA.w	R0, 17
+	BST	R0 | BST = Berg op STapel
+		   | korte notatie voor "BIG R0, (-R9)"
+	HIA.w	R0, R9
+	DRU	| Print 8999
+	HST	R0 | HST = Haal van STapel (ofwel HerSTel)
+		   | korte notatie voor "HIA R0, (R9+)"
+	DRU	| Print 17
+	NWL
+	
+	| Voorbeeld om stapel te gebruiken om tussenuitkomsten op te slaan:
+	| Bereken X + 2 * X*X + 3 * X*X*X + 4 * X*X*X*X
+	LEZ	| Geef X een waarde
+	
+	HIA	R1, R0
+	BST	R1 | X
+	VER	R1, R0
+	BST	R1 | X*X
+	VER	R1, R0
+	BST	R1 | X*X*X
+	VER	R1, R0
+	BST	R1 | X*X*X*X
+	
+	HIA.w	R0, 0
+	HST	R1
+	VER.w	R1, 4
+	OPT	R0, R1
+	HST	R1
+	VER.w	R1, 3
+	OPT	R0, R1
+	HST	R1
+	VER.w	R1, 2
+	OPT	R0, R1
+	HST	R1
+	VER.w	R1, 1
+	OPT	R0, R1
+	
+	DRU
+	
+	STP
