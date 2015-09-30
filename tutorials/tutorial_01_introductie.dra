@@ -1,0 +1,30 @@
+               ||||||||||||||||||||||||
+               |||  WELKOM  BIJ DE  |||
+               ||| DRAMA TUTORIALS! |||
+               ||||||||||||||||||||||||
+
+| Deze teksts hier is waar DRAMA programma's worden geschreven.
+
+| Iedere tutorial zal een uitdaging bieden.
+| Voltooi ze allemaal en misschien zul jij
+| binnen kort een DRAMA meester zijn!
+| Veel plezier!
+
+| PS: Klik ook eens op het woord "Kleuren" daar boven.
+
+| Tutorial 01: <<< INTRODUCTIE >>>
+| Doel: Geraak vertrouwd met de werking van de DRAMA simulator.
+
+| Opdracht: Compileer dit programma en laat het lopen.
+| Verificatie: De opdracht is geslaagd
+|              wanneer je de output "succes!" krijgt.
+| Hint: "Vertalen > Vertalen",
+|       "Vertalen > Uitvoeringsvenster",
+|       "Uitvoering > Starten"
+
+	HIA.w	R0,	Label
+	DRS
+	STP
+
+Label:
+	"succes!\n"

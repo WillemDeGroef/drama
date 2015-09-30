@@ -1,0 +1,21 @@
+| Tutorial 04: <<< REKENWERK >>>
+| Doel: Geraak vertrouwd met de DRAMA syntax.
+
+| Opdracht: Voorspel wat dit programma zal doen.
+
+	HIA.w	R0,  5 | HIA = Haal In Accumulator
+	HIA.w	R1,  7 | Accumulator ~ integer variabele
+	HIA.w	R2,  4 | R1..9 = Register 1..9
+	HIA.w	R3, -9 | Accumulatoren ? Registers
+	HIA.w	R4,  3 | -> R4 = 10;
+	HIA.w	R5, 50 | -> R5 = 50;
+	
+	OPT.w	R0,  6 | OPT = Optellen -> R0 = R0 + 6;
+	OPT	R0, R1 | -> R0 = R0 + R1;
+	AFT	R0, R2 | -> R0 = R0 - R2;
+	VER	R0, R3 | -> R0 = R0 * R3;
+	DEL	R0, R4 | -> R0 = R0 / R4;
+	MOD	R0, R5 | -> R0 = R0 % R5;
+	
+	DRU | DRU = DRUk R0 af op scherm
+	STP | STP = SToP (vergeet hem niet!)

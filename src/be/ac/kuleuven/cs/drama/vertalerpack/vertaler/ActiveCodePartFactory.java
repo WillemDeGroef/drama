@@ -52,7 +52,7 @@ public final class ActiveCodePartFactory {
          return getLetterCodePart(eline, vertaler);
 
       if (c == '-' || c == '+' || Character.isDigit(c) || c == '"')
-    	  return new LiteralCodePart(line, vertaler);
+    	  return new LiteralCodePart(eline, vertaler);
 
       return new DummyCodePart(eline);
    }

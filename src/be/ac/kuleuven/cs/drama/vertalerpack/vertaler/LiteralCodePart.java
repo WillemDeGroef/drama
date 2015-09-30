@@ -95,6 +95,8 @@ public class LiteralCodePart extends ActiveCodePart {
 				for(int j = 0; j < copyable.length; j++)
 					result[i++] = copyable[j];
 				i--;
+			} else if (c == ';') {
+				throw new AbnormalTerminationException("fout aantal ;'s");
 			} else {
 				temp = this.getConstantObjectAt(p);
 				result[i] = temp.s;
@@ -155,7 +157,7 @@ public class LiteralCodePart extends ActiveCodePart {
 				default:
 				{
 					if (!LiteralCodePart.isOctal(this._line.charAt(indexFrom)))
-						throw new AbnormalTerminationException("onbekend ASCII karakter \\" + c);
+						throw new AbnormalTerminationException("onbekend ASCII karakter : \\" + c);
 					int value = 0;
 					for(int i = 0; i < 3; i++) {
 						value = value * 8 + (this._line.charAt(indexFrom) - '0');
@@ -171,6 +173,8 @@ public class LiteralCodePart extends ActiveCodePart {
 				}
 				break;
 			default:
+				if (c >= 256)
+					throw new AbnormalTerminationException("non-ASCII karakter in string : " + c);
 				result += c;
 			}
 		}
@@ -183,18 +187,20 @@ public class LiteralCodePart extends ActiveCodePart {
 	}
 	
 	private static String[] values(String s) {
-		String[] result = new String[(s.length() / 3) + 1];
+		int l = s.length();
+		String[] result = new String[(l / 3) + 1];
 		
-		long l = 0;
-		int i, c = 0;
-		for(i = 0; s.length() != i; ++i) {
-			if (i != 0 && i%3 == 0) {
-				result[c++] = Long.toString(l);
-				l = 0;
+		if (l%3 == 0)
+			result[result.length - 1] = Long.toString(0);
+		
+		long n = 0;
+		for(int i = l - 1; i >= 0; i--) {
+			n = n * 1000 + s.charAt(i);
+			if (i%3 == 0) {
+				result[i / 3] = Long.toString(n);
+				n = 0;
 			}
-			l += ((long)s.charAt(i)) * Math.pow(1000, i%3);
 		}
-		result[c] = Long.toString(l);
 		
 		return result;
 	}

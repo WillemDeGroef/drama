@@ -71,9 +71,7 @@ public class ExecuteFrame
       _actionManager.getStepAction().setEnabled((state.isInitial() || state.isStarted()) && !state.isExecuting());
       _actionManager.getStopAction().setEnabled(state.isExecuting());
       _actionManager.getResetAction().setEnabled(state.canExecute() && !state.isInitial() && !state.isExecuting());
-      _actionManager.getResetAction().setEnabled(true);
       ((SimpleAction)_actionManager.getContinueAction()).putValue(SimpleAction.SHORT_DESCRIPTION, state.isStarted() ? "Doorgaan" : "Starten");
-      ((SimpleAction)_actionManager.getContinueAction()).putValue(SimpleAction.LONG_DESCRIPTION, state.isStarted() ? "Doorgaan" : "Starten");
       
       updateHighlights();
    }

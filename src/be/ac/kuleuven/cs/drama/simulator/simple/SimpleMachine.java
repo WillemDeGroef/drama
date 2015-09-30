@@ -57,11 +57,11 @@ public class SimpleMachine
 
    private boolean _halted = false;
 
-   //private boolean       _debug  = false;
-
    private boolean _isFinished = true;
 
    private StatistiekModule _statistics;
+   
+   private boolean _haltable = false;
 
    /**
     * Initialise a new SimpleMachine with
@@ -101,10 +101,11 @@ public class SimpleMachine
    private void reset() {
 	   if (_input.isWaiting())
 		   _monitor.delLastChar();
+      _haltable = false;
       _input.reset();
-      _halted = false;
-      ram().reset();
       cpu().reset();
+      ram().reset();
+      _halted = false;
       _isFinished = false;
    }
 
@@ -133,12 +134,6 @@ public class SimpleMachine
    public boolean isHalted() {
       return _halted;
    }
-
-   /*
-   public boolean isDebug(){
-   return _debug;
-}
-   */
 
    public void systemMessage(String message) {
       _runtime.systemMessage(message);
@@ -177,15 +172,9 @@ public class SimpleMachine
 
       reset();
 
-      _halted = false;
-      //reset();
       try {
          ram().loadProgram(file);
          _cpu.setBreakPoints(breakpoints);
-         // if (! _debug) {
-         // System.out.println("Starting cpu...");
-         // cpu().start();
-         //}
       }
       catch (FatalMachineError fme) {
          systemMessage("Fout bij het laden van het programma.");
@@ -193,38 +182,29 @@ public class SimpleMachine
 
    }
 
-   /*
-   public void startDebug(Hashtable breakpoints){
-   if (DEBUG) System.out.println( "SimpleMachine.startDebug()");
-   _debug = true;
-   reset();
-   _cpu.setBreakPoints(breakpoints);
-}
-   */
-
-   /*
-   public void stopDebug(){
-   if (DEBUG) System.out.println("SimpleMachine.stopDebug()");
-   _debug = false;
-}
-   */
-
    public void step() {
       if (DEBUG) System.out.println( "SimpleMachine.step()");
 
+      _haltable = true;
       cpu().singleStep();
    }
 
    public void halt() {
+      if (!_haltable)
+          return;
+      
       if (DEBUG) System.out.println( "SimpleMachine.halt()");
 
       _halted = true;
+      if (_input.isWaiting())
+          _runtime.halted();
       _monitor.close();
    }
 
    public void cont() {
       if (DEBUG) System.out.println( "SimpleMachine.cont()");
 
+      _haltable = true;
       _halted = false;
       cpu().start();
    }
@@ -317,6 +297,9 @@ public class SimpleMachine
    }
 
    public void halted() {
+      if (!_haltable)
+          return;
+      
       _runtime.halted();
    }
    

@@ -155,7 +155,7 @@ public class TextDecorator {
 						continue;
 					}
 				}
-				if (i == e || " \t\r,.()<>+-*".indexOf(text.charAt(i)) >= 0) {
+				if (i == e || " \t\r,.()<>+-*;".indexOf(text.charAt(i)) >= 0) {
 					if (cState.getState() == IdeState.STATE_MACRO_HEADER && i != p) {
 						cElement = null;
 						ccol = this.colorSet.selfDefinedCol;
