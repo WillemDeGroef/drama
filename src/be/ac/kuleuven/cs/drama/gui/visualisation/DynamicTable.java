@@ -11,14 +11,13 @@ package be.ac.kuleuven.cs.drama.gui.visualisation;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.GridLayout;
-import java.awt.event.AdjustmentEvent;
-import java.awt.event.AdjustmentListener;
-import java.util.Arrays;
-
+import java.awt.Component;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 /**
  * Class that displays the memory contents.
@@ -28,54 +27,24 @@ import javax.swing.JScrollBar;
  */
 
 public class DynamicTable
-
    extends JPanel {
-	private static final long serialVersionUID = 0L;
-
-
-   private static final boolean DEBUG = false;
-
-   private final InternalRepresentationFrame _imr;
-
-   private final int _virtualSize;
-   private final int _realSize;
-
-   private int _frameStart;
-
-   private JLabel[] _labels;
-   private JLabel[] _addresses;
-   private JLabel[] _values;
-
-   private JScrollBar _bar;
-
-   private int _activeLine = 0;
-   private int _activePos = 0;
-
-   private int[] _labelAddresses;
-   private String[] _labelNames;
-
+   private static final long serialVersionUID = 0L;
+   
+   private JTable _table;
+   private MemoryTableModel _model;
+   
    /**
     * Initialize.
-    * @param virtualSize the entire size of memory
-    * @param realSize    the size of the memory frame visible 
+    * @param memorySize the entire size of memory
     */
-   public DynamicTable(InternalRepresentationFrame imr, int virtualSize, int realSize) {
+   public DynamicTable(int memorySize) {
       super();
 
       setBackground(Color.black);
       setForeground(Color.white);
 
-      _imr = imr;
-      _virtualSize = virtualSize;
-      _realSize = realSize;
-
-      setLayout(new BorderLayout());
-
-      add(createTable(), BorderLayout.CENTER);
-      add(createScrollBar(), BorderLayout.EAST);
-
-      fillAll();
-
+      this.setLayout(new BorderLayout());
+      add(createTable(memorySize), BorderLayout.CENTER);
    }
 
    /**
@@ -83,40 +52,28 @@ public class DynamicTable
     * All other addresses will have no label.
     */
    public void setLabels(String[] names, int[] addresses) {
-      _labelNames = names;
-      _labelAddresses = addresses;
+      _model.clearLabels();
+      for(int i = 0;i<names.length;i++){
+         _model.setLabel(addresses[i], names[i]);
+      }
    }
 
    /**
     * Update the contents of the given cell.
     */
    public void update(int address, long value) {
-      if (address >= _frameStart && address < (_frameStart + _realSize)) {
-         // only if visible
-         fill(address - _frameStart, address);
-      }
-
+      _model.setValue(address, value);
    }
-
-   /*
-    * Refill all visible cells.
+   
+   /**
+    * Creates a JTable containing all the memory values and labels.
     */
-   private void fillAll() {
-	  //int c = _frameStart;
-      for (int i = 0; i < _realSize; i++) 
-         fill(i, _frameStart + i);
-   }
-
-   /*
-    * call in constructor only
-    */
-   private JPanel createTable() {
-
+   private JPanel createTable(int memorySize) {
       JPanel outerPanel = new JPanel();
       outerPanel.setLayout(new BorderLayout());
 
       outerPanel.setOpaque(true);
-      outerPanel.setBackground(Color.black);
+      outerPanel.setBackground(Color.PINK);
 
       JLabel title = new JLabel("Geheugen");
       title.setOpaque(true);
@@ -125,157 +82,137 @@ public class DynamicTable
       title.setHorizontalAlignment(JLabel.CENTER);
 
       outerPanel.add(title, BorderLayout.NORTH);
-
-      JPanel panel = new JPanel();
-      GridLayout layout = new GridLayout(_realSize + 1, 3);
-      layout.setHgap(3);
-      layout.setVgap(3);
-      panel.setLayout(layout);
-      panel.setForeground(Color.white);
-      panel.setBackground(Color.black);
-
-      JLabel labelLabel = new JLabel("Label");
-      JLabel addressLabel = new JLabel("Adres");
-      JLabel contentLabel = new JLabel("Inhoud");
-      labelLabel.setOpaque(true);
-      labelLabel.setForeground(Color.white);
-      labelLabel.setBackground(Color.blue);
-      labelLabel.setHorizontalAlignment(JLabel.CENTER);
-      addressLabel.setOpaque(true);
-      addressLabel.setForeground(Color.white);
-      addressLabel.setBackground(Color.blue);
-      addressLabel.setHorizontalAlignment(JLabel.CENTER);
-      contentLabel.setOpaque(true);
-      contentLabel.setForeground(Color.white);
-      contentLabel.setBackground(Color.blue);
-      contentLabel.setHorizontalAlignment(JLabel.CENTER);
-      panel.add(labelLabel);
-      panel.add(addressLabel);
-      panel.add(contentLabel);
-
-      _labels = new JLabel[_realSize];
-      _addresses = new JLabel[_realSize];
-      _values = new JLabel[_realSize];
-
-      for (int i = 0; i < _realSize; i++) {
-         _labels[i] = new JLabel();
-         _labels[i].setForeground(Color.white);
-         _labels[i].setHorizontalAlignment(JLabel.CENTER);
-         panel.add(_labels[i]);
-         _addresses[i] = new JLabel("");
-         //_addresses[i].setOpaque(true);
-         // _addresses[i].setBackground(Color.gray);
-         _addresses[i].setForeground(Color.white);
-         _addresses[i].setHorizontalAlignment(JLabel.CENTER);
-         panel.add(_addresses[i]);
-         _values[i] = new JLabel("");
-         _values[i].setOpaque(true);
-         _values[i].setBackground(Color.gray);
-         _values[i].setForeground(Color.white);
-         _values[i].setHorizontalAlignment(JLabel.CENTER);
-         panel.add(_values[i]);
+      
+      _model = new MemoryTableModel(memorySize);
+      _table = new JTable(_model);
+      
+      MemoryTableCellRenderer renderer = new MemoryTableCellRenderer();
+      for(int i = 0;i<_table.getColumnCount();i++){
+         _table.getColumnModel().getColumn(i).setCellRenderer(renderer);
       }
 
-      outerPanel.add(panel, BorderLayout.CENTER);
+      JScrollPane tableScollPane = new JScrollPane();
+      tableScollPane.setViewportView(_table);
+      
+      outerPanel.add(tableScollPane, BorderLayout.CENTER);
 
       return outerPanel;
-
    }
 
-   /*
-    * call in constructor only
+   /**
+    * Set active memory cell,
+    * scroll to get cell in visible range,
+    * cell will have red foreground until
+    * other cell is set active.
     */
-   private JScrollBar createScrollBar() {
-      _frameStart = 0;
-      _bar = new JScrollBar(JScrollBar.VERTICAL, _frameStart, 10, 0, _virtualSize);
-      _bar.addAdjustmentListener(new MyAdjustmentListener(_bar));
-      return _bar;
+   public void setActive(int address) {
+      _table.scrollRectToVisible(_table.getCellRect(address, 0, true));
+      _table.repaint();
+      _model.setActiveLine(address);
    }
 
-   /*
-    * Scroll the visible range to the given address
-    */
-   private void scrollViewTo(int frameStart) {
-
-      int difference = _frameStart - frameStart;
-
-      if (difference == 0) {
-         // do nothing if not moved
-         return ;
+   //Data model of the table
+   private class MemoryTableModel extends AbstractTableModel {
+      private static final int COLUMN_LABEL = 0;
+      private static final int COLUMN_ADDRESS = 1;
+      private static final int COLUMN_VALUE = 2;
+      private String[] columnNames = {"Label", "Adres", "Inhoud"};
+      
+      private int memorySize;
+      private String[] labels;
+      private long[] memory;
+      private int activeLine = -1;
+      
+      public MemoryTableModel(int memorySize){
+          this.memorySize = memorySize;
+          this.labels = new String[memorySize];
+          this.memory = new long[memorySize];
       }
-
-      _frameStart = frameStart;
-
-      if (_activePos >= 0) {
-         // reset red line to white
-         _labels[_activePos].setForeground(Color.white);
-         _addresses[_activePos].setForeground(Color.white);
-         _values[_activePos].setForeground(Color.white);
-      }
-
-      fillAll();
-
-      if (_activeLine >= _frameStart && _activeLine < (_frameStart + _realSize)) {
-         // set red line if visible
-         _activePos = _activeLine - _frameStart;
-
-         _labels[_activePos].setForeground(Color.red);
-         _addresses[_activePos].setForeground(Color.red);
-         _values[_activePos].setForeground(Color.red);
-
-      } else {
-         _activePos = -1;
-      }
-
-   }
-
-   private void fill(int position, int address) {
-      _addresses[position].setText(address(address));
-      _values[position].setText(value(_imr.getValue(address)));
-
-      int pos = -1;
-
-      if (_labelAddresses != null) {
-         pos = Arrays.binarySearch(_labelAddresses, address);
-      }
-
-      if ( pos >= 0) {
-         _labels[position].setText(_labelNames[pos]);
-         _labels[position].setToolTipText(_labelNames[pos]);
-      } else {
-         _labels[position].setText("");
-         _labels[position].setToolTipText(null);
-      }
-
-   }
-
-   // Past inhoud van cellen aan als er gescrolled wordt.
-
-   private class MyAdjustmentListener
-
-      implements AdjustmentListener {
-
-      private JScrollBar _scroller;
-
-      public MyAdjustmentListener(JScrollBar scroller) {
-         _scroller = scroller;
-      }
-
-      public void adjustmentValueChanged(AdjustmentEvent e) {
-
-         // doe niets als er gedragged wordt
-
-         if (DEBUG) {
-            System.out.println("adjustmentValueChanged()");
-            System.out.println("dragging: " + _scroller.getValueIsAdjusting());
+      
+      public Object getValueAt(int row, int col) {
+         if(col == COLUMN_LABEL){
+            return labels[row];
+         }else if(col == COLUMN_ADDRESS){
+            return address(row);
+         }else if(col == COLUMN_VALUE){
+            return value(memory[row]);
          }
-
-         if (! _scroller.getValueIsAdjusting()) scrollViewTo(e.getValue());
-
+         return null; //Invalid column! Should never happen.
       }
-
+      
+      public String getColumnName(int col) {
+         return columnNames[col];
+      }
+      
+      public int getRowCount() { 
+         return memorySize; 
+      }
+      
+      public int getColumnCount() { 
+         return columnNames.length; 
+      }
+      
+      public boolean isCellEditable(int row, int col){ 
+         return false;
+      }
+      public void setValueAt(Object value, int row, int col) {
+         if(col == COLUMN_LABEL){
+            labels[row] = value.toString();
+            fireTableCellUpdated(row, col);
+         }else if(col == COLUMN_VALUE){
+            if(value instanceof Long){
+               memory[row] = (Long)value;
+            }else{
+               System.err.println("Invalid value " +value  + " of type " + value.getClass() + " cannot be set as memory value!");
+            }
+            fireTableCellUpdated(row, col);
+         }else{
+            System.err.println("MemoryTableModel column "+col+" cannot be updated!");
+         }
+      }
+      
+      public void setLabel(int row, String label){
+         labels[row] = label;
+         fireTableCellUpdated(row, COLUMN_LABEL);
+      }
+      
+      public void clearLabels() {
+         labels = new String[memorySize];
+         fireTableDataChanged();
+      }
+      
+      public void setValue(int row, long value){
+         memory[row] = value;
+         fireTableCellUpdated(row, COLUMN_VALUE);
+      }
+      
+      public void setActiveLine(int newActiveLine){
+         int oldActiveLine = activeLine;
+         activeLine = newActiveLine;
+         if(oldActiveLine != -1){
+            fireTableCellUpdated(oldActiveLine, COLUMN_LABEL);
+            fireTableCellUpdated(oldActiveLine, COLUMN_ADDRESS);
+            fireTableCellUpdated(oldActiveLine, COLUMN_VALUE);
+         }
+         fireTableCellUpdated(activeLine, COLUMN_LABEL);
+         fireTableCellUpdated(activeLine, COLUMN_ADDRESS);
+         fireTableCellUpdated(activeLine, COLUMN_VALUE);
+      }
    }
-
+   
+   //Table renderer, handles font color for the table cells
+   private class MemoryTableCellRenderer extends DefaultTableCellRenderer {
+      public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+         MemoryTableModel model = (MemoryTableModel)table.getModel();
+         Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+         if(model.activeLine == row){
+            c.setForeground(Color.RED);
+         }else{
+            c.setForeground(Color.BLACK);
+         }
+         return c;
+      }
+   }
 
    private String address(int adr) {
       String result = Integer.toString(adr);
@@ -296,16 +233,4 @@ public class DynamicTable
 
       return result;
    }
-
-   /**
-    * Set active memory cell,
-    * scroll to get cell in visible range,
-    * cell will have red foreground until
-    * other cell is set active.
-    */
-   public void setActive(int adr) {
-      _activeLine = adr;
-      scrollViewTo(adr);
-   }
-
 }
