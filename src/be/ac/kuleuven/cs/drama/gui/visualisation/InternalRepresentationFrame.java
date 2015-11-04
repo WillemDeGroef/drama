@@ -63,7 +63,7 @@ public class InternalRepresentationFrame
       _leftPanel = new CpuPanel();
       firstPanel.add(_leftPanel, BorderLayout.WEST);
 
-      _memoryPanel = new DynamicTable(this, 10000, 10);
+      _memoryPanel = new DynamicTable(10000);
       firstPanel.add(_memoryPanel, BorderLayout.CENTER);
 
       _secondPanel = new JPanel();
