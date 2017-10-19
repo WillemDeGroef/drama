@@ -64,6 +64,7 @@ public class InternalRepresentationFrame
       firstPanel.add(_leftPanel, BorderLayout.WEST);
 
       _memoryPanel = new DynamicTable(10000);
+      _memoryPanel.SetParentVisualization(_machineVisualisation);
       firstPanel.add(_memoryPanel, BorderLayout.CENTER);
 
       _secondPanel = new JPanel();

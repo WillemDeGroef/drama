@@ -128,7 +128,16 @@ public class MachineVisualisation
    }
 
 
+   public int getRegisterValue(int index) {
+	   String t = _cpuFrame.getPanel().getRegisters()[index].getText();
+	   int value = -1;
+	   try{
+		   value = Integer.parseInt(t);
+	   }
+	   catch (Exception e){}
 
+	   return value;
+   }
 
 
 
