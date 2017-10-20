@@ -197,5 +197,9 @@ public class CpuPanel
       return buffer.toString();
    }
 
+   public JLabel[] getRegisters() {
+	   return _registers;
+   }
+
 
 }

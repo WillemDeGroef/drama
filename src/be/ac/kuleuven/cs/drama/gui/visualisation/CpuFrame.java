@@ -52,5 +52,9 @@ public class CpuFrame
    public void setBT(long value) {
       _panel.setBT(value);
    }
-
+   
+   public CpuPanel getPanel(){
+	   return _panel;
+   }
+   
 }
