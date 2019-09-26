@@ -115,7 +115,7 @@ public class SimpleInstructionDecoder {
     * add the given opcode decoder to the map
     */
    private static void addDecoder(OpcodeDecoder decoder) {
-      _decoders.put(new Integer(decoder.opcode()), decoder);
+      _decoders.put(decoder.opcode(), decoder);
    }
 
 }
