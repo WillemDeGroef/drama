@@ -18,9 +18,9 @@ import be.ac.kuleuven.cs.drama.simulator.basis.NumberFormat;
  * Output device usable by other
  * machine components.
  *
- * @version 08/11/2015
  * @author Tom Schrijvers
  * @author Jo-Thijs Daelman
+ * @version 08/11/2015
  */
 
 public class StreamMonitor
@@ -50,7 +50,7 @@ public class StreamMonitor
     public void writeChar(char value) {
         if (DEBUG) System.out.println("PrintMonitor.writeChar()");
 
-        _out.print(Character.toString(value));
+        _out.print(value);
     }
 
     /**

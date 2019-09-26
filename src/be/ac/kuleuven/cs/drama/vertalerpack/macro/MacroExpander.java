@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/vertalerpack/macro/MacroExpander.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
@@ -18,176 +16,177 @@ import be.ac.kuleuven.cs.drama.exception.AbnormalTerminationException;
  * Class that manages all the variable for
  * the expansion of a single macro.
  *
+ * @author Tom Schrijvers
  * @version 1.0.0 08/28/2000
- * @author  Tom Schrijvers
  */
 
 public class MacroExpander {
 
-   private final ExpansionManager _manager;
+    private final ExpansionManager _manager;
 
-   private VariableTable _localVariableTable;
-   private List _lines;
-   private PrintWriter _out;
-   private int _currentLine;
-   private boolean _finished;
-   private ConditionState _mcc;
-   private int _expansionNumber;
-   private int _lineno;
+    private VariableTable _localVariableTable;
+    private List<MacroLine> _lines;
+    private PrintWriter _out;
+    private int _currentLine;
+    private boolean _finished;
+    private ConditionState _mcc;
+    private int _expansionNumber;
+    private int _lineno;
 
-   /**
-    * Initialize.
-    */
-   public MacroExpander(ExpansionManager manager) {
-      _manager = manager;
-   }
+    /**
+     * Initialize.
+     */
+    public MacroExpander(ExpansionManager manager) {
+        _manager = manager;
+    }
 
-   /**
-    * Expand the given list of macro lines into the given
-    * printwriter with the given local variable table.
-    */
-   public long expand(VariableTable localVariableTable, List lines, PrintWriter out, int n)
-   throws AbnormalTerminationException {
-      init(localVariableTable, lines, out);
-      setLineNo(n);
+    /**
+     * Expand the given list of macro lines into the given
+     * printwriter with the given local variable table.
+     */
+    public void expand(VariableTable localVariableTable, List<MacroLine> lines, PrintWriter out, int n)
+            throws AbnormalTerminationException {
+        init(localVariableTable, lines, out);
+        setLineNo(n);
 
-      while (! _finished) {
-         MacroLine line = (MacroLine) _lines.get(_currentLine++);
+        while (!_finished) {
+            MacroLine line = _lines.get(_currentLine++);
 
-         try {
-            line.expand(this);
-         } catch (AbnormalTerminationException e) {
-            if (!e.hasLineNo()) {
-               throw new AbnormalTerminationException(line.getLineNo(), e.getMessage());
-            } else {
-               throw e;
+            try {
+                line.expand(this);
+            } catch (AbnormalTerminationException e) {
+                if (!e.hasLineNo()) {
+                    throw new AbnormalTerminationException(line.getLineNo(), e.getMessage());
+                } else {
+                    throw e;
+                }
+
             }
 
-         }
+        }
 
-      }
+    }
 
-      return n;
-   }
+    private static char lineseparator_newline;
+    private static int lineseparator_length;
 
-   private static char lineseparator_newline;
-   private static int lineseparator_length;
-   static {
-      lineseparator_length = System.getProperty("line.separator").length();
-      lineseparator_newline = System.getProperty("line.separator").
-                              charAt(lineseparator_length - 1);
-   }
-   protected long countNewlines(String s) {
-      int i = s.indexOf(lineseparator_newline);
-      long n = 0;
+    static {
+        lineseparator_length = System.getProperty("line.separator").length();
+        lineseparator_newline = System.getProperty("line.separator").
+                charAt(lineseparator_length - 1);
+    }
 
-      while (i != -1) {
-         n++;
-         i = s.indexOf(lineseparator_newline, i + lineseparator_length);
-      }
+    protected long countNewlines(String s) {
+        int i = s.indexOf(lineseparator_newline);
+        long n = 0;
 
-      return n;
-   }
+        while (i != -1) {
+            n++;
+            i = s.indexOf(lineseparator_newline, i + lineseparator_length);
+        }
 
-   /**
-    * Print the given string s to the printbuffer and put a newline at the end.
-    *
-    * @param srcline The corresponding sourceline from where this line is
-    * expanded.
-    * @param s A string with no newline characters in it (this is because we
-    * want to keep track of the lineno we're on)
-    */
-   public void println(int srcline, String s) {
-      _manager.addLineMapping(_lineno, srcline);
-      _lineno++;
-      out().println(s);
-   }
+        return n;
+    }
 
-   /**
-    * Print the given string s to the printbuffer.
-    *
-    * @param srcline The corresponding sourceline from where this line is
-    * expanded.
-    * @param s A string with no newline characters in it (this is because we
-    * want to keep track of the lineno we're on)
-    */
-   public void print(int srcline, String s) {
-      _manager.addLineMapping(_lineno, srcline);
-      out().print(s);
-   }
+    /**
+     * Print the given string s to the printbuffer and put a newline at the end.
+     *
+     * @param srcline The corresponding sourceline from where this line is
+     *                expanded.
+     * @param s       A string with no newline characters in it (this is because we
+     *                want to keep track of the lineno we're on)
+     */
+    public void println(int srcline, String s) {
+        _manager.addLineMapping(_lineno, srcline);
+        _lineno++;
+        out().println(s);
+    }
 
-   public int getLineNo() {
-      return _lineno;
-   }
+    /**
+     * Print the given string s to the printbuffer.
+     *
+     * @param srcline The corresponding sourceline from where this line is
+     *                expanded.
+     * @param s       A string with no newline characters in it (this is because we
+     *                want to keep track of the lineno we're on)
+     */
+    public void print(int srcline, String s) {
+        _manager.addLineMapping(_lineno, srcline);
+        out().print(s);
+    }
 
-   public void setLineNo(int lineno) {
-      _lineno = lineno;
-   }
+    public int getLineNo() {
+        return _lineno;
+    }
 
-   /*
-    * Init all datamembers
-    */
-   private void init(VariableTable lvt, List lines, PrintWriter out) {
-      _localVariableTable = lvt;
-      _lines = lines;
-      _out = out;
-      _currentLine = 0;
-      _finished = false;
-      _mcc = ConditionState.ZERO;
-      _expansionNumber = _manager.getUniqueExpansionNumber();
-   }
+    public void setLineNo(int lineno) {
+        _lineno = lineno;
+    }
 
-   /**
-    * @return the local variable table
-    */
-   public VariableTable getLocalVariableTable() {
-      return _localVariableTable;
-   }
+    /**
+     * Init all datamembers
+     */
+    private void init(VariableTable lvt, List<MacroLine> lines, PrintWriter out) {
+        _localVariableTable = lvt;
+        _lines = lines;
+        _out = out;
+        _currentLine = 0;
+        _finished = false;
+        _mcc = ConditionState.ZERO;
+        _expansionNumber = _manager.getUniqueExpansionNumber();
+    }
 
-   /**
-    * @return the printwriter
-    */
-   public PrintWriter out() {
-      return _out;
-   }
+    /**
+     * @return the local variable table
+     */
+    public VariableTable getLocalVariableTable() {
+        return _localVariableTable;
+    }
 
-   /**
-    * Notify this MacroExpander that the expansion of the macro
-    * has ended.
-    */
-   public void finish() {
-      _finished = true;
-   }
+    /**
+     * @return the printwriter
+     */
+    public PrintWriter out() {
+        return _out;
+    }
 
-   /**
-    * jump to the line with given macro label
-    */
-   public void setCurrentLine(MacroLabel label)
-   throws AbnormalTerminationException {
-      _currentLine = label.getIndex();
-   }
+    /**
+     * Notify this MacroExpander that the expansion of the macro
+     * has ended.
+     */
+    public void finish() {
+        _finished = true;
+    }
 
-   /**
-    * set the macro condition code with the given value
-    */
-   public void setMCC(long value) {
-      _mcc = ConditionState.getConditionState(value);
-   }
+    /**
+     * jump to the line with given macro label
+     */
+    public void setCurrentLine(MacroLabel label)
+            throws AbnormalTerminationException {
+        _currentLine = label.getIndex();
+    }
 
-   /**
-    * @return wether the macro condition code
-    *  meets the given conditon
-    */
-   public boolean doAssert(Condition cond) {
-      return cond.accept(_mcc);
-   }
+    /**
+     * set the macro condition code with the given value
+     */
+    public void setMCC(long value) {
+        _mcc = ConditionState.getConditionState(value);
+    }
 
-   /**
-    * @return the number of this expansion
-    * usable for unique label numbers
-    */
-   public int getExpansionNumber() {
-      return _expansionNumber;
-   }
+    /**
+     * @return wether the macro condition code
+     * meets the given conditon
+     */
+    public boolean doAssert(Condition cond) {
+        return cond.accept(_mcc);
+    }
+
+    /**
+     * @return the number of this expansion
+     * usable for unique label numbers
+     */
+    public int getExpansionNumber() {
+        return _expansionNumber;
+    }
 
 }

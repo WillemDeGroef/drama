@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/simulator/CVOInterface.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.simulator;
 
@@ -21,24 +19,24 @@ import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 
 public interface CVOInterface {
 
-   /**
-    * @return the 'bevelenteller'
-    */
-   public long getBT();
+    /**
+     * @return the 'bevelenteller'
+     */
+    long getBT();
 
-   /**
-    * @return the register with given index
-    */
-   public long getReg(int index);
+    /**
+     * @return the register with given index
+     */
+    long getReg(int index);
 
-   /**
-    * @return the 'bevelenregister'
-    */
-   public long getBevReg();
+    /**
+     * @return the 'bevelenregister'
+     */
+    long getBevReg();
 
-   /**
-    * @return the 'programmatoestandswoord'
-    */
-   public PTW getPTW();
+    /**
+     * @return the 'programmatoestandswoord'
+     */
+    PTW getPTW();
 
 }

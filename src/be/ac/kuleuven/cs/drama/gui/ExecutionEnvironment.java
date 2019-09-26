@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/ExecutionEnvironment.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui;
 
@@ -16,25 +14,25 @@ import java.util.Hashtable;
  * the GUIController.
  *
  * @version 1.0.0 09/08/2000
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public interface ExecutionEnvironment {
 
-   public void systemMessage(String message);
+    void systemMessage(String message);
 
-   public Hashtable getBreakPoints();
+    Hashtable getBreakPoints();
 
-   public String getFileName();
+    String getFileName();
 
-   void programLoaded();
+    void programLoaded();
 
-   void programRunning();
+    void programRunning();
 
-   void programStepping();
+    void programStepping();
 
-   void programHalted();
+    void programHalted();
 
-   void programFinished();
+    void programFinished();
 
 }

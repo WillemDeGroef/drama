@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/SymbolTableParser.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui;
 
@@ -23,84 +21,85 @@ import be.ac.kuleuven.cs.drama.vertalerpack.vertaler.StringUtils;
  * to allow the machine visualisation to display label names.
  *
  * @version 1.0.0 08/28/2000
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public class SymbolTableParser {
 
-   private String[] _labels;
-   private int[] _addresses;
+    private String[] _labels;
+    private int[] _addresses;
 
-   /**
-    * Initialize
-    */
-   public SymbolTableParser() {}
+    /**
+     * Initialize
+     */
+    public SymbolTableParser() {
+    }
 
-   /**
-    * Parse the given file.
-    */
-   public void parseFile(String file) {
-      List labels = new ArrayList();
-      List addresses = new ArrayList();
+    /**
+     * Parse the given file.
+     */
+    public void parseFile(String file) {
+        List labels = new ArrayList();
+        List addresses = new ArrayList();
 
-      try {
+        try {
 
-         BufferedReader in = new BufferedReader(new FileReader(file));
+            BufferedReader in = new BufferedReader(new FileReader(file));
 
-         String line = null;
+            String line = null;
 
-         while ( (line = in.readLine()) != null) {
-            parseLine(line, labels, addresses);
-         }
-         
-         in.close();
+            while ((line = in.readLine()) != null) {
+                parseLine(line, labels, addresses);
+            }
 
-      } catch (IOException ioe) {
-         System.out.println("Fout in symbooltabel");
-      }
+            in.close();
+
+        } catch (IOException ioe) {
+            System.out.println("Fout in symbooltabel");
+        }
 
 
-      _labels = new String[labels.size()];
-      _addresses = new int[addresses.size()];
+        _labels = new String[labels.size()];
+        _addresses = new int[addresses.size()];
 
-      for (int i = 0; i < _labels.length; i++) {
-         _labels[i] = (String) labels.get(i);
-         _addresses[i] = ((Integer) addresses.get(i)).intValue();
-      }
+        for (int i = 0; i < _labels.length; i++) {
+            _labels[i] = (String) labels.get(i);
+            _addresses[i] = ((Integer) addresses.get(i)).intValue();
+        }
 
-   }
+    }
 
-   /*
-    * parse a line
-    */
-   private void parseLine(String line, List labels, List addresses) {
+    /*
+     * parse a line
+     */
+    private void parseLine(String line, List labels, List addresses) {
 
-      //System.out.println(line);
+        //System.out.println(line);
 
-      if (line.startsWith("#symbool")) {
+        if (line.startsWith("#symbool")) {
 
-         //System.out.println(line);
+            //System.out.println(line);
 
-         addresses.add(new Integer(line.substring(line.length() - 4)));
+            addresses.add(Integer.valueOf(line.substring(line.length() - 4)));
 
-         labels.add(StringUtils.trimSpaces(line.substring(9, 43)));
+            labels.add(StringUtils.trimSpaces(line.substring(9, 43)));
 
-      }
+        }
 
-   }
+    }
 
-   /**
-    * @return the labels of the most recently parsed file
-    */
-   public String[] getLabels() {
-      return _labels;
-   }
+    /**
+     * @return the labels of the most recently parsed file
+     */
+    public String[] getLabels() {
+        return _labels;
+    }
 
-   /**
-    * @return the addresses of the labels of the most recently parsed file
-    */
-   public int[] getAddresses() {
-      return _addresses;
-   }
+    /**
+     * @return the addresses of the labels of the most recently parsed file
+     */
+    public int[] getAddresses() {
+        return _addresses;
+    }
 
 }

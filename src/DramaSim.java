@@ -23,11 +23,7 @@ public class DramaSim {
       // Run all GUI code in the AWT event handling thread to avoid races
       // between initialization code running in the main thread and event
       // handling code running in the AWT thread.
-      EventQueue.invokeLater(new Runnable() {
-         public void run() {
-            new GuiMain().start();
-         }
-      });
+      EventQueue.invokeLater(() -> new GuiMain().start());
    }
 
 }

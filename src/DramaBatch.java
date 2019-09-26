@@ -50,7 +50,7 @@ public class DramaBatch implements DramaRuntime {
     /**
      * main methode, opgeroepen vanaf de command prompt
      *
-     * @param args[] typ java DramaBatch ? voor de mogelijke opties
+     * @param args typ java DramaBatch ? voor de mogelijke opties
      */
     public static void main(String[] args) {
         DramaBatch batch = new DramaBatch();
@@ -101,9 +101,9 @@ public class DramaBatch implements DramaRuntime {
     /**
      * verwerk de gegeven parameters/programma's
      *
-     * @param args[] de te verwerken argumenten (zie main() methode)
+     * @param arg de te verwerken argumenten (zie main() methode)
      */
-    private void verwerk(String arg[]) {
+    private void verwerk(String[] arg) {
         ControllableMachine machine = new SimpleMachine(this, false);
 
         System.out.println("Batch verwerking begint om " + getTime());
@@ -111,7 +111,7 @@ public class DramaBatch implements DramaRuntime {
         boolean useInputFile = false;
         boolean runProgram = true;
         int sleepTime = 10000; //default sleep time per execution
-        String sleepTimeString = "10";
+        String sleepTimeString;
         String globalInputFile = "";
 
         int nbOfArgs = arg.length;
@@ -236,7 +236,6 @@ public class DramaBatch implements DramaRuntime {
                     vertaler.process();
                     System.out.println("Vertaling van " + filenaam + " geslaagd");
                     filenaam = filenaam_zonder_ext + ".out";
-                    ext = ".out";
                 } catch (Exception e) {
                     System.out.println("probleem met Vertaler");
                     systemErrorMessage(e.toString());
