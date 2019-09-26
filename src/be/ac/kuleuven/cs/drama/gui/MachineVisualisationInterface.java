@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/MachineVisualisationInterface.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui;
 
@@ -18,52 +16,52 @@ import javax.swing.JFrame;
  * Interface for machine visualisation managers.
  *
  * @version 1.0.0 08/28/2000
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public interface MachineVisualisationInterface {
 
-   // all methods as defined in gui.MachineImage
+    // all methods as defined in gui.MachineImage
 
-   public void setRAPogTextField(int index, long value);
+    void setRAPogTextField(int index, long value);
 
-   public void setRAPtTextField(int index, long value);
+    void setRAPtTextField(int index, long value);
 
-   public void setBusAdresText(long value);
+    void setBusAdresText(long value);
 
-   public void setBusDataText(long value);
+    void setBusDataText(long value);
 
-   public void setBusSignaalText(int strobe);
+    void setBusSignaalText(int strobe);
 
-   public void setIRQ(int irq, boolean on)
-   throws AbnormalTerminationException ;
+    void setIRQ(int irq, boolean on)
+            throws AbnormalTerminationException;
 
-   public void setDevices(int number, String[] names);
+    void setDevices(int number, String[] names);
 
-   public void setDeviceIRQ(int deviceNumber, boolean on);
+    void setDeviceIRQ(int deviceNumber, boolean on);
 
-   public void setEventsEnabled(boolean b);
+    void setEventsEnabled(boolean b);
 
-   public void setPTWPartEnabled(boolean ptwOn);
+    void setPTWPartEnabled(boolean ptwOn);
 
-   public void setIRQPartEnabled(boolean irqOn);
+    void setIRQPartEnabled(boolean irqOn);
 
-   public void halt();
+    void halt();
 
-   public void cont();
+    void cont();
 
-   public void setPTW(PTW ptw);
+    void setPTW(PTW ptw);
 
-   public void setReg(int idx, long value);
+    void setReg(int idx, long value);
 
-   public void setBevReg(long value);
+    void setBevReg(long value);
 
-   public JFrame getInternalRepresentationFrame();
+    JFrame getInternalRepresentationFrame();
 
-   public JFrame getCVOFrame();
+    JFrame getCVOFrame();
 
-   public void updateMemory(int address, long value);
+    void updateMemory(int address, long value);
 
-   public void setLabels(String[] names, int[] addresses);
+    void setLabels(String[] names, int[] addresses);
 
 }

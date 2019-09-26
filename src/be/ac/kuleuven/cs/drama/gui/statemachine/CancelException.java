@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/statemachine/CancelException.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui.statemachine;
 
@@ -14,20 +12,20 @@ package be.ac.kuleuven.cs.drama.gui.statemachine;
  * on the state machine was unsuccesful.
  *
  * @version 1.0.0 09/06/2000
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public class CancelException
 
-   extends Exception {
-	private static final long serialVersionUID = 0L;
+        extends Exception {
+    private static final long serialVersionUID = 0L;
 
-   public CancelException() {
-      super();
-   }
+    public CancelException() {
+        super();
+    }
 
-   public CancelException(String message) {
-      super(message);
-   }
+    public CancelException(String message) {
+        super(message);
+    }
 
 }

@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/editor/BreakPointCollection.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui.editor;
 
@@ -31,210 +29,211 @@ import javax.swing.JPanel;
 
 public class BreakPointCollection {
 
-   public static int HEIGHT = 13;
+    public static int HEIGHT = 13;
 
-   private Hashtable _mapping;
-   private SimpleEditor _editor;
+    private Hashtable _mapping;
+    private SimpleEditor _editor;
 
-   private JPanel _box;
+    private JPanel _box;
 
-   private int _count;
-   private List _buttons;
+    private int _count;
+    private List _buttons;
 
-   /**
-    * Initialize for a given SimpleEditor.
-    */
-   public BreakPointCollection(SimpleEditor se) {
-      _editor = se;
-      _mapping = new Hashtable();
-      _box = new JPanel();
-      _box.setLayout(new VerticalLayout());
-      _buttons = new ArrayList();
-      _count = 0;
-      _box.setForeground(Color.white);
-      _box.setBackground(Color.white);
+    /**
+     * Initialize for a given SimpleEditor.
+     */
+    public BreakPointCollection(SimpleEditor se) {
+        _editor = se;
+        _mapping = new Hashtable();
+        _box = new JPanel();
+        _box.setLayout(new VerticalLayout());
+        _buttons = new ArrayList();
+        _count = 0;
+        _box.setForeground(Color.white);
+        _box.setBackground(Color.white);
 
-   }
+    }
 
-   /**
-    * Table of breakpoints.
-    * Keys are Integer objects representing the line numbers
-    * of the breakpoint lines.
-    * Values are undefined.
-    */
-   public Hashtable breakPoints() {
-      return _mapping;
-   }
+    /**
+     * Table of breakpoints.
+     * Keys are Integer objects representing the line numbers
+     * of the breakpoint lines.
+     * Values are undefined.
+     */
+    public Hashtable breakPoints() {
+        return _mapping;
+    }
 
-   /**
-    * Clear all breakpoints and all
-    * visual compoments.
-    */
-   public void clear() {
-      _mapping.clear();
+    /**
+     * Clear all breakpoints and all
+     * visual compoments.
+     */
+    public void clear() {
+        _mapping.clear();
 
-      while (_count > 0) {
-         removeLine();
-      }
+        while (_count > 0) {
+            removeLine();
+        }
 
-   }
+    }
 
-   private void toggleBreakPoint(int line, Object key) {
-      if (_mapping.containsKey(key)) {
-         _mapping.remove(key);
-      } else {
-         _mapping.put(key, new Integer(line));
-      }
+    private void toggleBreakPoint(int line, Object key) {
+        if (_mapping.containsKey(key)) {
+            _mapping.remove(key);
+        } else {
+            _mapping.put(key, line);
+        }
 
-   }
+    }
 
-   /**
-    * Toggle the breakpoint of the given line
-    * in the source code.
-    */
-   public void toggleBreakPoint(int line) {
-      toggleBreakPoint(line, _editor.getKey(line));
-   }
+    /**
+     * Toggle the breakpoint of the given line
+     * in the source code.
+     */
+    public void toggleBreakPoint(int line) {
+        toggleBreakPoint(line, _editor.getKey(line));
+    }
 
-   /**
-    * Toggle the state of the button at the
-    * given object code line.
-    */
-   public void toggle(int line) {
-      getButton(line).toggle();
-   }
+    /**
+     * Toggle the state of the button at the
+     * given object code line.
+     */
+    public void toggle(int line) {
+        getButton(line).toggle();
+    }
 
-   /**
-    * @return the visual component containing
-    * all breakpoint buttons
-    */
-   public JPanel getBox() {
-      return _box;
-   }
+    /**
+     * @return the visual component containing
+     * all breakpoint buttons
+     */
+    public JPanel getBox() {
+        return _box;
+    }
 
-   /**
-    * increase the number of source code lines.
-    */
-   public void addLine() {
-      _count += 1;
-      _buttons.add(new MyButton(_count));
-      _box.add(getButton(_count));
-   }
+    /**
+     * increase the number of source code lines.
+     */
+    public void addLine() {
+        _count += 1;
+        _buttons.add(new MyButton(_count));
+        _box.add(getButton(_count));
+    }
 
-   /**
-    * decrease the number of source code lines
-    */
-   public void removeLine() {
-	   getButton(_count).setEnabled(false);
-      _box.remove(getButton(_count));
-      _buttons.remove(getButton(_count));
-      _count -= 1;
-   }
+    /**
+     * decrease the number of source code lines
+     */
+    public void removeLine() {
+        getButton(_count).setEnabled(false);
+        _box.remove(getButton(_count));
+        _buttons.remove(getButton(_count));
+        _count -= 1;
+    }
 
-   /**
-    * disallow a source code line to have a breakpoint
-    */
-   public void disableLine(int line) {
-      getButton(line).disableButton();
-   }
+    /**
+     * disallow a source code line to have a breakpoint
+     */
+    public void disableLine(int line) {
+        getButton(line).disableButton();
+    }
 
-   /**
-    * allow a source code line to have a breakpoint
-    */
-   public void enableLine(int line) {
-      getButton(line).enableButton();
-   }
+    /**
+     * allow a source code line to have a breakpoint
+     */
+    public void enableLine(int line) {
+        getButton(line).enableButton();
+    }
 
-   private MyButton getButton(int line) {
-      return (MyButton) _buttons.get(line - 1);
-   }
+    private MyButton getButton(int line) {
+        return (MyButton) _buttons.get(line - 1);
+    }
 
-   /**
-    * Disable all breakpoints
-    */
-   public void disableAll() {
-      for (int i = 1; i <= _count; i++) {
-         getButton(i).disableButton();
-      }
+    /**
+     * Disable all breakpoints
+     */
+    public void disableAll() {
+        for (int i = 1; i <= _count; i++) {
+            getButton(i).disableButton();
+        }
 
-   }
+    }
 
-   /**
-    * Set the height of the breakpoint buttons.
-    */
-   public void setButtonHeight(int height) {
-      if (height != 0) HEIGHT = height;
+    /**
+     * Set the height of the breakpoint buttons.
+     */
+    public void setButtonHeight(int height) {
+        if (height != 0) HEIGHT = height;
 
-   }
+    }
 
-   private class MyButton extends JButton {
-		private static final long serialVersionUID = 0L;
+    private class MyButton extends JButton {
+        private static final long serialVersionUID = 0L;
 
-      private final int _line;
-      private final Action _action;
-      private boolean _on;
-      public static final int WIDTH = 20;
-
-
-      public MyButton(int line) {
-         super();
-         _line = line;
-         _on = false;
-         _action = new MyAction();
-         addActionListener(_action);
-         setForeground(Color.blue);
-         setBackground(Color.blue);
+        private final int _line;
+        private final Action _action;
+        private boolean _on;
+        public static final int WIDTH = 20;
 
 
-         setPreferredSize(new Dimension(WIDTH, BreakPointCollection.HEIGHT));
-      }
-
-      public void enableButton() {
-         setEnabled(true);
-         _action.setEnabled(true);
-         showIcon();
-      }
-
-      public void disableButton() {
-         setEnabled(false);
-         _action.setEnabled(false);
-      }
-
-      public void toggle() {
-         _action.actionPerformed(null);
-      }
-
-      private void toggleMe() {
-         _on = ! _on;
-         toggleBreakPoint(_line);
-         showIcon();
-      }
-
-      private void showIcon() {
-         if (_on) {
-            setBackground(Color.red);
-         } else {
+        public MyButton(int line) {
+            super();
+            _line = line;
+            _on = false;
+            _action = new MyAction();
+            addActionListener(_action);
+            setForeground(Color.blue);
             setBackground(Color.blue);
-         }
-
-      }
-
-      private class MyAction
-         extends AbstractAction {
-    		private static final long serialVersionUID = 0L;
 
 
-         public MyAction() {}
+            setPreferredSize(new Dimension(WIDTH, BreakPointCollection.HEIGHT));
+        }
 
-         public void actionPerformed(ActionEvent e) {
-            if (this.isEnabled()) {
-               toggleMe();
+        public void enableButton() {
+            setEnabled(true);
+            _action.setEnabled(true);
+            showIcon();
+        }
+
+        public void disableButton() {
+            setEnabled(false);
+            _action.setEnabled(false);
+        }
+
+        public void toggle() {
+            _action.actionPerformed(null);
+        }
+
+        private void toggleMe() {
+            _on = !_on;
+            toggleBreakPoint(_line);
+            showIcon();
+        }
+
+        private void showIcon() {
+            if (_on) {
+                setBackground(Color.red);
+            } else {
+                setBackground(Color.blue);
             }
 
-         }
+        }
 
-      }
+        private class MyAction
+                extends AbstractAction {
+            private static final long serialVersionUID = 0L;
 
-   }
+
+            public MyAction() {
+            }
+
+            public void actionPerformed(ActionEvent e) {
+                if (this.isEnabled()) {
+                    toggleMe();
+                }
+
+            }
+
+        }
+
+    }
 
 }

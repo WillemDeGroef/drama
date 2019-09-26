@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/simulator/ControllableMachine.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.simulator;
 
@@ -24,117 +22,117 @@ import java.io.OutputStream;
 
 public interface ControllableMachine {
 
-   /**
-    * @return the inspectable RAM memory
-    */
-   public Memory getRAMMemory();
+    /**
+     * @return the inspectable RAM memory
+     */
+    Memory getRAMMemory();
 
-   /**
-    * @return the CVO
-    */
-   public CVOInterface getCVOInterface();
+    /**
+     * @return the CVO
+     */
+    CVOInterface getCVOInterface();
 
-   /**
-    * @return the device with given index
-    */
-   public DeviceInterface getDeviceInterface(int index);
+    /**
+     * @return the device with given index
+     */
+    DeviceInterface getDeviceInterface(int index);
 
-   /**
-    * @return the monitor
-    */
-   public MonitorInterface getMonitorInterface();
+    /**
+     * @return the monitor
+     */
+    MonitorInterface getMonitorInterface();
 
-   /**
-    * Set the components of the machine to the given components.
-    */
-   public void buildMachine(String[] component, int[] address, int[] irq);
+    /**
+     * Set the components of the machine to the given components.
+     */
+    void buildMachine(String[] component, int[] address, int[] irq);
 
-   /**
-    * Load the drama object program stored in the given file.
-    */
-   public void loadProgram(String file, Hashtable breakpoints);
+    /**
+     * Load the drama object program stored in the given file.
+     */
+    void loadProgram(String file, Hashtable breakpoints);
 
-   /**
-    * Start debug mode.
-    */
-   //public void startDebug(Hashtable breaklist);
+    /**
+     * Start debug mode.
+     */
+    //public void startDebug(Hashtable breaklist);
 
-   /**
-    * Stop debug mode.
-    */
-   //public void stopDebug();
+    /**
+     * Stop debug mode.
+     */
+    //public void stopDebug();
 
-   /**
-    * Execute one instruction.
-    * 
-    */
-   public void step();
+    /**
+     * Execute one instruction.
+     *
+     */
+    void step();
 
-   /**
-    * Stop the execution.
-    * 
-    */
-   public void halt();
+    /**
+     * Stop the execution.
+     *
+     */
+    void halt();
 
-   /**
-    * Continue the execution
-    * 
-    */
-   public void cont();
+    /**
+     * Continue the execution
+     *
+     */
+    void cont();
 
-   /**
-    * Abort the execution.
-    *
-    */
-   public void abort();
+    /**
+     * Abort the execution.
+     *
+     */
+    void abort();
 
-   public boolean isFinished();
+    boolean isFinished();
 
-   /**
-    * Set the time between the execution of two instructions.
-    */
-   public void setMachineSleep(int millis);
+    /**
+     * Set the time between the execution of two instructions.
+     */
+    void setMachineSleep(int millis);
 
-   /**
-    * @return the inputstream used for input from file
-    */
-   public InputStream getInputStream();
+    /**
+     * @return the inputstream used for input from file
+     */
+    InputStream getInputStream();
 
-   /**
-    * set the inputstream used for input from file
-    */
-   public void setInputStream(InputStream in);
+    /**
+     * set the inputstream used for input from file
+     */
+    void setInputStream(InputStream in);
 
-   /**
-    * @return the outputstream for output instructions
-    */
-   public OutputStream getOutputStream();
+    /**
+     * @return the outputstream for output instructions
+     */
+    OutputStream getOutputStream();
 
-   /**
-    * set the ouputstream for output instructions
-    */
-   public void setOutputStream(OutputStream out);
+    /**
+     * set the ouputstream for output instructions
+     */
+    void setOutputStream(OutputStream out);
 
-   /**
-    * User input that should/could be handled.
-    * HACK IMPOSED BY DramaMachine
-    */
-   public void handleInput(String input);
+    /**
+     * User input that should/could be handled.
+     * HACK IMPOSED BY DramaMachine
+     */
+    void handleInput(String input);
 
-   /**
-    * reset the statistics
-    */
-   public void resetStats();
+    /**
+     * reset the statistics
+     */
+    void resetStats();
 
-   /**
-    * write the gathered statistics of
-    * instruction execution to file
-    */
-   public void writeRunTimeStatsToFile();
-   
-   /**
-    * clears the output screen
-    */
-   public void clear();
+    /**
+     * write the gathered statistics of
+     * instruction execution to file
+     */
+    void writeRunTimeStatsToFile();
+
+    /**
+     * clears the output screen
+     */
+    void clear();
 
 }

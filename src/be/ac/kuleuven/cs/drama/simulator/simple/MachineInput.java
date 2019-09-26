@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/simulator/simple/MachineInput.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.simulator.simple;
 
@@ -14,27 +12,27 @@ package be.ac.kuleuven.cs.drama.simulator.simple;
  * that accpet input from outside and are resettable..
  *
  * @version 1.0.0
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public interface MachineInput
 
-   extends InternalInput {
+        extends InternalInput {
 
-   /**
-    * reset the state of the input handler
-    */
-   public void reset();
+    /**
+     * reset the state of the input handler
+     */
+    void reset();
 
-   /**
-    * handle the given outside input
-    * IMPOSED BY GUICONTROLLER
-    */
-   public void setInput(String input);
-   
-   /**
-    * @return whatever the user is currently being asked for input
-    */
-   public boolean isWaiting();
+    /**
+     * handle the given outside input
+     * IMPOSED BY GUICONTROLLER
+     */
+    void setInput(String input);
+
+    /**
+     * @return whatever the user is currently being asked for input
+     */
+    boolean isWaiting();
 
 }

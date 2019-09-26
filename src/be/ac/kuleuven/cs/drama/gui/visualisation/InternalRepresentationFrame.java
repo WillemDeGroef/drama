@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/gui/visualisation/InternalRepresentationFrame.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.gui.visualisation;
 
@@ -26,241 +24,241 @@ import javax.swing.*;
 
 public class InternalRepresentationFrame
 
-   extends JFrame {
-	private static final long serialVersionUID = 0L;
+        extends JFrame {
+    private static final long serialVersionUID = 0L;
 
-   private final CpuPanel _leftPanel;
+    private final CpuPanel _leftPanel;
 
-   private final DynamicTable _memoryPanel;
+    private final DynamicTable _memoryPanel;
 
-   private final DevicesPanel _devicesPanel;
+    private final DevicesPanel _devicesPanel;
 
-   private final JPanel _PTWAndBusPanel;
+    private final JPanel _PTWAndBusPanel;
 
-   private final JPanel _secondPanel;
+    private final JPanel _secondPanel;
 
-   private MachineVisualisation _machineVisualisation;
-   
-   private int _GBE = 0;
+    private MachineVisualisation _machineVisualisation;
 
-   /**
-    * Initialize for the given MachineVisualisation manager.
-    */
-   public InternalRepresentationFrame(MachineVisualisation mv) {
+    private int _GBE = 0;
 
-      super("Interne machine");
+    /**
+     * Initialize for the given MachineVisualisation manager.
+     */
+    public InternalRepresentationFrame(MachineVisualisation mv) {
 
-      _machineVisualisation = mv;
+        super("Interne machine");
 
-      GridLayout layout = new GridLayout(1, 2);
-      layout.setHgap(10);
-      getContentPane().setLayout(layout);
+        _machineVisualisation = mv;
 
-      JPanel firstPanel = new JPanel();
-      BorderLayout bl = new BorderLayout();
-      bl.setHgap(3);
-      firstPanel.setLayout(bl);
-      _leftPanel = new CpuPanel();
-      firstPanel.add(_leftPanel, BorderLayout.WEST);
+        GridLayout layout = new GridLayout(1, 2);
+        layout.setHgap(10);
+        getContentPane().setLayout(layout);
 
-      _memoryPanel = new DynamicTable(10000);
-      _memoryPanel.SetParentVisualization(_machineVisualisation);
-      firstPanel.add(_memoryPanel, BorderLayout.CENTER);
+        JPanel firstPanel = new JPanel();
+        BorderLayout bl = new BorderLayout();
+        bl.setHgap(3);
+        firstPanel.setLayout(bl);
+        _leftPanel = new CpuPanel();
+        firstPanel.add(_leftPanel, BorderLayout.WEST);
 
-      _secondPanel = new JPanel();
-      GridLayout secondLayout = new GridLayout(1, 2);
-      _secondPanel.setOpaque(true);
-      _secondPanel.setBackground(Color.black);
-      secondLayout.setHgap(5);
-      _secondPanel.setLayout(secondLayout);
+        _memoryPanel = new DynamicTable(10000);
+        _memoryPanel.SetParentVisualization(_machineVisualisation);
+        firstPanel.add(_memoryPanel, BorderLayout.CENTER);
 
-      _devicesPanel = new DevicesPanel();
-      _secondPanel.add(_devicesPanel);
+        _secondPanel = new JPanel();
+        GridLayout secondLayout = new GridLayout(1, 2);
+        _secondPanel.setOpaque(true);
+        _secondPanel.setBackground(Color.black);
+        secondLayout.setHgap(5);
+        _secondPanel.setLayout(secondLayout);
 
-      _PTWAndBusPanel = createPTWAndBusPanel();
-      _secondPanel.add(_PTWAndBusPanel);
+        _devicesPanel = new DevicesPanel();
+        _secondPanel.add(_devicesPanel);
 
-      getContentPane().add(firstPanel);
+        _PTWAndBusPanel = createPTWAndBusPanel();
+        _secondPanel.add(_PTWAndBusPanel);
 
-      getContentPane().add(_secondPanel);
+        getContentPane().add(firstPanel);
 
-      setBackground(Color.black);
-      setForeground(Color.white);
+        getContentPane().add(_secondPanel);
 
-      setSize(1080, 260);
+        setBackground(Color.black);
+        setForeground(Color.white);
 
-      this.setIconImage(new ImageIcon(Settings.class.getResource(Settings.LOGO_ICON)).getImage());
-   }
+        setSize(1080, 260);
 
-   /**
-    * Set the names of the labels corresponing to the addresses.
-    */
-   public void setLabels(String[] names, int[] addresses ) {
-      _memoryPanel.setLabels(names, addresses);
-   }
+        this.setIconImage(new ImageIcon(Settings.class.getResource(Settings.LOGO_ICON)).getImage());
+    }
 
-   /**
-    * Set the value of the given register.
-    */
-   public void setRegister(int idx, long value) {
-      _leftPanel.setRegister(idx, value);
-   }
+    /**
+     * Set the names of the labels corresponing to the addresses.
+     */
+    public void setLabels(String[] names, int[] addresses) {
+        _memoryPanel.setLabels(names, addresses);
+    }
 
-   /**
-    * Set the value of the current instruction.
-    */
-   public void setInstruction(long value) {
-      _leftPanel.setInstruction(value);
-   }
+    /**
+     * Set the value of the given register.
+     */
+    public void setRegister(int idx, long value) {
+        _leftPanel.setRegister(idx, value);
+    }
 
-   /**
-    * set the condition code
-    */
-   public void setCC(int value) {
-      _leftPanel.setCC(value);
-   }
+    /**
+     * Set the value of the current instruction.
+     */
+    public void setInstruction(long value) {
+        _leftPanel.setInstruction(value);
+    }
 
-   /**
-    * set the instruction counter
-    */
-   public void setBT(long value) {
-      _leftPanel.setBT(value);
-      _memoryPanel.setActive((int) value + _GBE);
-   }
+    /**
+     * set the condition code
+     */
+    public void setCC(int value) {
+        _leftPanel.setCC(value);
+    }
 
-   /**
-    * get the value of the given memory cell
-    */
-   public long getValue(int address) {
+    /**
+     * set the instruction counter
+     */
+    public void setBT(long value) {
+        _leftPanel.setBT(value);
+        _memoryPanel.setActive((int) value + _GBE);
+    }
 
-      return _machineVisualisation.getRAMCell(address);
+    /**
+     * get the value of the given memory cell
+     */
+    public long getValue(int address) {
 
-   }
+        return _machineVisualisation.getRAMCell(address);
 
-   /**
-    * update the value of the given memory cell
-    */
-   public void updateMemory(int address, long value) {
-      _memoryPanel.update(address, value);
-   }
+    }
 
-   public void setRAPogTextField(int idx, long val) {
-      _devicesPanel.setRAPogTextField(idx, val);
-   }
+    /**
+     * update the value of the given memory cell
+     */
+    public void updateMemory(int address, long value) {
+        _memoryPanel.update(address, value);
+    }
 
-   public void setRAPtTextField(int idx, long val) {
-      _devicesPanel.setRAPtTextField(idx, val);
-   }
+    public void setRAPogTextField(int idx, long val) {
+        _devicesPanel.setRAPogTextField(idx, val);
+    }
 
-   public void setDeviceIRQ(int idx, boolean on) {
-      _devicesPanel.setDeviceIRQ(idx, on);
-   }
+    public void setRAPtTextField(int idx, long val) {
+        _devicesPanel.setRAPtTextField(idx, val);
+    }
 
-   public void setDevices(int number, String[] names) {
-      _devicesPanel.setDevices(number, names);
-   }
+    public void setDeviceIRQ(int idx, boolean on) {
+        _devicesPanel.setDeviceIRQ(idx, on);
+    }
 
-   // PTW & BUS
+    public void setDevices(int number, String[] names) {
+        _devicesPanel.setDevices(number, names);
+    }
 
-   private JPanel createPTWAndBusPanel() {
+    // PTW & BUS
 
-      JPanel panel = new JPanel();
+    private JPanel createPTWAndBusPanel() {
 
-      panel.setLayout(new BorderLayout());
+        JPanel panel = new JPanel();
 
-      panel.add(createBusPanel(), BorderLayout.NORTH);
-      panel.add(createPTWPanel(), BorderLayout.CENTER);
+        panel.setLayout(new BorderLayout());
 
-      return panel;
-   }
+        panel.add(createBusPanel(), BorderLayout.NORTH);
+        panel.add(createPTWPanel(), BorderLayout.CENTER);
 
-   // BUS
+        return panel;
+    }
 
-   private JLabel _busAddress;
-   private JLabel _busData;
-   private JLabel _busSignal;
+    // BUS
 
-   private JPanel createBusPanel() {
-      JPanel panel = new JPanel();
-      panel.setOpaque(true);
-      panel.setBackground(Color.gray);
+    private JLabel _busAddress;
+    private JLabel _busData;
+    private JLabel _busSignal;
 
-      panel.setLayout(new BorderLayout());
+    private JPanel createBusPanel() {
+        JPanel panel = new JPanel();
+        panel.setOpaque(true);
+        panel.setBackground(Color.gray);
 
-      JPanel dataPanel = new JPanel();
-      GridLayout layout = new GridLayout(3, 2);
-      layout.setHgap(3);
-      layout.setVgap(3);
-      dataPanel.setLayout(layout);
+        panel.setLayout(new BorderLayout());
 
-      JLabel dataLabel = new JLabel("DATA");
-      JLabel addressLabel = new JLabel("ADRES");
-      JLabel signalLabel = new JLabel("SIGNAAL");
+        JPanel dataPanel = new JPanel();
+        GridLayout layout = new GridLayout(3, 2);
+        layout.setHgap(3);
+        layout.setVgap(3);
+        dataPanel.setLayout(layout);
 
-      dataLabel.setForeground(Color.yellow);
-      dataLabel.setOpaque(true);
-      dataLabel.setBackground(Color.gray);
-      addressLabel.setForeground(Color.yellow);
-      addressLabel.setOpaque(true);
-      addressLabel.setBackground(Color.gray);
-      signalLabel.setForeground(Color.yellow);
-      signalLabel.setOpaque(true);
-      signalLabel.setBackground(Color.gray);
-      dataLabel.setHorizontalAlignment(JLabel.LEFT);
-      addressLabel.setHorizontalAlignment(JLabel.LEFT);
-      signalLabel.setHorizontalAlignment(JLabel.LEFT);
+        JLabel dataLabel = new JLabel("DATA");
+        JLabel addressLabel = new JLabel("ADRES");
+        JLabel signalLabel = new JLabel("SIGNAAL");
 
-      _busData = new JLabel();
-      _busData.setOpaque(true);
-      _busData.setForeground(Color.black);
-      _busData.setBackground(Color.white);
-      _busData.setHorizontalAlignment(JLabel.CENTER);
-      _busAddress = new JLabel();
-      _busAddress.setOpaque(true);
-      _busAddress.setForeground(Color.black);
-      _busAddress.setBackground(Color.white);
-      _busAddress.setHorizontalAlignment(JLabel.CENTER);
-      _busSignal = new JLabel();
-      _busSignal.setOpaque(true);
-      _busSignal.setForeground(Color.black);
-      _busSignal.setBackground(Color.white);
-      _busSignal.setHorizontalAlignment(JLabel.CENTER);
+        dataLabel.setForeground(Color.yellow);
+        dataLabel.setOpaque(true);
+        dataLabel.setBackground(Color.gray);
+        addressLabel.setForeground(Color.yellow);
+        addressLabel.setOpaque(true);
+        addressLabel.setBackground(Color.gray);
+        signalLabel.setForeground(Color.yellow);
+        signalLabel.setOpaque(true);
+        signalLabel.setBackground(Color.gray);
+        dataLabel.setHorizontalAlignment(JLabel.LEFT);
+        addressLabel.setHorizontalAlignment(JLabel.LEFT);
+        signalLabel.setHorizontalAlignment(JLabel.LEFT);
 
-      dataPanel.add(dataLabel);
-      dataPanel.add(_busData);
-      dataPanel.add(addressLabel);
-      dataPanel.add(_busAddress);
-      dataPanel.add(signalLabel);
-      dataPanel.add(_busSignal);
+        _busData = new JLabel();
+        _busData.setOpaque(true);
+        _busData.setForeground(Color.black);
+        _busData.setBackground(Color.white);
+        _busData.setHorizontalAlignment(JLabel.CENTER);
+        _busAddress = new JLabel();
+        _busAddress.setOpaque(true);
+        _busAddress.setForeground(Color.black);
+        _busAddress.setBackground(Color.white);
+        _busAddress.setHorizontalAlignment(JLabel.CENTER);
+        _busSignal = new JLabel();
+        _busSignal.setOpaque(true);
+        _busSignal.setForeground(Color.black);
+        _busSignal.setBackground(Color.white);
+        _busSignal.setHorizontalAlignment(JLabel.CENTER);
 
-      panel.add(dataPanel, BorderLayout.CENTER);
+        dataPanel.add(dataLabel);
+        dataPanel.add(_busData);
+        dataPanel.add(addressLabel);
+        dataPanel.add(_busAddress);
+        dataPanel.add(signalLabel);
+        dataPanel.add(_busSignal);
 
-      JLabel name = new JLabel("Bus");
-      name.setForeground(Color.red);
-      name.setVerticalAlignment(JLabel.BOTTOM);
+        panel.add(dataPanel, BorderLayout.CENTER);
 
-      panel.add(name, BorderLayout.WEST);
+        JLabel name = new JLabel("Bus");
+        name.setForeground(Color.red);
+        name.setVerticalAlignment(JLabel.BOTTOM);
 
-      return panel;
-   }
+        panel.add(name, BorderLayout.WEST);
 
-   public void setBusAdresText(long value) {
-      _busAddress.setText(Long.toString(value));
-   }
+        return panel;
+    }
 
-   public void setBusDataText(long value) {
-      _busData.setText(Long.toString(value));
-   }
+    public void setBusAdresText(long value) {
+        _busAddress.setText(Long.toString(value));
+    }
 
-   public void setBusSignaalText(int strobe) {
-      _busSignal.setText(Integer.toString(strobe));
-   }
+    public void setBusDataText(long value) {
+        _busData.setText(Long.toString(value));
+    }
 
-   // PTW
+    public void setBusSignaalText(int strobe) {
+        _busSignal.setText(Integer.toString(strobe));
+    }
 
-   private JLabel[] _ptw;
+    // PTW
 
-   private static final String[] _ptwNames = new String[]{
+    private JLabel[] _ptw;
+
+    private static final String[] _ptwNames = new String[]{
             "ONV",
             "G",
             "H/U",
@@ -281,129 +279,124 @@ public class InternalRepresentationFrame
             "SPL",
             "GBE",
             "MFT"
-         };
+    };
 
-   private static final int ONV = 0;
-   private static final int G = 1;
-   private static final int HU = 2;
-   private static final int GPF = 3;
-   private static final int SP = 4;
-   private static final int WEK = 5;
-   private static final int CC = 6;
-   private static final int DRK = 7;
-   private static final int OVI = 8;
-   private static final int IN = 9;
-   private static final int SOI = 10;
-   private static final int UIT = 11;
-   private static final int BT = 12;
-   private static final int SCH = 13;
-   private static final int OVL = 15;
-   private static final int GBA = 16;
-   private static final int SPL = 17;
-   private static final int GBE = 18;
-   private static final int MFT = 19;
+    private static final int ONV = 0;
+    private static final int G = 1;
+    private static final int HU = 2;
+    private static final int GPF = 3;
+    private static final int SP = 4;
+    private static final int WEK = 5;
+    private static final int CC = 6;
+    private static final int DRK = 7;
+    private static final int OVI = 8;
+    private static final int IN = 9;
+    private static final int SOI = 10;
+    private static final int UIT = 11;
+    private static final int BT = 12;
+    private static final int SCH = 13;
+    private static final int OVL = 15;
+    private static final int GBA = 16;
+    private static final int SPL = 17;
+    private static final int GBE = 18;
+    private static final int MFT = 19;
 
-   private JPanel createPTWPanel() {
-      JPanel panel = new JPanel();
-      panel.setOpaque(true);
-      panel.setBackground(Color.gray);
+    private JPanel createPTWPanel() {
+        JPanel panel = new JPanel();
+        panel.setOpaque(true);
+        panel.setBackground(Color.gray);
 
-      panel.setLayout(new BorderLayout());
+        panel.setLayout(new BorderLayout());
 
-      JLabel name = new JLabel("PTW");
-      name.setOpaque(true);
-      name.setBackground(Color.blue);
-      name.setForeground(Color.white);
+        JLabel name = new JLabel("PTW");
+        name.setOpaque(true);
+        name.setBackground(Color.blue);
+        name.setForeground(Color.white);
 
-      panel.add(name, BorderLayout.NORTH);
+        panel.add(name, BorderLayout.NORTH);
 
-      JPanel dataPanel = new JPanel();
-      GridLayout layout = new GridLayout(10 , 4);
-      layout.setVgap(3);
-      dataPanel.setLayout(layout);
+        JPanel dataPanel = new JPanel();
+        GridLayout layout = new GridLayout(10, 4);
+        layout.setVgap(3);
+        dataPanel.setLayout(layout);
 
-      _ptw = new JLabel[20];
+        _ptw = new JLabel[20];
 
-      for (int i = 0; i < 20; i++) {
-         JLabel label = new JLabel(_ptwNames[i]);
-         label.setForeground(Color.RED);
-         label.setHorizontalAlignment(JLabel.CENTER);
+        for (int i = 0; i < 20; i++) {
+            JLabel label = new JLabel(_ptwNames[i]);
+            label.setForeground(Color.RED);
+            label.setHorizontalAlignment(JLabel.CENTER);
 
-         dataPanel.add(label);
+            dataPanel.add(label);
 
-         _ptw[i] = new JLabel();
-         _ptw[i].setOpaque(true);
-         _ptw[i].setBackground(Color.black);
-         _ptw[i].setForeground(Color.white);
-         _ptw[i].setHorizontalAlignment(JLabel.CENTER);
+            _ptw[i] = new JLabel();
+            _ptw[i].setOpaque(true);
+            _ptw[i].setBackground(Color.black);
+            _ptw[i].setForeground(Color.white);
+            _ptw[i].setHorizontalAlignment(JLabel.CENTER);
 
-         dataPanel.add(_ptw[i]);
-      }
+            dataPanel.add(_ptw[i]);
+        }
 
-      panel.add(dataPanel, BorderLayout.CENTER);
+        panel.add(dataPanel, BorderLayout.CENTER);
 
-      return panel;
-   }
+        return panel;
+    }
 
-   /**
-    * set the ptw fields
-    */
-   public void setPTW(PTW ptw) {
+    /**
+     * set the ptw fields
+     */
+    public void setPTW(PTW ptw) {
 
-      DramaPTW dp = (DramaPTW) ptw;
+        DramaPTW dp = (DramaPTW) ptw;
 
-      _ptw[ONV].setText(Long.toString(dp.getElement(DramaPTW.ONV)));
-      _ptw[HU].setText(Long.toString(dp.getElement(DramaPTW.H_U)));
-      _ptw[SP].setText(Long.toString(dp.getElement(DramaPTW.S_P)));
-      _ptw[CC].setText(Long.toString(dp.getElement(DramaPTW.CC)));
-      _ptw[OVI].setText(Long.toString(dp.getElement(DramaPTW.OVI)));
-      _ptw[SOI].setText(Long.toString(dp.getElement(DramaPTW.SOI)));
-      _ptw[BT].setText(Long.toString(dp.getBT()));
-      _ptw[G].setText(Long.toString(dp.getElement(DramaPTW.G)));
-      _ptw[GPF].setText(Long.toString(dp.getElement(DramaPTW.GPF)));
-      _ptw[WEK].setText(Long.toString(dp.getElement(DramaPTW.WEK)));
-      _ptw[DRK].setText(Long.toString(dp.getElement(DramaPTW.DRK)));
-      _ptw[IN].setText(Long.toString(dp.getElement(DramaPTW.IN)));
-      _ptw[UIT].setText(Long.toString(dp.getElement(DramaPTW.UIT)));
-      _ptw[SCH].setText(Long.toString(dp.getElement(DramaPTW.SCH)));
-      _ptw[OVL].setText(Long.toString(dp.getElement(DramaPTW.OVL)));
-      _ptw[SPL].setText(Long.toString(dp.getElement(DramaPTW.SPL)));
-      _ptw[MFT].setText(Long.toString(dp.getElement(DramaPTW.MFT)));
-      _ptw[GBE].setText(Long.toString(dp.getGBE() % 10000));
-      _ptw[GBA].setText(Long.toString(dp.getGBE() / 10000));
-      if ((_GBE = ((int) dp.getGBE()) - 50000) < 0)
-    	  _GBE = 0;
-      _memoryPanel.setActive((int) dp.getBT() + _GBE);
-   }
+        setTextPTW(dp, ONV, DramaPTW.ONV, HU, DramaPTW.H_U, SP, DramaPTW.S_P, CC, DramaPTW.CC, OVI, DramaPTW.OVI, SOI, DramaPTW.SOI, BT, dp.getBT(), G, DramaPTW.G, GPF, dp.getElement(DramaPTW.GPF));
+        setTextPTW(dp, WEK, DramaPTW.WEK, DRK, DramaPTW.DRK, IN, DramaPTW.IN, UIT, DramaPTW.UIT, SCH, DramaPTW.SCH, OVL, DramaPTW.OVL, SPL, dp.getElement(DramaPTW.SPL), MFT, DramaPTW.MFT, GBE, dp.getGBE() % 10000);
+        _ptw[GBA].setText(Long.toString(dp.getGBE() / 10000));
+        if ((_GBE = ((int) dp.getGBE()) - 50000) < 0)
+            _GBE = 0;
+        _memoryPanel.setActive((int) dp.getBT() + _GBE);
+    }
 
-   /**
-    * set the visibility of the ptw part of the visualisation
-    * also affects the irq part
-    */
-   public void setPTWPartEnabled(boolean ptwOn) {
-      getContentPane().remove(_secondPanel);
+    private void setTextPTW(DramaPTW dp, int onv, int onv2, int hu, int hU, int sp, int sP, int cc, int cc2, int ovi, int ovi2, int soi, int soi2, int bt, long bt2, int g, int g2, int gpf, long element) {
+        _ptw[onv].setText(Long.toString(dp.getElement(onv2)));
+        _ptw[hu].setText(Long.toString(dp.getElement(hU)));
+        _ptw[sp].setText(Long.toString(dp.getElement(sP)));
+        _ptw[cc].setText(Long.toString(dp.getElement(cc2)));
+        _ptw[ovi].setText(Long.toString(dp.getElement(ovi2)));
+        _ptw[soi].setText(Long.toString(dp.getElement(soi2)));
+        _ptw[bt].setText(Long.toString(bt2));
+        _ptw[g].setText(Long.toString(dp.getElement(g2)));
+        _ptw[gpf].setText(Long.toString(element));
+    }
 
-      if (ptwOn) {
-         getContentPane().add(_secondPanel);
-      }
+    /**
+     * set the visibility of the ptw part of the visualisation
+     * also affects the irq part
+     */
+    public void setPTWPartEnabled(boolean ptwOn) {
+        getContentPane().remove(_secondPanel);
 
-      getContentPane().validate();
-   }
+        if (ptwOn) {
+            getContentPane().add(_secondPanel);
+        }
 
-   /**
-    * set the visibility of the irq part of the visualisation
-    * also affects the ptw part
-    */
-   public void setIRQPartEnabled(boolean irqOn) {
-      getContentPane().remove(_secondPanel);
+        getContentPane().validate();
+    }
 
-      if (irqOn) {
-         getContentPane().add(_secondPanel);
-      }
+    /**
+     * set the visibility of the irq part of the visualisation
+     * also affects the ptw part
+     */
+    public void setIRQPartEnabled(boolean irqOn) {
+        getContentPane().remove(_secondPanel);
 
-      getContentPane().validate();
-   }
+        if (irqOn) {
+            getContentPane().add(_secondPanel);
+        }
 
+        getContentPane().validate();
+    }
 
 
 }

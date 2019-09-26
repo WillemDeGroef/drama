@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/vertalerpack/macro/PrintableSequence.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.vertalerpack.macro;
 
@@ -18,39 +16,37 @@ import java.util.Set;
 
 /**
  * Sequence of printable entities.
- * 
+ *
  * @version 1.0.0 08/29/2000
- * @author  Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public class PrintableSequence
 
-   implements Printable {
-   private final List _sequence = new ArrayList();
+        implements Printable {
+    private final List<Printable> _sequence = new ArrayList<>();
 
-   public void add(Printable printable) {
-      _sequence.add(printable);
-   }
+    public void add(Printable printable) {
+        _sequence.add(printable);
+    }
 
-   public String toString(MacroExpander expander)
-   throws AbnormalTerminationException {
-      StringBuffer buffer = new StringBuffer();
-      Iterator it = _sequence.iterator();
+    public String toString(MacroExpander expander)
+            throws AbnormalTerminationException {
+        StringBuilder builder = new StringBuilder();
 
-      while (it.hasNext()) {
-         buffer.append( ((Printable) it.next()).toString(expander));
-      }
+        for (Printable printable : _sequence) {
+            builder.append(printable.toString(expander));
+        }
 
-      return buffer.toString();
-   }
+        return builder.toString();
+    }
 
-   public void getMacroLabels(Set labels) {
-      Iterator it = _sequence.iterator();
+    public void getMacroLabels(Set labels) {
 
-      while (it.hasNext()) {
-         ((Printable) it.next()).getMacroLabels(labels);
-      }
+        for (Printable printable : _sequence) {
+            printable.getMacroLabels(labels);
+        }
 
-   }
+    }
 
 }

@@ -1,11 +1,9 @@
 /**
- *
  * CVS: $Header: /export/home0/cvsroot/socsg/DRAMA/Sources/be/ac/kuleuven/cs/drama/simulator/simple/SimpleInstructionDecoder.java,v 1.1.1.1 2001/09/07 09:41:38 dirkw Exp $
- *
+ * <p>
  * (C) 2000
  * Katholieke Universiteit Leuven
  * Developed at Dept. Computer Science
- *
  */
 package be.ac.kuleuven.cs.drama.simulator.simple;
 
@@ -18,104 +16,104 @@ import java.util.HashMap;
  * Decoder(factory) of all drama instructions.
  *
  * @version 1.0.0 08/09/2015
- * @author  Tom Schrijvers
- * @author  Jo-Thijs Daelman
+ * @author Tom Schrijvers
+ * @author Jo-Thijs Daelman
  */
 
 public class SimpleInstructionDecoder {
 
-   private final InternalMachine _machine;
+    private final InternalMachine _machine;
 
-   /**
-    * Initialize a new SimpleInstructionDecoder for the given machine.
-    */
-   public SimpleInstructionDecoder(InternalMachine machine) {
-      _machine = machine;
-   }
+    /**
+     * Initialize a new SimpleInstructionDecoder for the given machine.
+     */
+    public SimpleInstructionDecoder(InternalMachine machine) {
+        _machine = machine;
+    }
 
-   /**
-    * Decode the current instruction of the machine.
-    */
-   public void decode() {
-      Instruction instruction = new Instruction(_machine.cpu().currentInstruction());
-      OpcodeDecoder decoder = getDecoder(instruction);
+    /**
+     * Decode the current instruction of the machine.
+     */
+    public void decode() {
+        Instruction instruction = new Instruction(_machine.cpu().currentInstruction());
+        OpcodeDecoder decoder = getDecoder(instruction);
 
-      if (decoder != null) {
-    	  if (_machine.cpu().ptw().getSupervisionState() && decoder.isPrivileged())
-    		  _machine.cpu().ptw().setInterruptFlag(9, true);
-    	  else
-    		  decoder.decode(instruction, _machine);
-      } else {
-         throw new FatalMachineError("Niet decodeerbare instructie: " + instruction);
-      }
+        if (decoder != null) {
+            if (_machine.cpu().ptw().getSupervisionState() && decoder.isPrivileged())
+                _machine.cpu().ptw().setInterruptFlag(9, true);
+            else
+                decoder.decode(instruction, _machine);
+        } else {
+            throw new FatalMachineError("Niet decodeerbare instructie: " + instruction);
+        }
 
-   }
+    }
 
-   /**
-    * @return the OpcodeDecoder for the given instruction
-    */
-   private OpcodeDecoder getDecoder(Instruction instruction) {
-      return getDecoder(instruction.opcode());
-   }
+    /**
+     * @return the OpcodeDecoder for the given instruction
+     */
+    private OpcodeDecoder getDecoder(Instruction instruction) {
+        return getDecoder(instruction.opcode());
+    }
 
-   /**
-    * @return the opcode decoder for the given opcode
-    */
-   private OpcodeDecoder getDecoder(int opcode) {
-      return (OpcodeDecoder) _decoders.get(new Integer(opcode));
-   }
+    /**
+     * @return the opcode decoder for the given opcode
+     */
+    private OpcodeDecoder getDecoder(int opcode) {
+        return (OpcodeDecoder) _decoders.get(new Integer(opcode));
+    }
 
-   // map of opcode decoders
-   private static final Map _decoders;
+    // map of opcode decoders
+    private static final Map _decoders;
 
-   static{
+    static {
 
-      // init en fill the map of opcode decoders
+        // init en fill the map of opcode decoders
 
-      _decoders = new HashMap();
-      addDecoder(new HIADecoder());
+        _decoders = new HashMap();
+        addDecoder(new HIADecoder());
 
-      addDecoder(new OPTDecoder());
-      addDecoder(new AFTDecoder());
-      addDecoder(new VERDecoder());
-      addDecoder(new DELDecoder());
-      addDecoder(new MODDecoder());
+        addDecoder(new OPTDecoder());
+        addDecoder(new AFTDecoder());
+        addDecoder(new VERDecoder());
+        addDecoder(new DELDecoder());
+        addDecoder(new MODDecoder());
 
-      addDecoder(new BIGDecoder());
+        addDecoder(new BIGDecoder());
 
-      addDecoder(new VGLDecoder());
+        addDecoder(new VGLDecoder());
 
-      addDecoder(new VSPDecoder());
-      addDecoder(new SPRDecoder());
+        addDecoder(new VSPDecoder());
+        addDecoder(new SPRDecoder());
 
-      addDecoder(new SBRDecoder());
-      addDecoder(new KTGDecoder());
+        addDecoder(new SBRDecoder());
+        addDecoder(new KTGDecoder());
 
-      addDecoder(new LEZDecoder());
-      addDecoder(new DRUDecoder());
-      addDecoder(new DRSDecoder());
-      addDecoder(new NWLDecoder());
-      addDecoder(new NTSDecoder());
+        addDecoder(new LEZDecoder());
+        addDecoder(new DRUDecoder());
+        addDecoder(new DRSDecoder());
+        addDecoder(new NWLDecoder());
+        addDecoder(new NTSDecoder());
 
-      addDecoder(new STPDecoder());
-      
-      addDecoder(new HIBDecoder());
-      addDecoder(new SGIDecoder());
-      addDecoder(new SGUDecoder());
-      
-      addDecoder(new MKHDecoder());
-      addDecoder(new MKLDecoder());
-      addDecoder(new TSMDecoder());
-      addDecoder(new TSODecoder());
-      addDecoder(new KTODecoder());
-      addDecoder(new ONDDecoder());
-   }
+        addDecoder(new STPDecoder());
 
-   /*
-    * add the given opcode decoder to the map
-    */
-   private static void addDecoder(OpcodeDecoder decoder) {
-      _decoders.put(decoder.opcode(), decoder);
-   }
+        addDecoder(new HIBDecoder());
+        addDecoder(new SGIDecoder());
+        addDecoder(new SGUDecoder());
+
+        addDecoder(new MKHDecoder());
+        addDecoder(new MKLDecoder());
+        addDecoder(new TSMDecoder());
+        addDecoder(new TSODecoder());
+        addDecoder(new KTODecoder());
+        addDecoder(new ONDDecoder());
+    }
+
+    /*
+     * add the given opcode decoder to the map
+     */
+    private static void addDecoder(OpcodeDecoder decoder) {
+        _decoders.put(decoder.opcode(), decoder);
+    }
 
 }
