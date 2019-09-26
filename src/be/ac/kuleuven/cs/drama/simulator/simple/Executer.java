@@ -32,7 +32,7 @@ public class Executer extends Thread {
     * it will be ignored.
     */
    public void run() {
-      while (true) {
+      while (_jobList.hasNext()) {
          Job job = _jobList.next();
 
          try {
