@@ -95,8 +95,8 @@ public class SimpleCPU
 
 
    private boolean debugStop() {
-      boolean result =         /* _machine.isDebug() && */ _breakPoints.containsKey((int) ptw().getBT()) && _noSecondCall;
-      _noSecondCall = !result;
+      boolean result =         /* _machine.isDebug() && */ _breakPoints.containsKey(new Integer((int) ptw().getBT())) && _noSecondCall;
+      _noSecondCall = result ? false : true;
       return result;
    }
 
@@ -245,7 +245,7 @@ public class SimpleCPU
             step();
             _noSecondCall = true;
          } catch (FatalMachineError fme) {
-            Object[] options = {"OK"};
+        	Object options[] = {"OK"};
             JOptionPane.showOptionDialog(
                null,
                "Er is een fatale fout opgetreden en de uitvoering is gestopt:\n" + fme.getMessage(),
@@ -281,7 +281,7 @@ public class SimpleCPU
                step();
             }
          } catch (FatalMachineError fme) {
-            Object[] options = {"OK"};
+        	Object options[] = {"OK"};
             JOptionPane.showOptionDialog(
                null,
                "Er is een fatale fout opgetreden en de uitvoering is gestopt:\n" + fme.getMessage(),

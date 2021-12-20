@@ -74,7 +74,7 @@ public class Vertaler2 {
 
    public int translateLine(int line) {
       try {
-         return (Integer) _linemap.get(line - 1);
+         return ((Integer) _linemap.get(line - 1)).intValue();
       } catch (Exception e) {
          System.out.println("*** " + e);
          return -1;

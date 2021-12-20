@@ -46,7 +46,7 @@ public class SimpleRAM
    }
 
    /**
-    * reset the cells of this RAM
+    * @reset the cells of this RAM
     */
    public void reset() {
       for (int i = 0; i < _cell.length; i++) {
@@ -75,14 +75,14 @@ public class SimpleRAM
       return _cell[address].getValue();
    }
 
-   // alias
+   // just another alias :)
    public long cell(int address) {
       return getCell(address);
    }
 
    private void checkValue(long value) {
       if (! NumberFormat.isDramaNumber(value)) {
-         throw new FatalMachineError( "Ongeldige waarde voor geheugecel: " + value);
+         throw new FatalMachineError( "Ongeldige waarde voor geheugecel:" + value);
       }
 
    }
