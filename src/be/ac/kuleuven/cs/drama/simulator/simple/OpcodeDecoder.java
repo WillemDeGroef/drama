@@ -113,7 +113,7 @@ public abstract class OpcodeDecoder {
          return 0;
       }
 
-   } 
+   }
 
    /**
     * @return the entire operand value
@@ -133,10 +133,10 @@ public abstract class OpcodeDecoder {
             operand += 9999990000L;
          }
 
-         return operand + index;
+         return (operand + index) % 10000000000L;
 
       case ABSOLUTE_VALUE:
-         return operand;
+         return operand % 10000;
 
       case ADDRESS:
          operand = (machine.cpu().addGBE(operand)) % 10000;
