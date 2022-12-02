@@ -82,7 +82,7 @@ public class SimpleRAM
 
    private void checkValue(long value) {
       if (! NumberFormat.isDramaNumber(value)) {
-         throw new FatalMachineError( "Ongeldige waarde voor geheugecel:" + value);
+         throw new FatalMachineError( "Ongeldige waarde voor geheugencel:" + value);
       }
 
    }

@@ -149,7 +149,7 @@ public class DramaBatch
             System.out.println("opties:");
             System.out.println(" -i   = gebruik invoerbestand van het programma (='bestandnaam.geg')");
             System.out.println(" -g:naam = gebruik dit bestand als invoerbestand voor alle programma's");
-            System.out.println(" -e = creeer een bestand met compilatie fouten (bestandsnaam.err) voor alle programma's");
+            System.out.println(" -e = creëer een bestand met compilatie fouten (bestandsnaam.err) voor alle programma's");
             System.out.println(" -c    = enkel vertaling, geen uitvoering");
             System.out.println(" -t:time = processortijd die elk programma krijgt toegewezen (default 10 seconden)");
             System.out.println(" -? = help (deze tekst)");

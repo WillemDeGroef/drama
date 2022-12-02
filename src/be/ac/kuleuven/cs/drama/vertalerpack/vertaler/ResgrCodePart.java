@@ -17,7 +17,7 @@ import java.util.StringTokenizer;
  * This class handles the RESGR compiler directive
  *
  * @version 1.0.0, 08/04/2000
- * @autor Tom Schrijvers
+ * @author Tom Schrijvers
  */
 
 public class ResgrCodePart extends LetterCodePart {

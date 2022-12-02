@@ -36,7 +36,7 @@ import be.ac.kuleuven.cs.drama.simulator.MonitorInterface;
 import be.ac.kuleuven.cs.drama.simulator.devices.CVO.PTW;
 
 
-/** Klasse GUIController coördineert het drama-machine model en de
+/** Klasse GUIController coÃ¶rdineert het drama-machine model en de
  *  verschillende GUI's (Graphical User Interface)  
  *
  *  @version 2.8 11 MAY 1999

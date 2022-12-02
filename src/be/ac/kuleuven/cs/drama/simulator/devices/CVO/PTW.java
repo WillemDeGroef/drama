@@ -106,7 +106,7 @@ public abstract class PTW extends Register {
    */
    public abstract void setMaskerValue(long value);
 
-   /**verwittig de objecten die geïnteresseerd zijn in veranderingen van het
+   /**verwittig de objecten die geÃ¯nteresseerd zijn in veranderingen van het
       PTW dat er een wijziging is opgetreden
    */
    protected final void notifyListeners() {

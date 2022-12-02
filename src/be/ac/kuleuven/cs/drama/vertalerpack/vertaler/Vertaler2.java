@@ -190,7 +190,7 @@ public class Vertaler2 {
 
    /**
     * @param symbol the symbol name
-    * @result the numeric value of the symbol
+    * @return  the numeric value of the symbol
     * @exception AbnormalTerminationException the symbol is not defined
     */
    public int getSymbolValue(String symbol)

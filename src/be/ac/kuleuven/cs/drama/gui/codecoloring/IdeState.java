@@ -13,7 +13,7 @@ public class IdeState {
 	
 	private IdeState(byte state, boolean singleWord, boolean finalState) {
 		if (state < 0 || state >= 3)
-			throw new RuntimeException("The state was attempted to be set to an unvalid number.");
+			throw new RuntimeException("The state was attempted to be set to an invalid number.");
 		this.state = state;
 		this.singleWord = singleWord;
 		

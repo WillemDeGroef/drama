@@ -35,7 +35,7 @@ extends GuiState {
 						getStateMachine().getSavedState());
 			getStateMachine().newFile();
 		} catch (CancelException ce) {
-			getStateMachine().statusMessage("Openen van nieuw bestand geanulleerd.");
+			getStateMachine().statusMessage("Openen van nieuw bestand geannuleerd.");
 		}
 	}
 
@@ -43,7 +43,7 @@ extends GuiState {
 		try {
 			save();
 		} catch (CancelException ce) {
-			getStateMachine().statusMessage("Opslaan geanulleerd.");
+			getStateMachine().statusMessage("Opslaan geannuleerd.");
 		}
 	}
 
@@ -59,7 +59,7 @@ extends GuiState {
 				getStateMachine().setCurrentState(getStateMachine().getSavedState());
 			getStateMachine().openFile();
 		} catch (CancelException ce) {
-			getStateMachine().statusMessage("Openen geanulleerd.");
+			getStateMachine().statusMessage("Openen geannuleerd.");
 		}
 	}
 
@@ -77,7 +77,7 @@ extends GuiState {
 			save();
 			getStateMachine().compile();
 		} catch (CancelException ce) {
-			getStateMachine().statusMessage("Comilatie niet geslaagd.");
+			getStateMachine().statusMessage("Compilatie niet geslaagd.");
 		}
 	}
 

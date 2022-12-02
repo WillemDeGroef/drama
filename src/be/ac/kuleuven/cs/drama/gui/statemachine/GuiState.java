@@ -51,7 +51,7 @@ abstract class GuiState {
          getStateMachine().realSaveAsFile();
          getStateMachine().setCurrentState(getStateMachine().getSavedState());
       } catch (CancelException ce) {
-         getStateMachine().statusMessage("'Opslaan als' geanulleerd.");
+         getStateMachine().statusMessage("'Opslaan als' geannuleerd.");
       }
 
    }

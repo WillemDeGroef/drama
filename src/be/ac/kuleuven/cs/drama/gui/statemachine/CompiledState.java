@@ -37,7 +37,7 @@ extends GuiState {
 			getStateMachine().realOpenFile();
 			getStateMachine().setCurrentState(getStateMachine().getSavedState());
 		} catch (CancelException ce) {
-			getStateMachine().statusMessage("Openen geanulleerd.");
+			getStateMachine().statusMessage("Openen geannuleerd.");
 		}
 
 	}

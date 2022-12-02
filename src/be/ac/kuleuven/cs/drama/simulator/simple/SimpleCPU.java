@@ -301,7 +301,7 @@ public class SimpleCPU
          }
 
          _machine.halt();
-         _machine.systemMessage("Uitvoering beëindigd");
+         _machine.systemMessage("Uitvoering beÃ«indigd");
          _machine.halted();
       }
    

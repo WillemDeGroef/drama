@@ -125,7 +125,7 @@ public class EditFrame extends JFrame {
 			}
 		});
 		popup.add(item);
-		item = new JMenuItem("Kopiëren");
+		item = new JMenuItem("KopiÃ«ren");
 		item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				_textPane.getTransferHandler().exportToClipboard(_textPane, Toolkit.getDefaultToolkit().getSystemClipboard(), TransferHandler.COPY);

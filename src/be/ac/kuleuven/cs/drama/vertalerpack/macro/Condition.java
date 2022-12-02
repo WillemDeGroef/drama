@@ -55,7 +55,7 @@ public abstract class Condition {
    }
 
    /**
-    * @return wether the given condition state meets this conditon
+    * @return whether the given condition state meets this condition
     */
    public abstract boolean accept(ConditionState state);
 

@@ -35,7 +35,7 @@ class SavedState extends GuiState {
 				try {
 					getStateMachine().realSaveAsFile();
 				} catch (CancelException ce) {
-					getStateMachine().statusMessage("Opslaan geanulleerd.");
+					getStateMachine().statusMessage("Opslaan geannuleerd.");
 				}
 			}
 	}
@@ -45,7 +45,7 @@ class SavedState extends GuiState {
 			try {
 				getStateMachine().realOpenFile();
 			} catch (CancelException ce) {
-				getStateMachine().statusMessage("Openen geanulleerd.");
+				getStateMachine().statusMessage("Openen geannuleerd.");
 			}
 	}
 

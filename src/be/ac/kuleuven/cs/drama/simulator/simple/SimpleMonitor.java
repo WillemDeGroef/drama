@@ -35,7 +35,7 @@ public class SimpleMonitor
       super("Monitor online.\n \n", 40 , 20 /*, TextArea.SCROLLBARS_VERTICAL_ONLY */);
       setBackground(Color.black);
       setForeground(Color.yellow);
-      setFont(new Font("courrier", 1, 14));
+      setFont(new Font("courier", 1, 14));
       setEditable(false);
       setLineWrap(true);
    }
