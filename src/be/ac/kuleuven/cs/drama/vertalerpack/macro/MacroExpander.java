@@ -176,7 +176,7 @@ public class MacroExpander {
 
    /**
     * @return wether the macro condition code
-    *  meets the given conditon
+    *  meets the given condition
     */
    public boolean doAssert(Condition cond) {
       return cond.accept(_mcc);

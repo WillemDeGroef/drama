@@ -102,7 +102,7 @@ public abstract class MacroLine {
    throws AbnormalTerminationException;
 
    /**
-    * @return wether this is the last line of a macro (default is false)
+    * @return whether this is the last line of a macro (default is false)
     */
    public boolean isLastLine() {
       return false;

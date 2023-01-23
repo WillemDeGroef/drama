@@ -63,7 +63,7 @@ public final class StringUtils {
 
 
    /**
-    * @return wether the given char is considered a space
+    * @return whether the given char is considered a space
     */
    public static boolean isSpace(char c) {
       //      return c == ' ' || c == '\t';
@@ -71,7 +71,7 @@ public final class StringUtils {
    }
 
    /**
-    * @return the number of occurences of the given char in the given string
+    * @return the number of occurrences of the given char in the given string
     */
    public static int occurences(String s, char c) {
       char[] chars = s.toCharArray();

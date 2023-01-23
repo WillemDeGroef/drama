@@ -109,11 +109,11 @@ public abstract class OpcodeDecoder {
          return value;
 
       default:
-         System.out.println("Omgeldige indexatiemode");
+         System.out.println("Ongeldige indexatiemode");
          return 0;
       }
 
-   } 
+   }
 
    /**
     * @return the entire operand value
@@ -133,10 +133,10 @@ public abstract class OpcodeDecoder {
             operand += 9999990000L;
          }
 
-         return operand + index;
+         return (operand + index) % 10000000000L;
 
       case ABSOLUTE_VALUE:
-         return operand;
+         return operand % 10000;
 
       case ADDRESS:
          operand = (machine.cpu().addGBE(operand)) % 10000;
@@ -222,7 +222,7 @@ public abstract class OpcodeDecoder {
    private void checkAddressing(Instruction instruction) {
       if (! usesAddressing()) {
          if ( instruction.addressing() != 9) {
-            throw new FatalMachineError("Geen addressering verwacht in " + this + " bij " + instruction);
+            throw new FatalMachineError("Geen adressering verwacht in " + this + " bij " + instruction);
          }
       } else {
 
@@ -239,7 +239,7 @@ public abstract class OpcodeDecoder {
          case 8:
 
          case 9:
-            throw new FatalMachineError( "Ongeldige addressering in " + this + " bij " + instruction);
+            throw new FatalMachineError( "Ongeldige adressering in " + this + " bij " + instruction);
          }
 
       }

@@ -52,7 +52,7 @@ public class SourceLine {
    // LABEL RELATED METHODS
 
    /**
-    * @return wether this SourceLine contains a label
+    * @return whether this SourceLine contains a label
     */
    public boolean hasLabel() {
       return _label != null;
@@ -101,14 +101,14 @@ public class SourceLine {
    }
 
    /**
-    * return wether c is acceptable as the first character of a label
+    * return whether c is acceptable as the first character of a label
     */
    public static boolean isFirstLabelCharacter(char c) {
       return Character.isLetter(c) || c == '_';
    }
 
    /**
-    * @return wether c is acceptable as a character of a label
+    * @return whether c is acceptable as a character of a label
     */
    public static boolean isLabelCharacter(char c) {
       return isFirstLabelCharacter(c) || Character.isDigit(c) || c == '.';
@@ -117,7 +117,7 @@ public class SourceLine {
    // COMMENT RELATED CODE
 
    /**
-    * @return wether this SourceLine has a comment
+    * @return whether this SourceLine has a comment
     */
    public boolean hasComment() {
       return _comment != null;
@@ -168,7 +168,7 @@ public class SourceLine {
    }
 
    /**
-    * @return wether this is the last line of the source program
+    * @return whether this is the last line of the source program
     */
    public boolean isLastProgramLine() {
       return _codePart.isLastProgramLine();

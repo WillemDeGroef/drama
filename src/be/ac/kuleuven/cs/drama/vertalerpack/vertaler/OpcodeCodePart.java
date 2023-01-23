@@ -155,7 +155,7 @@ public abstract class OpcodeCodePart extends LetterCodePart {
 
 
    /**
-    * @return wether the given number of arguments is accpetable
+    * @return whether the given number of arguments is acceptable
     */
    protected abstract boolean acceptNbArguments(int nb);
 
@@ -316,7 +316,7 @@ public abstract class OpcodeCodePart extends LetterCodePart {
    }
 
    /**
-    * @return wether the given string is a register
+    * @return whether the given string is a register
     */
    public boolean isRegister(String str) {
       return _registers.containsKey(str);

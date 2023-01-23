@@ -44,14 +44,14 @@ public final class Name {
    }
 
    /*
-    * isName helper funtion
+    * isName helper function
     */
    private static boolean isFirstCharOfName(char c) {
       return Character.isLetter(c);
    }
 
    /*
-    * isName helper funtion
+    * isName helper function
     */
    private static boolean isCharOfName(char c) {
       return Character.isLetterOrDigit(c) || c == '_';

@@ -289,7 +289,7 @@ public class SimpleMachine
    }
 
    public void finish() {
-      systemMessage("Programma beëindigd.");
+      systemMessage("Programma beÃ«indigd.");
       systemMessage("****************************************");
       _isFinished = true;
       _cpu.halt();

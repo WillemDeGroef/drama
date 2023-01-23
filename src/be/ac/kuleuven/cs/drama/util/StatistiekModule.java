@@ -78,7 +78,8 @@ public class StatistiekModule {
 
       //System.out.println("Writing: " + filenaam);
 
-      RAM_FILES.put(filenaam.toLowerCase(), toString());
+      String fileName = filenaam;
+      RAM_FILES.put(fileName.toLowerCase(), toString());
 
       // File statfile=new File(DramaTaskBar.DRAMADIR, filenaam);
       // File statfile=new File("." + File.separator, filenaam);
